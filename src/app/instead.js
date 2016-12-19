@@ -24,9 +24,6 @@ var Instead = {
         // this.track.autoplay = true;
         // this.track.loop = true;
         // this.track.muted = MenuDispatcher.Instance().muted;
-
-        // MenuDispatcher.Instance().save.onclick = OnSaveClick;
-        // MenuDispatcher.Instance().load.onclick = OnLoadClick;
     },
 
     startGame: function startGame(savedGame) {
@@ -72,7 +69,6 @@ var Instead = {
 
     click: function click(uiref, field, onStead) {
         var ref = uiref;
-        // if (MenuDispatcher.Instance().visible) return;
         if (!onStead && (UI.isAct || field === 'Inv')) {
             ref = ref.substr(1);
             if (ref.substr(0, 3) === 'act') {
@@ -89,18 +85,15 @@ var Instead = {
                     } else {
                         this.ifaceCmd('use ' + UI.actObj + ',' + ref);
                     }
-                    UI.setAct(false);
-                    UI.setActObj('');
+                    UI.setAct(false, '');
                     this.refreshInterface();
                 }
             } else {
-                UI.setAct(true);
-                UI.setActObj(ref);
+                UI.setAct(true, ref);
             }
         } else {
             if (UI.isAct) {
-                UI.setAct(false);
-                UI.setActObj('');
+                UI.setAct(false, '');
             }
             this.ifaceCmd(ref);
             this.refreshInterface();

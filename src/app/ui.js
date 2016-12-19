@@ -67,12 +67,10 @@ var UI = {
         this.element.$inventory.perfectScrollbar({wheelSpeed: 1});
     },
 
-    setAct: function setAct(act) {
+    setAct: function setAct(act, obj) {
         this.isAct = act;
-        this.updateUse();
-    },
-    setActObj: function setActObj(obj) {
         this.actObj = obj;
+        this.updateUse();
     },
     updateUse: function updateUse() {
         Theme.setCursor(this.isAct);
