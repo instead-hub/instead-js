@@ -1,0 +1,6 @@
+[submodule "instead/git/instead"]
+	path = instead/git/instead
+	url = https://github.com/instead-hub/instead.git
+[submodule "instead/git/weblua"]
+	path = instead/git/weblua
+	url = https://github.com/gl00my/weblua.git
