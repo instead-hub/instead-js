@@ -1,7 +1,6 @@
 var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var WebpackShellPlugin = require('webpack-shell-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
@@ -31,11 +30,8 @@ module.exports = {
         ]
     },
     plugins: [
-        new WebpackShellPlugin({
-            onBuildStart: ['node build_stead.js']
-        }),
         new CopyWebpackPlugin([
-            {from: 'instead/themes', to: 'themes'}
+            {from: 'instead/git/instead/themes', to: 'themes'}
         ]),
         new HtmlWebpackPlugin({
             template: './src/index.html',

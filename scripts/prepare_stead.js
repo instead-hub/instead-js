@@ -1,10 +1,7 @@
 var fs = require('fs');
 
-var dirname = './instead/stead/';
-var outputDir = './instead/';
+var dirname = './instead/git/instead/stead/';
 var output = {};
-var outputFileContent = '';
-
 
 function loadFile(dir, filename) {
     if (filename.indexOf('\.lua') !== -1) {
@@ -19,9 +16,5 @@ fs.readdir(dirname, function readFn(err, filenames) {
     filenames.forEach( function processFn(filename) {
         loadFile(dirname, filename);
     });
-    loadFile('./src/lua/', 'instead_js.lua');
-
-    outputFileContent = 'var stead = ' + JSON.stringify(output) + ';\n' +
-                      'module.exports = stead;\n';
-    fs.writeFile(outputDir + 'stead.js', outputFileContent, {flag: 'w'});
+    fs.writeFile('./instead/stead_lua.json',  JSON.stringify(output), {flag: 'w'});
 });

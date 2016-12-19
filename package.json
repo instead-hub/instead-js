@@ -6,6 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --inline --hot --content-base build/",
+    "prepare": "node ./scripts/prepare_stead.js && node ./scripts/prepare_lua_vm.js",
+    "prebuild": "node ./scripts/build_stead.js",
     "build": "webpack -p --config webpack.config.js",
     "build:dev": "webpack --config webpack.config.js",
     "lint": "./node_modules/.bin/eslint ./src/ --ext .js"
@@ -28,8 +30,7 @@
     "script-loader": "^0.7.0",
     "style-loader": "^0.13.1",
     "webpack": "^1.14.0",
-    "webpack-dev-server": "^1.16.2",
-    "webpack-shell-plugin": "^0.5.0"
+    "webpack-dev-server": "^1.16.2"
   },
   "dependencies": {
     "jquery": "^3.1.1",
