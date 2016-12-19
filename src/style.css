@@ -6,7 +6,7 @@ body {
     background-color: #333333;
 }
 
-.wordwrap { 
+.wordwrap {
 	word-wrap: normal;
 	white-space: pre-line;      /* CSS3 */
 }
