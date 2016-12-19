@@ -1,5 +1,6 @@
 var Game = {
-    path: './game/'
+    path: './game/',
+    themePath: './themes/default/'
 };
 
 module.exports = Game;

@@ -1,12 +1,12 @@
 var $ = require('jquery');
 
 var Theme = {
-    themePath: './themes/default2/',
     themeFile: 'theme.ini',
     theme: {},
-    load: function load(elements) {
+    load: function load(elements, themePath) {
         var self = this;
         this.elements = elements;
+        this.themePath = themePath;
         var url = this.themePath + this.themeFile;
         $.get(url, function onLoad(data) {
             var themeLines = data.split('\n');
@@ -19,10 +19,6 @@ var Theme = {
             self.apply();
             self.setCursor();
         });
-    },
-    loadTheme: function loadTheme() {
-        // load default theme
-        var themePath = './themes/default2';
     },
     apply: function applyTheme() {
         var elements = this.elements;
