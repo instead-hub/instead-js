@@ -1,0 +1,5 @@
+/build/
+/node_modules/
+/instead/stead.js
+.eslintcache
+npm-debug.log

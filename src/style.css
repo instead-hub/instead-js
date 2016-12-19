@@ -1,0 +1,100 @@
+* {
+	font-size: 100%;
+}
+
+body {
+    background-color: #333333;
+}
+
+.wordwrap { 
+	word-wrap: normal;
+	white-space: pre-line;      /* CSS3 */
+}
+
+pre {
+	white-space: pre-line;
+	padding-right: 20px;
+}
+
+.nowrap {
+	white-space: pre;
+}
+
+/* Set font */
+#stead *, #menu * {
+    font-family: Tahoma,Verdana,Helvetica,Arial,sans-serif;
+}
+
+#stead {
+    width: 800px;
+}
+
+#stead, #win, #inventory, #cog, #menu_button {
+	position: absolute;
+}
+
+#win, #inventory {
+	overflow: auto;
+	overflow-x: hidden;
+	overflow-y: hidden;
+}
+
+#title, #picture, #ways {
+	text-align: center;
+}
+
+#stead a {
+    text-decoration: none;
+    cursor: inherit;
+}
+
+#text {
+	text-align: justify;
+}
+
+#menu {
+	width: 200px;
+	position: absolute;
+	z-index: 9000;
+	top: 200px;
+	left: 300px;
+	display: none;
+}
+
+#menu a {
+	height: 24px;
+	text-align: center;
+	background-color: #333333;
+	border: 1px solid white;
+    color: white;
+	text-decoration: none;
+	width: 100%;
+	height: 100%;
+    padding: 5px;
+	display: block;
+}
+
+#menu a:hover {
+	color: white;
+	background-color: #555555;
+}
+
+c {
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+}
+
+#log {
+    position: absolute;
+    top: 620px;
+    width: 800px;
+    height: 300px;
+    padding: 10px;
+    border: 1px solid #999999;
+    color: #CCCCCC;
+    font-family: Consolas;
+    font-size: 12px;
+    white-space: pre;
+    overflow:auto;
+}
