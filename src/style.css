@@ -81,7 +81,19 @@ pre {
 c {
     text-align: center;
     display: inline-block;
-    width: 100%;
+    width: 99%;
+}
+
+r {
+    text-align: right;
+    display: inline-block;
+    width: 99%;
+}
+
+l {
+    text-align: left;
+    display: inline-block;
+    width: 99%;
 }
 
 #log {

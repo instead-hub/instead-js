@@ -24,6 +24,10 @@ function normalizeContent(input, field) {
     output = output.replace(r, '<span class="nowrap">$1</span>');
     r = /<g:([^>]+)>/g;
     output = output.replace(r, '<img src="' + Game.path + '$1">');
+    /* TODO: txttab support
+    r = /<x:([^>,]+),?([^>]+)?>/g;
+    output = output.replace(r, '[x : $1 : $2]');
+    */
     return output;
 }
 
