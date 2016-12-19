@@ -62,7 +62,7 @@ var UI = {
             self.clickHandler(steadHandler.click, e, obj);
         });
 
-        Theme.load(this.element);
+        Theme.load(this.element, Game.themePath);
         this.element.$win.perfectScrollbar({wheelSpeed: 1});
         this.element.$inventory.perfectScrollbar({wheelSpeed: 1});
     },
