@@ -1,5 +1,6 @@
 var $ = require('jquery');
 var Game = require('./game');
+var ajaxGetSync = require('../ajax');
 
 var dynamicStyles = {};
 
@@ -87,40 +88,67 @@ var applyStyle = {
 var Theme = {
     themeFile: 'theme.ini',
     theme: {},
+    themeUrl: {},
     load: function load(elements, themePath) {
-        var self = this;
         this.elements = elements;
-        this.themePath = themePath;
         dynamicStyles = {};
-        var url = this.themePath + this.themeFile;
-        $.get(url, function onLoad(data) {
-            var themeLines = data.split('\n');
-            themeLines.forEach(function parse(line) {
-                var pair = line.split('=');
-                if (pair.length === 2) {
-                    pair[1] = (pair[1].split(';'))[0];
-                    self.theme[pair[0].trim()] = pair[1].trim();
+
+        // load default theme
+        var defaultTheme = ajaxGetSync(themePath + 'default/' + this.themeFile);
+        this.parseTheme(defaultTheme, themePath + 'default/');
+
+        // try to load custom theme
+        var customTheme = ajaxGetSync(Game.path + this.themeFile);
+        if (customTheme) {
+            var include = this.parseTheme(customTheme, Game.path);
+        }
+
+        // load included theme
+        if (include) {
+            var includedTheme = ajaxGetSync(themePath + include + '/' + this.themeFile);
+            this.parseTheme(includedTheme, themePath + include + '/');
+            this.parseTheme(customTheme, Game.path);
+        }
+
+        // apply theme
+        this.apply();
+        this.setCursor();
+    },
+    parseTheme: function parseTheme(data, url) {
+        var self = this;
+        var pair;
+        var name;
+        var value;
+        var isInclude;
+        data.split('\n').forEach(function parse(line) {
+            pair = line.split('=');
+            if (pair.length === 2) {
+                name = pair[0].trim();
+                value = (pair[1].split(';'))[0].trim();
+                self.theme[name] = value;
+                self.themeUrl[name] = url;
+                if (name === 'include') {
+                    isInclude = value;
                 }
-            });
-            self.apply();
-            self.setCursor();
+            }
         });
+        return isInclude;
     },
     apply: function applyTheme() {
         var elements = this.elements;
         var theme = this.theme;
-        var path = this.themePath;
+        var themeUrl = this.themeUrl;
 
         Object.keys(theme).forEach(function parseParam(key) {
             if (key in applyStyle) {
-                applyStyle[key](elements, theme[key], path);
+                applyStyle[key](elements, theme[key], themeUrl[key]);
             }
         });
     },
     setCursor: function setCursor(isAct) {
-        var cursor = this.themePath + this.theme['scr.gfx.cursor.normal'];
+        var cursor = this.themeUrl['scr.gfx.cursor.normal'] + this.theme['scr.gfx.cursor.normal'];
         if (isAct) {
-            cursor = this.themePath + this.theme['scr.gfx.cursor.use'];
+            cursor = this.themeUrl['scr.gfx.cursor.normal'] + this.theme['scr.gfx.cursor.use'];
         }
         this.elements.$stead.css('cursor', 'url(' + cursor + '), auto');
     },
