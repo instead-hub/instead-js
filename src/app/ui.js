@@ -10,6 +10,8 @@ var Theme = require('./theme');
 var Menu = require('./menu');
 var Logger = require('./log');
 
+var parseImg = require('./ui/parse_image');
+
 function normalizeContent(input, field) {
     var output = input;
     if (!output) {
@@ -22,10 +24,8 @@ function normalizeContent(input, field) {
     output = output.replace(r, '<a href="" data-ref="#$2", data-type="' + field + '"');
     r = /<w:([^>]+)>/g;
     output = output.replace(r, '<span class="nowrap">$1</span>');
-    r = /<g:blank:(\d+)x(\d+)>/g;
-    output = output.replace(r, '<div width="$1" height="$2"></div>');
     r = /<g:([^>]+)>/g;
-    output = output.replace(r, '<img src="' + Game.path + '$1">');
+    output = output.replace(r, parseImg);
     /* TODO: txttab support
     r = /<x:([^>,]+),?([^>]+)?>/g;
     output = output.replace(r, '[x : $1 : $2]');
