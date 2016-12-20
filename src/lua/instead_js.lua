@@ -37,7 +37,12 @@ function url_encode(str)
         function (c) return string.format ("%%%02X", string.byte(c)) end)
     str = string.gsub (str, " ", "+")
   end
-  return str	
+  return str
+end
+
+-- theme
+function instead_theme_var(name, value)
+    js.run('insteadTheme("' .. tostring(name) .. '","' .. tostring(value) .. '")')
 end
 
 -- sprites are not supported (yet?)
