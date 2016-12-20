@@ -5,24 +5,20 @@ var ajaxGetSync = require('../ajax');
 
 var Game = require('../app/game');
 
-var localStorage = {};
-
-function getSource(path) {
-    if (stead.hasOwnProperty(path)) {
-        return stead[path];
+var vfs = {
+    storage: {},
+    getItem: function getItem(key) {
+        return this.storage[key];
+    },
+    setItem: function setItem(key, value) {
+        this.storage[key] = value;
+    },
+    clear: function clear() {
+        this.storage = {};
     }
-    // download code via synchronous ajax... sjax? ;)
-    return ajaxGetSync(path);
-}
-
-function logOutput() {
-    console.log(arguments); // eslint-disable-line no-console
-}
-
-function execLuaCode(path, luacode) {
-    var code = utf8encode(luacode);
-    Lua.cache.items = {}; // Clear cache;
-    return Lua.exec(code, path);
+};
+if (window.localStorage) {
+    vfs = window.localStorage;
 }
 
 // convert non latin symbols
@@ -46,7 +42,7 @@ function utf8encode(str) {
 // synchronous ajax to get file, so code executed before function returns
 function runLuaFromPath(path) {
     try {
-        var luacode = getSource(path);
+        var luacode = stead.hasOwnProperty(path) ? stead[path] : ajaxGetSync(path);
         // check if download worked
         if ((typeof luacode) !== 'string') {
             throw String('RunLuaFromPath failed "' + path + '" :' +
@@ -54,12 +50,11 @@ function runLuaFromPath(path) {
                          ' val=' + String(luacode));
         }
 
-        return execLuaCode(path, luacode);
+        var code = utf8encode(luacode);
+        Lua.cache.items = {}; // Clear cache;
+        return Lua.exec(code, path);
     } catch (e) {
-        // error during run, display infos as good as possible,
-        // lua-stacktrace would be cool here, but hard without line numbers
-        // if (!safe)
-        logOutput('Error: file ' + path + ' : ' + String(e) + ' :\n', e);
+        console.error('Error: file ' + path + ' : ' + String(e) + ' :\n', e); // eslint-disable-line no-console
     }
     return null;
 }
@@ -81,20 +76,18 @@ function luaRequire(filepath) {
     }
     Lua.requires[path] = true;
     return runLuaFromPath(path + '.lua');
-    // require("bla") -> bla.lua
-    // ~ NOTE: replaces parser lib lua_require(G, path);
 }
 
-function luaDofile(path) {
-    return runLuaFromPath(Game.path + path);
+function luaDofile(filepath) {
+    return runLuaFromPath(Game.path + filepath);
 }
 
 function saveFile(path, data) {
-    localStorage[path] = data;
+    vfs.setItem(path, data);
 }
 
 function loadFile(path) {
-    return localStorage[path];
+    return vfs.getItem(path);
 }
 
 var Glue = {
