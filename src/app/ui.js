@@ -99,7 +99,7 @@ var UI = {
     },
     setPicture: function setPicture(content) {
         if (content) {
-            this.element.$picture.html('<img src="' + Game.path + content + '">');
+            this.element.$picture.html(parseImg(null, content));
         } else {
             this.element.$picture.html('');
         }
