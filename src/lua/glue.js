@@ -1,43 +1,22 @@
 /* global Lua */
 require('script-loader!../../instead/lua.vm.js');
 var stead = require('../../instead/stead.js');
+var ajaxGetSync = require('../ajax');
 
 var Game = require('../app/game');
 
 var localStorage = {};
 
-function getSource(path, callback) {
+function getSource(path) {
     if (stead.hasOwnProperty(path)) {
-        callback(stead[path]);
-    } else {
-        // download code via synchronous ajax... sjax? ;)
-        ajaxGet(path, callback, true);
+        return stead[path];
     }
+    // download code via synchronous ajax... sjax? ;)
+    return ajaxGetSync(path);
 }
 
 function logOutput() {
     console.log(arguments); // eslint-disable-line no-console
-}
-
-// see http://www.w3.org/TR/XMLHttpRequest			sQuery = "bla.php?x="+escape(x)
-function ajaxGet(sQuery, callback, bSynchronous) {
-    var bAsync = true;
-    if (bSynchronous) {
-        bAsync = false;
-    }
-    var client = new XMLHttpRequest();
-    client.onreadystatechange = function callbackHandler() {
-        if (this.readyState === this.DONE) {
-            if (this.status === 200) {
-                callback(this.responseText);
-            } else {
-                callback(null, this.status);
-            }
-        }
-    };
-    client.open('GET', sQuery, bAsync);
-    // ~ client.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
-    client.send();
 }
 
 function execLuaCode(path, luacode) {
@@ -66,13 +45,8 @@ function utf8encode(str) {
 
 // synchronous ajax to get file, so code executed before function returns
 function runLuaFromPath(path) {
-    var gLastLoadedLuaCode = false;
     try {
-        getSource(path, function loadCode(luacode) {
-            gLastLoadedLuaCode = luacode;
-        });
-        var luacode = gLastLoadedLuaCode;
-
+        var luacode = getSource(path);
         // check if download worked
         if ((typeof luacode) !== 'string') {
             throw String('RunLuaFromPath failed "' + path + '" :' +
