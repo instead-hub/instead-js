@@ -55,6 +55,7 @@ var UI = {
 
         this.element.$stead.on('click', 'a', function handler(e) {
             var obj = $(this);
+            Theme.click(); // play click sound, if defined
             self.clickHandlerLink(steadHandler.click, e, obj);
         });
         this.element.$stead.on('click', function handler(e) {
