@@ -2,6 +2,7 @@ var $ = require('jquery');
 var Game = require('./game');
 var ajaxGetSync = require('../ajax');
 var interpreter = require('../lua/interpreter');
+var HTMLAudio = require('./audio');
 
 var dynamicStyles = {};
 
@@ -115,6 +116,7 @@ var Theme = {
         // apply theme
         this.apply();
         this.setCursor();
+        this.click(true); // preload click sound
     },
     parseTheme: function parseTheme(data, url) {
         var self = this;
@@ -158,6 +160,11 @@ var Theme = {
         if (name in applyStyle && value !== 'nil') {
             applyStyle[name](this.elements, value, Game.path);
         }
+    },
+    click: function click(isCache) {
+        if ('snd.click' in this.theme) {
+            HTMLAudio.playSound(this.themeUrl['snd.click'] + this.theme['snd.click'], null, isCache);
+        }
     }
 };
 
@@ -184,6 +191,4 @@ X scr.gfx.icon = пусть к файлу-иконке игры (ОС завис
 - menu.fnt.name = путь к файлу-шрифту меню (строка)
 - menu.fnt.size = размер шрифта меню (размер)
 - menu.fnt.height = междустрочный интервал как число с плавающей запятой (1.0 по умолчанию)
-- snd.click = путь к звуковому файлу щелчка (строка)
-- include = имя темы (последний компонент в пути каталога) (строка)
 */

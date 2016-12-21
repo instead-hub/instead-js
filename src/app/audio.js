@@ -23,8 +23,12 @@ var HTMLAudio = {
             this.audio = null;
         }
     },
-    playSound: function playSound(track, loop) {
+    playSound: function playSound(track, loop, cache) {
         var audio = new Audio(track);
+        audio.muted = this.isMuted;
+        if (cache) {
+            audio.muted = true;
+        }
         this.play(audio, loop);
     },
     play: function play(audio, loop) {
