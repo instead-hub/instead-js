@@ -1,13 +1,8 @@
 var $ = require('jquery');
 require('perfect-scrollbar/jquery')($);
 
-// load styles
-require('../style.css');
-require('perfect-scrollbar/dist/css/perfect-scrollbar.css');
-
 var Game = require('./game');
 var Theme = require('./theme');
-var Menu = require('./menu');
 var Logger = require('./log');
 
 var parseImg = require('./ui/parse_image');
@@ -57,7 +52,6 @@ var UI = {
 
     init: function init(steadHandler) {
         var self = this;
-        Menu.init(this.element, steadHandler);
 
         this.element.$stead.on('click', 'a', function handler(e) {
             var obj = $(this);

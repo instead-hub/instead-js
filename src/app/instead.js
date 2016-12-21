@@ -5,29 +5,19 @@ var Game = require('./game');
 var Logger = require('./log');
 
 var Instead = {
-    track: null,
     saveSlot: 'SAVE_GAME_SLOT',
 
     init: function init() {
-        // initialize UI
-        var self = this;
-        var handler = {
-            click: self.click.bind(self),
-            reset: self.resetGame.bind(self),
-            save: self.saveGame.bind(self),
-            load: self.loadGame.bind(self)
+        this.handlers = {
+            click: this.click.bind(this),
+            reset: this.resetGame.bind(this),
+            save: this.saveGame.bind(this),
+            load: this.loadGame.bind(this)
         };
 
         // preloader
         interpreter.init();
         interpreter.load('instead_js.lua');
-
-        UI.init(handler);
-
-
-        // this.track.autoplay = true;
-        // this.track.loop = true;
-        // this.track.muted = MenuDispatcher.Instance().muted;
     },
 
     startGame: function startGame(savedGame) {
@@ -39,17 +29,17 @@ var Instead = {
         this.refreshInterface();
     },
 
-    resetGame: function resetGame() {
-        interpreter.clear();
-        this.startGame();
-    },
-
     initGame: function initGame() {
         interpreter.load('instead_js.lua');
         interpreter.call('js_instead_gamepath("' + Game.path + '")');
         // load game
         interpreter.load(Game.path + 'main.lua');
         interpreter.call('stead.game_ini(game)');
+    },
+
+    resetGame: function resetGame() {
+        interpreter.clear();
+        this.startGame();
     },
 
     saveGame: function saveGame() {
