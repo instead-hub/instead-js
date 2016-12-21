@@ -22,6 +22,15 @@ var Menu = {
                 self.toggleMenu();
                 steadHandler.load();
                 break;
+            case 'mute':
+                if ($(this).text() === 'Mute') {
+                    steadHandler.mute(true);
+                    $(this).text('Unmute');
+                } else {
+                    steadHandler.mute(false);
+                    $(this).text('Mute');
+                }
+                break;
             default:
                 self.toggleMenu();
             }
