@@ -5,6 +5,7 @@ var interpreter = require('../lua/interpreter');
 var HTMLAudio = require('./audio');
 
 var dynamicStyles = {};
+var scrollerWidth = 15;
 
 function setCSS() {
     $('#theme_css').text(Object.values(dynamicStyles).join(''));
@@ -35,14 +36,22 @@ var applyStyle = {
     'win.gfx.x': function s(e, v) { e.$picture.css('left', v + 'px'); },
     'win.gfx.y': function s(e, v) { e.$picture.css('top', v + 'px'); },
 
-    'win.w': function s(e, v) { e.$win.css('width', v + 'px'); },
+    'win.w': function s(e, v) {
+        // reserve space for scrollers
+        e.$win.css('width', (+v + scrollerWidth) + 'px');
+        e.$win.css('padding-right', scrollerWidth + 'px');
+    },
     'win.h': function s(e, v) { e.$win.css('height', v + 'px'); },
     'win.x': function s(e, v) { e.$win.css('left', v + 'px'); },
     'win.y': function s(e, v) { e.$win.css('top', v + 'px'); },
     'win.col.fg': function s(e, v) { e.$win.css('color', v); },
     'win.align': function s(e, v) { e.$win.css('text-align', v); },
 
-    'inv.w': function s(e, v) { e.$inventory.css('width', v + 'px'); },
+    'inv.w': function s(e, v) {
+        // reserve space for scrollers
+        e.$inventory.css('width', (+v + scrollerWidth) + 'px');
+        e.$inventory.css('padding-right', scrollerWidth + 'px');
+    },
     'inv.h': function s(e, v) { e.$inventory.css('height', v + 'px'); },
     'inv.x': function s(e, v) { e.$inventory.css('left', v + 'px'); },
     'inv.y': function s(e, v) { e.$inventory.css('top', v + 'px'); },
