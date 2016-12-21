@@ -13,9 +13,9 @@ function normalizeContent(input, field) {
         // do not process empty outputs
         return '';
     }
-    var r = /<a(:)([\w+\d+ ]+)>(<i>|)((&#160;)+)/g;
+    var r = /<a(:)([^>]+)>(<i>|)((&#160;)+)/g;
     output = output.replace(r, '$4<a href="" data-ref="#$2" data-type="' + field + '">$3');
-    r = /<a(:)([\w+\d+ ]+)/g;
+    r = /<a(:)([^>]+)/g;
     output = output.replace(r, '<a href="" data-ref="#$2", data-type="' + field + '"');
     r = /<w:([^>]+)>/g;
     output = output.replace(r, '<span class="nowrap">$1</span>');
@@ -77,6 +77,7 @@ var UI = {
         Theme.setCursor(this.isAct);
     },
     setTitle: function setTitle(content) {
+        Logger.log('TITLE: ' + content);
         setContent(
             this.element.$title,
             '<a href="" data-ref="#look" data-type="Title">' + content + '</a>',
@@ -84,15 +85,18 @@ var UI = {
         );
     },
     setWays: function setWays(content) {
+        Logger.log('WAYS: ' + content);
         setContent(this.element.$ways, content, 'Ways');
     },
     setText: function setText(content) {
         setContent(this.element.$text, content, 'Text');
     },
     setInventory: function setInventory(content) {
+        Logger.log('INV: ' + content);
         setContent(this.element.$inventory, content, 'Inv');
     },
     setPicture: function setPicture(content) {
+        Logger.log('PICTURE: ' + content);
         if (content) {
             this.element.$picture.html(parseImg(null, content));
         } else {
