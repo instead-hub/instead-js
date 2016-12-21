@@ -30,3 +30,29 @@ To build INSTEAD-JS, run the following command:
     npm run build
     
 The application will be created in `build` folder.
+
+## Features
+
+- [x] Images
+    - [x] Blank images
+    - [x] Composite image
+    - [ ] Sprites (?)
+- [x] Themes
+    - [x] Standard and user-defined themes
+    - [x] Changing theme on-the-fly (module 'theme')
+    - [ ] win.scroll.mode
+    - [ ] src.gfx.mode = 'float'
+    - [ ] Theme fonts and font sizes
+- [x] Music and sounds
+    - [x] Play music and sound
+    - [ ] Loop music
+    - [ ] Sounds on multiple channels
+- [x] Save/load game
+    - [x] use LocalStorage to save game
+    - [ ] multiple save slots
+    - [ ] clean save slots
+- [ ] Game manager
+    - [ ] Choose game to load
+    - [ ] Separate save slots for different games
+- [ ] Keyboard input (?)
+- [ ] Timer (?)
