@@ -17,9 +17,13 @@ var Instead = {
             save: self.saveGame.bind(self),
             load: self.loadGame.bind(self)
         };
+
+        // preloader
+        interpreter.init();
+        interpreter.load('instead_js.lua');
+
         UI.init(handler);
 
-        interpreter.init();
 
         // this.track.autoplay = true;
         // this.track.loop = true;
@@ -41,9 +45,8 @@ var Instead = {
     },
 
     initGame: function initGame() {
-        // preloader
         interpreter.load('instead_js.lua');
-        interpreter.call('instead_gamepath("' + Game.path + '")');
+        interpreter.call('js_instead_gamepath("' + Game.path + '")');
         // load game
         interpreter.load(Game.path + 'main.lua');
         interpreter.call('stead.game_ini(game)');

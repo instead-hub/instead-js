@@ -19,8 +19,7 @@ var Interpreter = {
     },
     clear: function interpreterClear() {
         Lua.destroy();
-        Lua.initialize();
-        Glue.init();
+        this.init();
     }
 };
 

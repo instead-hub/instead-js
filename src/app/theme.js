@@ -1,6 +1,7 @@
 var $ = require('jquery');
 var Game = require('./game');
 var ajaxGetSync = require('../ajax');
+var interpreter = require('../lua/interpreter');
 
 var dynamicStyles = {};
 
@@ -100,6 +101,7 @@ var Theme = {
         // try to load custom theme
         var customTheme = ajaxGetSync(Game.path + this.themeFile);
         if (customTheme) {
+            interpreter.call('js_instead_theme_name(".")');
             var include = this.parseTheme(customTheme, Game.path);
         }
 

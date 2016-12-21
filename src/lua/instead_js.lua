@@ -12,7 +12,7 @@ table_get_maxn = function(tbl)
 	return c
 end
 
-set_instead_gamepath = function(path)
+js_instead_gamepath = function(path)
   INSTEAD_GAMEPATH=path
 end
 
@@ -24,25 +24,20 @@ instead_realpath=function()
   return nil
 end
 
-function url_decode(str)
-  str = string.gsub (str, "+", " ")
-  str = string.gsub (str, "%%(%x%x)",
-      function(h) return string.char(tonumber(h,16)) end)
-  return str
-end
-
-function url_encode(str)
-  if (str) then
-    str = string.gsub (str, "([^%w %-%_%.%~])",
-        function (c) return string.format ("%%%02X", string.byte(c)) end)
-    str = string.gsub (str, " ", "+")
-  end
-  return str
-end
-
 -- theme
 function instead_theme_var(name, value)
-    js.run('insteadTheme("' .. tostring(name) .. '","' .. tostring(value) .. '")')
+    -- TODO: get theme variable from JS
+    if (value) then
+        js.run('insteadTheme("' .. tostring(name) .. '","' .. tostring(value) .. '")')
+    end
+end
+
+function js_instead_theme_name(theme)
+  INSTEAD_THEME_NAME=theme
+end
+
+function instead_theme_name()
+    return INSTEAD_THEME_NAME
 end
 
 -- sprites are not supported (yet?)
@@ -71,6 +66,23 @@ require "stead"
 require "gui"
 
 stead.init(stead)
+
+-- save/load support
+function url_decode(str)
+  str = string.gsub (str, "+", " ")
+  str = string.gsub (str, "%%(%x%x)",
+      function(h) return string.char(tonumber(h,16)) end)
+  return str
+end
+
+function url_encode(str)
+  if (str) then
+    str = string.gsub (str, "([^%w %-%_%.%~])",
+        function (c) return string.format ("%%%02X", string.byte(c)) end)
+    str = string.gsub (str, " ", "+")
+  end
+  return str
+end
 
 stead.io.open = function(filename, mode)
     return {
