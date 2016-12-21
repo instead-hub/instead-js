@@ -31,7 +31,8 @@ module.exports = {
     },
     plugins: [
         new CopyWebpackPlugin([
-            {from: 'instead/git/instead/themes', to: 'themes'}
+            {from: 'instead/git/instead/themes', to: 'themes'},
+            {from: 'scripts/list_games.js'}
         ]),
         new HtmlWebpackPlugin({
             template: './src/index.html',
