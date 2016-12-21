@@ -44,6 +44,12 @@ pre {
     margin-bottom: 5px;
 }
 
+.compositeImage {
+    position:relative;
+    display:inline-block;
+    overflow: hidden;
+}
+
 #stead a {
     text-decoration: none;
     cursor: inherit;
@@ -102,6 +108,5 @@ l {
     color: #CCCCCC;
     font-family: Consolas;
     font-size: 12px;
-    white-space: pre;
     overflow:auto;
 }

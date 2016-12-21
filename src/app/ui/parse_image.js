@@ -21,10 +21,13 @@ function parseCompositeImage(image) {
     for (var i = 1; i < parsedImg.length; i++) {
         images = images + parseCompositePart(parsedImg[i]);
     }
-    return '<div style="position:relative">' + images + '</div>';
+    return '<div class="compositeImage">' + images + '</div>';
 }
 
 function parseCompositePart(image) {
+    if (!image) {
+        return '';
+    }
     var pImg = image;
     var imageParts = [];
     var pStyle = '';
