@@ -98,7 +98,7 @@ var Instead = {
     },
 
     getInv: function getInv() {
-        var horizontalInventory = false;
+        var horizontalInventory = (Game.inventory_mode === 'horizontal');
         var retVal = interpreter.call('instead.get_inv(' + horizontalInventory + ')');
         if (retVal[0] === null) {
             UI.setInventory('');

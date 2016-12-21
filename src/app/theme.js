@@ -21,8 +21,18 @@ var applyStyle = {
     'scr.w': function s(e, v) { e.$stead.css('width', v + 'px'); },
     'scr.h': function s(e, v) { e.$stead.css('height', v + 'px'); },
 
-    'scr.gfx.w': function s(e, v) { if (v > 0) { e.$picture.css('width', v + 'px'); }},
-    'scr.gfx.h': function s(e, v) { if (v > 0) { e.$picture.css('height', v + 'px'); }},
+    'scr.gfx.w': function s(e, v) {
+        if (v > 0) {
+            dynamicStyles['scr.gfx.w'] = '#picture img {max-width:' + v + 'px}';
+            setCSS();
+        }
+    },
+    'scr.gfx.h': function s(e, v) {
+        if (v > 0) {
+            dynamicStyles['scr.gfx.h'] = '#picture img {max-height:' + v + 'px}';
+            setCSS();
+        }
+    },
     'scr.gfx.x': function s(e, v) { e.$picture.css('left', v + 'px'); },
     'scr.gfx.y': function s(e, v) { e.$picture.css('top', v + 'px'); },
     'scr.gfx.mode': function s(e, v) {
@@ -31,10 +41,10 @@ var applyStyle = {
         }
     },
 
-    'win.gfx.w': function s(e, v) { if (v > 0) { e.$picture.css('width', v + 'px'); }},
-    'win.gfx.h': function s(e, v) { if (v > 0) { e.$picture.css('height', v + 'px'); }},
-    'win.gfx.x': function s(e, v) { e.$picture.css('left', v + 'px'); },
-    'win.gfx.y': function s(e, v) { e.$picture.css('top', v + 'px'); },
+    'win.gfx.w': function s() { this['scr.gfx.w'](arguments); },
+    'win.gfx.h': function s() { this['scr.gfx.h'](arguments); },
+    'win.gfx.x': function s() { this['scr.gfx.x'](arguments); },
+    'win.gfx.y': function s() { this['scr.gfx.w'](arguments); },
 
     'win.w': function s(e, v) {
         // reserve space for scrollers
@@ -56,6 +66,17 @@ var applyStyle = {
     'inv.x': function s(e, v) { e.$inventory.css('left', v + 'px'); },
     'inv.y': function s(e, v) { e.$inventory.css('top', v + 'px'); },
     'inv.col.fg': function s(e, v) { e.$inventory.css('color', v); },
+    'inv.mode': function s(e, v) {
+        if (v === 'disabled') {
+            e.$inventory.hide();
+        } else {
+            var p = v.split('-');
+            Game.inventory_mode = p[0];
+            if (p[1]) {
+                e.$inventory.css('text-align', p[1]);
+            }
+        }
+    },
 
     'menu.col.bg': function s(e, v) { e.$menu.css('background-color', v); },
     'menu.col.fg': function s(e, v) { e.$menu.css('color', v); },
@@ -152,6 +173,17 @@ var Theme = {
         var theme = this.theme;
         var themeUrl = this.themeUrl;
 
+        if (theme['scr.gfx.mode'] === 'embedded') {
+            // ignore gfx size for embedded
+            delete theme['scr.gfx.x'];
+            delete theme['scr.gfx.y'];
+            delete theme['scr.gfx.w'];
+            delete theme['scr.gfx.h'];
+            delete theme['win.gfx.x'];
+            delete theme['win.gfx.y'];
+            delete theme['win.gfx.w'];
+            delete theme['win.gfx.h'];
+        }
         Object.keys(theme).forEach(function parseParam(key) {
             if (key in applyStyle) {
                 applyStyle[key](elements, theme[key], themeUrl[key]);
@@ -193,7 +225,6 @@ X scr.gfx.icon = пусть к файлу-иконке игры (ОС завис
 - win.fnt.size = размер шрифта главного окна (размер)
 - win.fnt.height = междустрочный интервал как число с плавающей запятой (1.0 по умолчанию)
 - win.ways.mode = top/bottom (задать расположение списка переходов, по умолчанию top – сверху сцены)
-- inv.mode = строка режима инвентаря (horizontal или vertical). В горизонтальном режиме инвентаря в одной строке могут быть несколько предметов. В вертикальном режиме, в каждой строке инвентаря содержится только один предмет. (число) Существует модификации (-left/right/center). Вы можете задать режим disabled если в вашей игре не нужен инвентарь;
 - inv.fnt.name = путь к файлу-шрифту инвентаря (строка)
 - inv.fnt.size = размер шрифта инвентаря (размер)
 - inv.fnt.height = междустрочный интервал как число с плавающей запятой (1.0 по умолчанию)
