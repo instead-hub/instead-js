@@ -1,6 +1,7 @@
 var interpreter = require('../lua/interpreter');
 var UI = require('./ui');
 var Game = require('./game');
+var HTMLAudio = require('./audio');
 
 var Logger = require('./log');
 
@@ -12,7 +13,8 @@ var Instead = {
             click: this.click.bind(this),
             reset: this.resetGame.bind(this),
             save: this.saveGame.bind(this),
-            load: this.loadGame.bind(this)
+            load: this.loadGame.bind(this),
+            mute: this.soundMute.bind(this)
         };
 
         // preloader
@@ -38,6 +40,7 @@ var Instead = {
     },
 
     resetGame: function resetGame() {
+        HTMLAudio.stopMusic();
         interpreter.clear();
         this.startGame();
     },
@@ -47,6 +50,7 @@ var Instead = {
     },
 
     loadGame: function loadGame() {
+        HTMLAudio.stopMusic();
         interpreter.clear();
         this.startGame(this.saveSlot);
     },
@@ -56,7 +60,7 @@ var Instead = {
         this.getWays();
         this.getInv();
         this.getPicture();
-        // this.getMusic();
+        this.getMusic();
         UI.refresh();
     },
 
@@ -121,35 +125,34 @@ var Instead = {
         }
         UI.setPicture(picturePath);
     },
-/*
+
     getMusic: function getMusic() {
         var retVal = interpreter.call('instead.get_music()');
         if (retVal[0] !== null) {
-            var music_path = retVal[0];
-            playMusic(music_path);
+            var musicPath = retVal[0];
+            if (musicPath.indexOf(Game.path) === -1) {
+                musicPath = Game.path + musicPath;
+            }
+            HTMLAudio.playMusic(musicPath);
         }
     },
-    */
-/*
-    playMusic: function playMusic(path) {
-        if(track.src.indexOf(path) == -1) {
-            track.src = _dofile_path + path;
-            var i = 1;
-        }
-    },
-*/
+
     ifaceCmd: function ifaceCmd(command) {
         var cmd = 'iface.cmd(iface, "' + command + '")';
         var retVal = interpreter.call(cmd);
         Logger.log('IFACE ' + command + '> ' + JSON.stringify(retVal));
         if (retVal && retVal[0] !== null) {
             var cmdAnswer = retVal[0];
-            // var rc = retVal[1];
             if (cmdAnswer !== '') {
                 UI.setText(cmdAnswer);
             }
         }
+    },
+
+    soundMute: function soundMute(value) {
+        HTMLAudio.mute(value);
     }
+
 };
 
 module.exports = Instead;
