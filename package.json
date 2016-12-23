@@ -9,7 +9,7 @@
     "prepare": "node ./scripts/prepare_stead.js && node ./scripts/prepare_lua_vm.js",
     "prebuild": "node ./scripts/build_stead.js",
     "build": "webpack -p --config webpack.config.js",
-    "build:dev": "webpack --config webpack.config.js",
+    "postbuild": "cd ./build && node list_games.js",
     "lint": "./node_modules/.bin/eslint ./src/ --ext .js"
   },
   "author": "Serhii Mozhaiskyi (sergei.mozhaisky@gmail.com)",
