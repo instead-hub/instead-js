@@ -114,8 +114,8 @@ var Instead = {
     },
 
     getTitle: function getTitle() {
-        var title = interpreter.call('instead.get_title()');
-        UI.setTitle(title);
+        var retVal = interpreter.call('instead.get_title()');
+        UI.setTitle(retVal[0]);
     },
 
     getPicture: function getPicture() {

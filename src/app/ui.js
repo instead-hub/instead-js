@@ -84,9 +84,10 @@ var UI = {
     },
     setTitle: function setTitle(content) {
         Logger.log('TITLE: ' + content);
+        var title = content === true ? '' : content;
         setContent(
             this.element.$title,
-            '<a href="" data-ref="#look" data-type="Title">' + content + '</a>',
+            '<a href="" data-ref="#look" data-type="Title">' + title + '</a>',
             'Title'
         );
     },
