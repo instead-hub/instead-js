@@ -32,6 +32,7 @@ module.exports = {
     plugins: [
         new CopyWebpackPlugin([
             {from: 'instead/git/instead/themes', to: 'themes'},
+            {from: 'instead/git/instead/icon/sdl_instead_1x32.png', to: 'instead.png'},
             {from: 'scripts/list_games.js'}
         ]),
         new HtmlWebpackPlugin({

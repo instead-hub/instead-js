@@ -123,7 +123,9 @@ var Theme = {
     themeUrl: {},
     load: function load(elements, themePath) {
         this.elements = elements;
+        // reset styles
         dynamicStyles = {};
+        setCSS();
 
         // load default theme
         var defaultTheme = ajaxGetSync(themePath + 'default/' + this.themeFile);
