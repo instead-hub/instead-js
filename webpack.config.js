@@ -34,7 +34,13 @@ module.exports = {
             {from: 'instead/git/instead/themes', to: 'themes'},
             {from: 'instead/git/instead/icon/sdl_instead_1x32.png', to: 'instead.png'},
             {from: 'scripts/list_games.js'}
-        ]),
+        ], {
+            ignore: [
+                'Makefile',
+                'CMakeLists.txt',
+                'Makefile.windows'
+            ]
+        }),
         new HtmlWebpackPlugin({
             template: './src/index.html',
             inject: 'body'
