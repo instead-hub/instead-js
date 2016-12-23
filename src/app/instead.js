@@ -23,6 +23,7 @@ var Instead = {
     },
 
     startGame: function startGame(savedGame) {
+        UI.loadTheme();
         this.initGame();
         if (savedGame) {
             interpreter.loadgame(savedGame);

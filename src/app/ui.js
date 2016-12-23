@@ -1,5 +1,4 @@
 var $ = require('jquery');
-require('perfect-scrollbar/jquery')($);
 
 var Game = require('./game');
 var Theme = require('./theme');
@@ -63,11 +62,18 @@ var UI = {
             self.clickHandler(steadHandler.click, e, obj);
         });
 
-        Theme.load(this.element, Game.themePath);
         this.element.$win.perfectScrollbar({wheelSpeed: 1});
         this.element.$inventory.perfectScrollbar({wheelSpeed: 1});
     },
-
+    show: function show() {
+        this.element.$stead.show();
+    },
+    hide: function hide() {
+        this.element.$stead.hide();
+    },
+    loadTheme: function loadTheme() {
+        Theme.load(this.element, Game.themePath);
+    },
     setAct: function setAct(act, obj) {
         this.isAct = act;
         this.actObj = obj;

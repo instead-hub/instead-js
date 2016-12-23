@@ -2,6 +2,10 @@
 	font-size: 100%;
 }
 
+h1 {
+    font-size: 200%;
+}
+
 body {
     background-color: #333333;
 }
@@ -20,8 +24,34 @@ pre {
 	white-space: pre;
 }
 
+#manager {
+    text-align: center;
+    color: #FFFFFF;
+}
+
+#manager div {
+    width: 400px;
+    padding: 10px;
+}
+
+#manager a {
+    border: 1px solid transparent;
+    width: 400px;
+    margin: auto;
+    text-align: center;
+    text-decoration: none;
+    color: #CCCCCC;
+    display: block;
+    padding: 10px;
+}
+
+#manager a:hover {
+    border: 1px solid #CCCC66;
+    color: #CCCC66;
+}
+
 /* Set font */
-#stead *, #menu * {
+#manager *, #stead *, #menu * {
     font-family: Tahoma,Verdana,Helvetica,Arial,sans-serif;
 }
 
@@ -98,15 +128,24 @@ l {
     width: 99%;
 }
 
-#log {
+#log-window {
     position: absolute;
     top: 620px;
-    width: 800px;
-    height: 300px;
-    padding: 10px;
-    border: 1px solid #999999;
     color: #CCCCCC;
     font-family: Consolas;
     font-size: 12px;
-    overflow:auto;
+    display: none;
+}
+
+#show-log {
+    cursor: pointer;
+}
+
+#log {
+    width: 800px;
+    height: 300px;
+    border: 1px solid #999999;
+    padding: 10px;
+    overflow: auto;
+    display: none;
 }
