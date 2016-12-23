@@ -141,7 +141,9 @@ var Instead = {
     ifaceCmd: function ifaceCmd(command) {
         var cmd = 'iface.cmd(iface, "' + command + '")';
         var retVal = interpreter.call(cmd);
-        Logger.log('IFACE ' + command + '> ' + JSON.stringify(retVal));
+        Logger.log('');
+        Logger.log('> ' + command);
+        Logger.log(JSON.stringify(retVal));
         if (retVal && retVal[0] !== null) {
             var cmdAnswer = retVal[0];
             if (cmdAnswer !== '') {
