@@ -47,8 +47,7 @@ var applyStyle = {
     'win.gfx.y': function s() { this['scr.gfx.w'](arguments); },
 
     'win.w': function s(e, v) {
-        // reserve space for scrollers
-        e.$win.css('width', (+v + scrollerWidth) + 'px');
+        e.$win.css('width', v + 'px');
         e.$win.css('padding-right', scrollerWidth + 'px');
     },
     'win.h': function s(e, v) { e.$win.css('height', v + 'px'); },
@@ -58,8 +57,7 @@ var applyStyle = {
     'win.align': function s(e, v) { e.$win.css('text-align', v); },
 
     'inv.w': function s(e, v) {
-        // reserve space for scrollers
-        e.$inventory.css('width', (+v + scrollerWidth) + 'px');
+        e.$inventory.css('width', v + 'px');
         e.$inventory.css('padding-right', scrollerWidth + 'px');
     },
     'inv.h': function s(e, v) { e.$inventory.css('height', v + 'px'); },
@@ -205,7 +203,7 @@ var Theme = {
         }
     },
     click: function click(isCache) {
-        if ('snd.click' in this.theme) {
+        if ('snd.click' in this.theme && this.theme['snd.click']) {
             HTMLAudio.playSound(this.themeUrl['snd.click'] + this.theme['snd.click'], null, isCache);
         }
     }
