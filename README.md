@@ -31,6 +31,14 @@ To build INSTEAD-JS, run the following command:
     
 The application will be created in `build` folder.
 
+## Adding games
+
+Create `games` folder inside of `build` folder. Put all required games to that folder, then run the following command from the `build` folder:
+
+    node list_games.js
+
+Congratulations, you did it! Now you can put contents of `build` folder to the web server.
+
 ## Features
 
 - [x] Images
@@ -51,8 +59,8 @@ The application will be created in `build` folder.
     - [x] use LocalStorage to save game
     - [ ] multiple save slots
     - [ ] clean save slots
-- [ ] Game manager
-    - [ ] Choose game to load
+- [x] Game manager
+    - [x] Choose game to load
     - [ ] Separate save slots for different games
 - [ ] Keyboard input (?)
 - [ ] Timer (?)
