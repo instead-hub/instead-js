@@ -44,7 +44,7 @@ function parseCompositePart(image) {
 
 function parseImg(fullString, img) {
     var image = img;
-    var style = '';
+    var style = 'max-width: 100%;';
     var parsedImg = '';
     // Parse pseudo-images (box, blank)
     if (img.indexOf('box') === 0 || img.indexOf('blank') === 0) {

@@ -23,6 +23,7 @@ var Instead = {
     startGame: function startGame(savedGame) {
         interpreter.load('instead_js.lua');
         interpreter.call('js_instead_gamepath("' + Game.path + '")');
+        setTimer(0);
 
         UI.loadTheme();
         this.initGame();
@@ -160,5 +161,22 @@ var Instead = {
     }
 
 };
+
+var LuaTimer; // eslint-disable-line no-unused-vars
+
+function setTimer(t) {
+    var time = parseInt(t, 10);
+    if (time === 0) {
+        LuaTimer = null;
+    } else {
+        LuaTimer = window.setTimeout(
+            function LuaTimeout() {
+                Instead.ifaceCmd('user_timer');
+                Instead.refreshInterface();
+            }, time);
+    }
+}
+
+window.instead_settimer = setTimer;
 
 module.exports = Instead;

@@ -61,6 +61,6 @@ Congratulations, you did it! Now you can put contents of `build` folder to the w
     - [ ] clean save slots
 - [x] Game manager
     - [x] Choose game to load
-    - [ ] Separate save slots for different games
+    - [x] Separate save slots for different games
 - [ ] Keyboard input (?)
-- [ ] Timer (?)
+- [x] Timer
