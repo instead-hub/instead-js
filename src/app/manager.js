@@ -17,6 +17,7 @@ var Manager = {
             e.preventDefault();
             var gameid = $(this).attr('data-ref');
             Game.path = gamepath + gameid + '/';
+            Game.id = gameid;
             self.hide();
             Instead.startGame();
         });
