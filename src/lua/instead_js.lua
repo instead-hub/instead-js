@@ -40,6 +40,11 @@ function instead_theme_name()
     return INSTEAD_THEME_NAME
 end
 
+-- timer
+instead_timer = function(t)
+    js.run('instead_settimer("' .. tostring(t) .. '")')
+end
+
 -- sprites are not supported (yet?)
 instead_font_load = INSTEAD_PLACEHOLDER
 instead_font_free = INSTEAD_PLACEHOLDER
