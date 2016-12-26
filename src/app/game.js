@@ -2,6 +2,8 @@ var Storage = require('./storage');
 
 var Game = {
     id: 'default',
+    autosaveID: 9,
+    saveSlots: 5,
     inventory_mode: 'vertical',
     path: './game/',
     themePath: './themes/',

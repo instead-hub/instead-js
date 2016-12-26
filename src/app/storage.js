@@ -5,24 +5,37 @@ var Storage = {
         var n = vfs.length;
         var saves = [];
         var k;
+        var item;
         for (var i = 0; i < n; i++) {
             k = vfs.key(i);
+            try {
+                item = JSON.parse(vfs.getItem(k));
+            } catch (e) {
+                item = {timestamp: null};
+            }
+            item.id = k;
             if (key) {
                 if (k.indexOf(key + '-save-') === 0) {
-                    saves.push(k);
+                    saves.push(item);
                 }
             } else {
-                saves.push(k);
+                saves.push(item);
             }
         }
         return saves;
     },
     save: function save(name, value) {
-        vfs.setItem(name, value);
+        vfs.setItem(name, JSON.stringify({
+            timestamp: Date.now(),
+            data: value
+        }));
     },
     load: function load(name) {
-        var content = vfs.getItem(name);
-        return content;
+        var content = JSON.parse(vfs.getItem(name));
+        if (content) {
+            return content.data;
+        }
+        return '';
     },
     exists: function exists(name) {
         return !!vfs.getItem(name);
