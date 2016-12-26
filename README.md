@@ -63,4 +63,4 @@ Congratulations, you did it! Now you can put contents of `build` folder to the w
     - [x] Choose game to load
     - [x] Separate save slots for different games
 - [ ] Keyboard input (?)
-- [ ] Timer (?)
+- [x] Timer
