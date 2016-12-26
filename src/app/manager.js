@@ -19,7 +19,7 @@ var Manager = {
             Game.path = gamepath + gameid + '/';
             Game.id = gameid;
             self.hide();
-            Instead.startGame();
+            Instead.startGame(Game.autosaveID);
         });
 
         $('#show-log').on('click', function toggleLog() {

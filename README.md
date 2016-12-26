@@ -57,7 +57,8 @@ Congratulations, you did it! Now you can put contents of `build` folder to the w
     - [ ] Sounds on multiple channels
 - [x] Save/load game
     - [x] use LocalStorage to save game
-    - [ ] multiple save slots
+    - [x] multiple save slots
+    - [x] autosave
     - [ ] clean save slots
 - [x] Game manager
     - [x] Choose game to load
