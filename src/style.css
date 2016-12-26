@@ -98,16 +98,25 @@ pre {
     padding: 10px;
     border-style: solid;
 	display: none;
+    text-align: center;
 }
-
 
 #menu a {
 	height: 24px;
-	text-align: center;
 	text-decoration: none;
 	width: 100%;
     padding: 1px;
 	display: block;
+}
+
+.slot-selector {
+    height: 24px;
+    text-align: left;
+    font-size: 0.8em;
+}
+
+#menu-saveload {
+    display: none;
 }
 
 c {

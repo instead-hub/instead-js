@@ -20,15 +20,15 @@ var Instead = {
         interpreter.load('instead_js.lua');
     },
 
-    startGame: function startGame(savedGame) {
+    startGame: function startGame(savedGameID) {
         interpreter.load('instead_js.lua');
         interpreter.call('js_instead_gamepath("' + Game.path + '")');
         setTimer(0);
 
         UI.loadTheme();
         this.initGame();
-        if (savedGame) {
-            interpreter.loadgame(savedGame);
+        if (savedGameID) {
+            interpreter.loadgame(Game.getSaveName(savedGameID));
         }
         this.ifaceCmd('look');
         this.refreshInterface();
@@ -55,7 +55,7 @@ var Instead = {
             HTMLAudio.stopMusic();
             interpreter.clear();
             setTimeout(function t() {
-                self.startGame(Game.getSaveName(id));
+                self.startGame(id);
             }, 100);
         }
     },
@@ -77,6 +77,7 @@ var Instead = {
                 ref = 'use ' + ref.substr(4);
                 this.ifaceCmd(ref);
                 this.refreshInterface();
+                this.autoSave();
                 return;
             }
 
@@ -89,6 +90,7 @@ var Instead = {
                     }
                     UI.setAct(false, '');
                     this.refreshInterface();
+                    this.autoSave();
                 }
             } else {
                 UI.setAct(true, ref);
@@ -99,6 +101,7 @@ var Instead = {
             }
             this.ifaceCmd(ref);
             this.refreshInterface();
+            this.autoSave();
         }
     },
 
@@ -158,8 +161,11 @@ var Instead = {
 
     soundMute: function soundMute(value) {
         HTMLAudio.mute(value);
-    }
+    },
 
+    autoSave: function autoSave() {
+        this.saveGame(Game.autosaveID); // autosave
+    }
 };
 
 var LuaTimer; // eslint-disable-line no-unused-vars
