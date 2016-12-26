@@ -6,8 +6,6 @@ var HTMLAudio = require('./audio');
 var Logger = require('./log');
 
 var Instead = {
-    saveSlot: 'SAVE_GAME_SLOT',
-
     init: function init() {
         this.handlers = {
             click: this.click.bind(this),
@@ -23,6 +21,9 @@ var Instead = {
     },
 
     startGame: function startGame(savedGame) {
+        interpreter.load('instead_js.lua');
+        interpreter.call('js_instead_gamepath("' + Game.path + '")');
+
         UI.loadTheme();
         this.initGame();
         if (savedGame) {
@@ -33,9 +34,6 @@ var Instead = {
     },
 
     initGame: function initGame() {
-        interpreter.load('instead_js.lua');
-        interpreter.call('js_instead_gamepath("' + Game.path + '")');
-        // load game
         interpreter.load(Game.path + 'main.lua');
         interpreter.call('stead.game_ini(game)');
     },
@@ -46,14 +44,19 @@ var Instead = {
         this.startGame();
     },
 
-    saveGame: function saveGame() {
-        this.ifaceCmd('save ' + this.saveSlot);
+    saveGame: function saveGame(id) {
+        this.ifaceCmd('save ' + Game.getSaveName(id));
     },
 
-    loadGame: function loadGame() {
-        HTMLAudio.stopMusic();
-        interpreter.clear();
-        this.startGame(this.saveSlot);
+    loadGame: function loadGame(id) {
+        var self = this;
+        if (Game.saveExists(id)) {
+            HTMLAudio.stopMusic();
+            interpreter.clear();
+            setTimeout(function t() {
+                self.startGame(Game.getSaveName(id));
+            }, 100);
+        }
     },
 
     refreshInterface: function refreshInterface() {

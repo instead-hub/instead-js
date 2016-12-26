@@ -4,22 +4,7 @@ var stead = require('../../instead/stead.js');
 var ajaxGetSync = require('../ajax');
 
 var Game = require('../app/game');
-
-var vfs = {
-    storage: {},
-    getItem: function getItem(key) {
-        return this.storage[key];
-    },
-    setItem: function setItem(key, value) {
-        this.storage[key] = value;
-    },
-    clear: function clear() {
-        this.storage = {};
-    }
-};
-if (window.localStorage) {
-    vfs = window.localStorage;
-}
+var Storage = require('../app/storage');
 
 // convert non latin symbols
 function utf8encode(str) {
@@ -83,11 +68,11 @@ function luaDofile(filepath) {
 }
 
 function saveFile(path, data) {
-    vfs.setItem(path, data);
+    Storage.save(path, data);
 }
 
 function loadFile(path) {
-    return vfs.getItem(path);
+    return Storage.load(path);
 }
 
 var Glue = {

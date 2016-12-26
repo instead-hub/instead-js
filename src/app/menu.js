@@ -16,11 +16,11 @@ var Menu = {
                 break;
             case 'save':
                 self.toggleMenu();
-                steadHandler.save();
+                steadHandler.save(0);
                 break;
             case 'load':
                 self.toggleMenu();
-                steadHandler.load();
+                steadHandler.load(0);
                 break;
             case 'mute':
                 if ($(this).text() === 'Mute') {
