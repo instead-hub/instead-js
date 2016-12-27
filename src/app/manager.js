@@ -4,8 +4,11 @@ require('perfect-scrollbar/jquery')($);
 var Game = require('./game');
 var Instead = require('./instead');
 var UI = require('./ui');
+var Preloader = require('./ui/preloader');
 
 var gamepath = './games/';
+var gameList = gamepath + 'games_list.json';
+var allGames;
 
 var Manager = {
     init: function init() {
@@ -18,8 +21,16 @@ var Manager = {
             var gameid = $(this).attr('data-ref');
             Game.path = gamepath + gameid + '/';
             Game.id = gameid;
-            self.hide();
-            Instead.startGame(Game.autosaveID);
+            Preloader.load(
+                allGames[gameid].preload,
+                function preloadProgress(percent) {
+                    self.el.html('<p>Preloading images: ' + percent + '%</p>');
+                },
+                function preloadSuccess() {
+                    self.hide();
+                    Instead.startGame(Game.autosaveID);
+                }
+            );
         });
 
         $('#show-log').on('click', function toggleLog() {
@@ -32,9 +43,10 @@ var Manager = {
             }
         });
 
-        $.get(gamepath + 'games_list.json', function gameList(data) {
+        $.get(gameList, function listGames(data) {
+            allGames = data;
             Object.keys(data).forEach(function listGame(id) {
-                self.el.append('<a href="" data-ref="' + id + '">' + data[id] + '</a>');
+                self.el.append('<a href="" data-ref="' + id + '">' + data[id].name + '</a>');
             });
         });
     },

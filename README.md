@@ -63,5 +63,6 @@ Congratulations, you did it! Now you can put contents of `build` folder to the w
 - [x] Game manager
     - [x] Choose game to load
     - [x] Separate save slots for different games
+    - [x] Preload images before running game
 - [ ] Keyboard input (?)
 - [x] Timer
