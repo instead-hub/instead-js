@@ -111,7 +111,11 @@ var UI = {
         }
     },
     refresh: function refresh() {
-        this.element.$win.css('scrollTop', 0);
+        if (Game.scroll_mode === 'bottom') {
+            this.element.$win.scrollTop(9999);
+        } else {
+            this.element.$win.scrollTop(0);
+        }
         this.element.$win.perfectScrollbar('update');
         this.element.$inventory.perfectScrollbar('update');
     },

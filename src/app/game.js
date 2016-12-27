@@ -5,6 +5,7 @@ var Game = {
     autosaveID: 9,
     saveSlots: 5,
     inventory_mode: 'vertical',
+    scroll_mode: 'none',
     path: './game/',
     themePath: './themes/',
     getSaveName: function getSaveName(i) {

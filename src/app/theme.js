@@ -61,6 +61,13 @@ var applyStyle = {
     'win.y': function s(e, v) { e.$win.css('top', v + 'px'); },
     'win.col.fg': function s(e, v) { e.$win.css('color', v); },
     'win.align': function s(e, v) { e.$win.css('text-align', v); },
+    'win.scroll.mode': function s(e, v) {
+        if (+v === 3) {
+            Game.scroll_mode = 'bottom';
+        } else if (+v > 0) {
+            Game.scroll_mode = 'change';
+        }
+    },
 
     'inv.w': function s(e, v) {
         e.$inventory.css('width', v + 'px');
