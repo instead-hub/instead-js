@@ -3,26 +3,48 @@ var fs = require('fs');
 var dirname = './games/';
 var output = {};
 
-function getGameName(path) {
-    var game = fs.readFileSync(path + '/main.lua', 'utf-8');
-    var name = game.match(/\$Name:(.+)\$/);
+function getGameName(gamepath) {
+    var game = fs.readFileSync(gamepath + '/main.lua', 'utf-8');
+    var name = game.match(/\$Name\(ru\):(.+)\$/);
+    if (name) {
+        return name[1].trim();
+    }
+    name = game.match(/\$Name:(.+)\$/);
     if (name) {
         return name[1].trim();
     }
     return null;
 }
 
+function walkSync(dir, filelist) {
+    var files = filelist;
+    fs.readdirSync(dir).forEach(function readDir(file) {
+        if (fs.statSync(dir + '/' + file).isDirectory()) {
+            files = walkSync(dir + '/' + file, files);
+        } else if (file.match(/(jpg|jpeg|png|gif|bmp|tiff|tif)$/i)) {
+            files.push(dir + '/' + file);
+        }
+    });
+    return files;
+}
+
+
 fs.readdir(dirname, function readFn(err, filenames) {
     if (err) {
         return;
     }
     filenames.forEach(function processFn(filename) {
-        var path = dirname + filename;
+        var gamepath = dirname + filename;
         var gameName;
-        if (fs.lstatSync(path).isDirectory()) {
-            gameName = getGameName(path);
+        var images;
+        if (fs.lstatSync(gamepath).isDirectory()) {
+            gameName = getGameName(gamepath);
+            images = walkSync(gamepath, []);
             if (gameName) {
-                output[filename] = gameName;
+                output[filename] = {
+                    name: gameName,
+                    preload: images
+                };
             }
         }
     });
