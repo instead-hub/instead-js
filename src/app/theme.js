@@ -8,7 +8,13 @@ var dynamicStyles = {};
 var scrollerWidth = 15;
 
 function setCSS() {
-    $('#theme_css').text(Object.values(dynamicStyles).join(''));
+    var css = '';
+    for (var property in dynamicStyles) {
+        if (dynamicStyles.hasOwnProperty(property)) {
+            css = css + dynamicStyles[property];
+        }
+    }
+    $('#theme_css').text(css);
 }
 
 var applyStyle = {
