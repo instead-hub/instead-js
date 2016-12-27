@@ -7,7 +7,12 @@ var HTMLAudio = require('./audio');
 var dynamicStyles = {};
 var scrollerWidth = 15;
 
+var updateCSS = true;
+
 function setCSS() {
+    if (!updateCSS) {
+        return;
+    }
     var css = '';
     for (var property in dynamicStyles) {
         if (dynamicStyles.hasOwnProperty(property)) {
@@ -158,9 +163,12 @@ var Theme = {
             this.parseTheme(includedTheme, themePath + include + '/');
             this.parseTheme(customTheme, Game.path);
         }
-
         // apply theme
+        updateCSS = false; // disable auto-updating stylesheet while theme rules are generated
         this.apply();
+        updateCSS = true;
+        setCSS();
+
         this.setCursor();
         this.click(true); // preload click sound
     },
