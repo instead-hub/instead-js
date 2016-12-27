@@ -6,6 +6,7 @@ var Game = {
     saveSlots: 5,
     inventory_mode: 'vertical',
     scroll_mode: 'none',
+    ways_mode: 'top',
     path: './game/',
     themePath: './themes/',
     getSaveName: function getSaveName(i) {
