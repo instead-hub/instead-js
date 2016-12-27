@@ -5,7 +5,11 @@ var output = {};
 
 function getGameName(gamepath) {
     var game = fs.readFileSync(gamepath + '/main.lua', 'utf-8');
-    var name = game.match(/\$Name:(.+)\$/);
+    var name = game.match(/\$Name\(ru\):(.+)\$/);
+    if (name) {
+        return name[1].trim();
+    }
+    name = game.match(/\$Name:(.+)\$/);
     if (name) {
         return name[1].trim();
     }
