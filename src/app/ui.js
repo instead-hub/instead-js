@@ -34,7 +34,7 @@ function setContent(element, content, field) {
 var UI = {
     element: {
         $title: $('#title'),
-        $ways: $('#ways'),
+        $ways: $('#ways-top'),
         $text: $('#text'),
         $picture: $('#picture'),
         $canvas: $('#canvas'),
@@ -73,6 +73,9 @@ var UI = {
     },
     loadTheme: function loadTheme() {
         Theme.load(this.element, Game.themePath);
+        if (Game.ways_mode === 'bottom') {
+            this.element.$ways = $('#ways-bottom');
+        }
     },
     setAct: function setAct(act, obj) {
         this.isAct = act;
@@ -111,7 +114,11 @@ var UI = {
         }
     },
     refresh: function refresh() {
-        this.element.$win.css('scrollTop', 0);
+        if (Game.scroll_mode === 'bottom') {
+            this.element.$win.scrollTop(9999);
+        } else {
+            this.element.$win.scrollTop(0);
+        }
         this.element.$win.perfectScrollbar('update');
         this.element.$inventory.perfectScrollbar('update');
     },
