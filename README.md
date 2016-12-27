@@ -50,7 +50,7 @@ Congratulations, you did it! Now you can put contents of `build` folder to the w
     - [x] Changing theme on-the-fly (module 'theme')
     - [x] win.scroll.mode
     - [ ] src.gfx.mode = 'float'
-    - [ ] Theme fonts and font sizes
+    - [x] Theme fonts and font sizes
 - [x] Music and sounds
     - [x] Play music and sound
     - [ ] Loop music
