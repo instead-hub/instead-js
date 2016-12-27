@@ -22,6 +22,53 @@ function setCSS() {
     $('#theme_css').text(css);
 }
 
+function setFontCSS(selector, fontName, v, p) {
+    var fntCSS = '';
+
+    function setFont(name, file, type) {
+        var fnt = '';
+        switch (type) {
+        case 'b':
+            fnt = '@font-face{font-family:"' + name + '";src:url("' + file +
+                  '") format("truetype");font-weight:bold;}';
+            break;
+        case 'i':
+            fnt = '@font-face{font-family:"' + name + '";src:url("' + file +
+                  '") format("truetype");font-style:italic;}';
+            break;
+        case 'bi':
+            fnt = '@font-face{font-family:"' + name + '";src:url("' + file +
+                  '") format("truetype");font-weight:bold;font-style:italic;}';
+            break;
+        default:
+            fnt = '@font-face{font-family:"' + name + '";src:url("' + file +
+                  '") format("truetype");}';
+        }
+        return fnt;
+    }
+
+    var fonts = v.match(/(.*?){(.*?),(.*?),(.*?),(.*?)}(\.\w+)/);
+    if (fonts) {
+        if (fonts[2]) {
+            fntCSS = fntCSS + setFont(fontName, p + fonts[1] + fonts[2] + fonts[6]);
+        }
+        if (fonts[3]) {
+            fntCSS = fntCSS + setFont(fontName, p + fonts[1] + fonts[3] + fonts[6], 'b');
+        }
+        if (fonts[4]) {
+            fntCSS = fntCSS + setFont(fontName, p + fonts[1] + fonts[4] + fonts[6], 'i');
+        }
+        if (fonts[5]) {
+            fntCSS = fntCSS + setFont(fontName, p + fonts[1] + fonts[5] + fonts[6], 'bi');
+        }
+    }
+    if (fntCSS === '' && v) {
+        fntCSS = setFont(fontName, p + v); // one font for all types
+    }
+    fntCSS = fntCSS + selector + ' * {font-family:' + fontName + ',Arial,Helvetica,sans-serif;}';
+    return fntCSS;
+}
+
 var applyStyle = {
     'scr.gfx.bg': function s(e, v, p) {
         e.$stead.css('backgroundImage', 'url("' + p + v + '")');
@@ -76,6 +123,16 @@ var applyStyle = {
     'win.ways.mode': function s(e, v) {
         Game.ways_mode = v;
     },
+    'win.fnt.name': function s(e, v, p) {
+        dynamicStyles['win.fnt.name'] = setFontCSS('#win', 'insteadWin', v, p);
+        setCSS();
+    },
+    'win.fnt.size': function s(e, v) {
+        e.$win.css('font-size', v + 'px');
+    },
+    'win.fnt.height': function s(e, v) {
+        e.$win.css('line-height', v);
+    },
 
     'inv.w': function s(e, v) {
         e.$inventory.css('width', v + 'px');
@@ -95,6 +152,16 @@ var applyStyle = {
                 e.$inventory.css('text-align', p[1]);
             }
         }
+    },
+    'inv.fnt.name': function s(e, v, p) {
+        dynamicStyles['inv.fnt.name'] = setFontCSS('#inventory', 'insteadInv', v, p);
+        setCSS();
+    },
+    'inv.fnt.size': function s(e, v) {
+        e.$inventory.css('font-size', v + 'px');
+    },
+    'inv.fnt.height': function s(e, v) {
+        e.$inventory.css('line-height', v);
     },
 
     'menu.col.bg': function s(e, v) { e.$menu.css('background-color', v); },
@@ -208,6 +275,12 @@ var Theme = {
             delete theme['win.gfx.w'];
             delete theme['win.gfx.h'];
         }
+        if (!theme['win.fnt.name']) {
+            theme['win.fnt.name'] = '#win * {font-family:Tahoma,Arial,Helvetica,sans-serif;}';
+        }
+        if (!theme['inv.fnt.name']) {
+            theme['inv.fnt.name'] = '#inventory * {font-family:Tahoma,Arial,Helvetica,sans-serif;}';
+        }
         Object.keys(theme).forEach(function parseParam(key) {
             if (key in applyStyle) {
                 applyStyle[key](elements, theme[key], themeUrl[key]);
@@ -243,14 +316,20 @@ module.exports = Theme;
 ? scr.gfx.use = путь к картинке-индикатору режима использования (строка)
 ? scr.gfx.pad = размер отступов к скролл-барам и краям меню (число)
 X scr.gfx.icon = пусть к файлу-иконке игры (ОС зависимая опция, может работать некорректно в некоторых случаях)
-- scr.gfx.mode = режим расположения (строка fixed, embedded или float). Задает режим изображения. embedded – картинка является частью содержимого главного окна, параметры scr.gfx.x, scr.gfx.y, scr.gfx.w игнорируются. float – картинка расположена по указанным координатам (scr.gfx.x, scr.gfx.y) и масштабируется к размеру scr.gfx.w x scr.gfx.h если превышает его. fixed – картинка является частью сцены как в режиме embedded, но не скроллируется вместе с текстом а расположена непосредственно над ним. Доступны модификации режима float с модификаторами 'left/right/center/middle/bottom/top', указывающими как именно размещать картинку в области scr.gfx. Например: float-top-left;
-- win.scroll.mode = [0|1|2|3] режим прокрутки области сцены. 0 - нет автоматической прокрутки, 1 - прокрутка на изменение в тексте, 2 прокрутка на изменение, только если изменение не видно, 3 - всегда в конец;
-- win.fnt.name = путь к файлу-шрифту (строка). Здесь и далее, шрифт может содержать описание всех начертаний, например: {sans,sans-b,sans-i,sans-bi}.ttf (заданы начертания для regular, bold, italic и bold-italic). Вы можете опускать какие-то начертания, и движок сам сгенерирует их на основе обычного начертания, например: {sans,,sans-i}.ttf (заданы только regular и italic);
-- win.fnt.size = размер шрифта главного окна (размер)
-- win.fnt.height = междустрочный интервал как число с плавающей запятой (1.0 по умолчанию)
-- inv.fnt.name = путь к файлу-шрифту инвентаря (строка)
-- inv.fnt.size = размер шрифта инвентаря (размер)
-- inv.fnt.height = междустрочный интервал как число с плавающей запятой (1.0 по умолчанию)
+- scr.gfx.mode = режим расположения (строка fixed, embedded или float). Задает режим изображения.
+    embedded - картинка является частью содержимого главного окна,
+               параметры scr.gfx.x, scr.gfx.y, scr.gfx.w игнорируются.
+    float    - картинка расположена по указанным координатам (scr.gfx.x, scr.gfx.y)
+               и масштабируется к размеру scr.gfx.w x scr.gfx.h если превышает его.
+    fixed    - картинка является частью сцены как в режиме embedded, но не скроллируется
+               вместе с текстом а расположена непосредственно над ним.
+    Доступны модификации режима float с модификаторами 'left/right/center/middle/bottom/top',
+    указывающими как именно размещать картинку в области scr.gfx. Например: float-top-left;
+- win.scroll.mode = [0|1|2|3] режим прокрутки области сцены.
+    0 - нет автоматической прокрутки,
+    1 - прокрутка на изменение в тексте,
+    2 прокрутка на изменение, только если изменение не видно,
+    3 - всегда в конец;
 - menu.fnt.name = путь к файлу-шрифту меню (строка)
 - menu.fnt.size = размер шрифта меню (размер)
 - menu.fnt.height = междустрочный интервал как число с плавающей запятой (1.0 по умолчанию)
