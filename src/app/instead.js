@@ -176,9 +176,9 @@ var LuaTimer; // eslint-disable-line no-unused-vars
 function setTimer(t) {
     var time = parseInt(t, 10);
     if (time === 0) {
-        LuaTimer = null;
+        window.clearInterval(LuaTimer);
     } else {
-        LuaTimer = window.setTimeout(
+        LuaTimer = window.setInterval(
             function LuaTimeout() {
                 Instead.ifaceCmd('user_timer');
                 Instead.refreshInterface();
