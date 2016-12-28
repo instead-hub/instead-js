@@ -1,0 +1,121 @@
+a.vk-curator-call, a.game-title-compact {
+    color: lightgray!important;
+    font-weight: normal!important;
+}
+
+a.game-title-compact {
+    margin: 10px 0 -10px;
+    text-transform: uppercase;
+    transform: rotate(-47deg);
+}
+
+a.vk-curator-call {
+    padding-right: 40px;
+}
+
+.vk-window {
+    background: #1c1d1f;
+}
+
+.main * {
+    font-size: 12pt !important;
+}
+
+.main {
+    background: #FEE2B6 url("bg.jpg") repeat-y;
+    padding: 20px 50px 80px;
+    margin: 5px 35px 0;
+    width: 450px;
+    min-height: 400px;
+    border-radius: 7px;
+    position: relative;
+}
+
+a, a:hover {
+    color: #B02C00;
+}
+
+.head h1 a {
+    font-weight: normal;
+    color: #B02C00;
+}
+
+div.head {
+    text-align: center;
+    margin-bottom: 2em;
+}
+
+div.image img {
+    max-height: 300px;
+}
+
+div.ways {
+    position: absolute;
+    height: 60px;
+    bottom: 0;
+    text-align: center;
+    display: block;
+    left: 50px;
+    right: 50px;
+    padding-top: 0.7em;
+    border-top: 1px dotted silver;
+    color: silver;
+    line-height: 140%;
+}
+
+div.ways a {
+    display: inline-block;
+    margin: 0 0.3em;
+}
+
+div.scene p {
+    text-align: justify;
+    text-indent: 2em;
+    margin: 3px 0;
+}
+
+div.scene p.para-separa {
+    text-align: justify;
+    height: 5px;
+    margin: 3px 0;
+}
+
+.xroom {
+    position: absolute;
+    width: 84px;
+    height: 55px;
+    border: 1px solid #B02C00;
+    text-align: center;
+    text-indent: 0;
+    padding-top: 14px;
+}
+
+ul.inventory {
+    min-height: 5px;
+    padding: 0 44px;
+}
+
+ul.inventory a {
+    background: linear-gradient(to top, rgba(50, 50, 50, 0.5), rgba(150, 150, 150, 0.2));
+    border-radius: 2px;
+    /*border: 2px slategray ridge;*/
+    color: #fbad7f;
+    display: inline-block;
+    font-size: 12pt;
+    margin: 5px 2px;
+    padding: 3px 1em 5px;
+}
+
+.dragging {
+    background: linear-gradient(to top, rgba(50, 50, 50, 0.7), rgba(150, 150, 150, 0.8))!important;
+    color: white!important;
+}
+
+.c {
+    text-align: center;
+}
+
+pre.debug {
+    display: none;
+}
+
