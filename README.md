@@ -53,7 +53,7 @@ Congratulations, you did it! Now you can put contents of `build` folder to the w
     - [x] Theme fonts and font sizes
 - [x] Music and sounds
     - [x] Play music and sound
-    - [ ] Loop music
+    - [x] Loop music
     - [ ] Sounds on multiple channels
 - [x] Save/load game
     - [x] use LocalStorage to save game
