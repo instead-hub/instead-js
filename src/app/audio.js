@@ -7,12 +7,9 @@ var HTMLAudio = {
             console.log('Unsupported music format:' + track); // eslint-disable-line no-console
             return;
         }
-        if (track !== this.track && this.audio) {
-            // stop previous music
-            this.audio.pause();
-            this.audio = null;
-        }
         if (track !== this.track) {
+            // stop previous music
+            this.stopMusic();
             // start new track
             this.audio = new Audio(track);
             this.track = track;
@@ -25,6 +22,7 @@ var HTMLAudio = {
         if (this.audio) {
             this.audio.pause();
             this.audio = null;
+            this.track = null;
         }
     },
     playSound: function playSound(track, loop, cache) {
@@ -37,7 +35,10 @@ var HTMLAudio = {
     },
     play: function play(audio, loop) {
         if (loop === 0) {
-            // audio.loop = true;
+            audio.addEventListener('ended', function restartAudio() {
+                this.currentTime = 0;
+                this.play();
+            }, false);
             audio.play();
         } else if (loop > 0) {
             for (var i = 0; i < loop; i++) {
