@@ -5,7 +5,7 @@ var Logger = {
         var message = Array.prototype.join.call(arguments, ', ');
         var style = '';
         if (message.indexOf('>') === 0) {
-            style = 'style="color: #FFFF99"';
+            style = 'style="color: #333399"';
         }
         message = message.replace(/</g, '&lt;');
         message = message.replace(/>/g, '&gt;');
