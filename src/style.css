@@ -73,6 +73,7 @@ pre {
 }
 
 #stead-toolbar-info {
+    margin-left: 5px;
     display: inline-block;
     color: #CCCCCC;
 }
@@ -85,6 +86,7 @@ pre {
 #stead-toolbar-buttons button {
     border: none;
     background-color: transparent;
+    position: relative;
     color: #CCCCCC;
     cursor: pointer;
 }

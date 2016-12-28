@@ -160,6 +160,7 @@ var Instead = {
     },
 
     soundMute: function soundMute(value) {
+        Game.mute = value;
         HTMLAudio.mute(value);
     },
 
