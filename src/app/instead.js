@@ -164,8 +164,10 @@ var Instead = {
         HTMLAudio.mute(value);
     },
 
-    autoSave: function autoSave() {
-        this.saveGame(Game.autosaveID); // autosave
+    autoSave: function autoSave(force) {
+        if (Game.autosave_on_click || force) {
+            this.saveGame(Game.autosaveID); // autosave
+        }
     }
 };
 
@@ -185,5 +187,11 @@ function setTimer(t) {
 }
 
 window.instead_settimer = setTimer;
+
+window.onbeforeunload = function autoSaveOnClose() {
+    if (Game.id) {
+        Instead.autoSave(true); // force autosave
+    }
+};
 
 module.exports = Instead;
