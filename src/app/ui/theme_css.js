@@ -128,7 +128,8 @@ var applyStyle = {
         e.$win.css('font-size', v + 'px');
     },
     'win.fnt.height': function s(e, v) {
-        e.$win.css('line-height', v);
+        // default line height for browsers: 1.2
+        e.$win.css('line-height', +v * 1.2);
     },
 
     'inv.w': function s(e, v) {
