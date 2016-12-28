@@ -22,15 +22,9 @@ var Manager = {
             Game.path = gamepath + gameid + '/';
             Game.id = gameid;
             Game.name = allGames[gameid].name;
-            Preloader.load(
-                allGames[gameid].preload,
-                function preloadProgress(percent) {
-                    $('#stead-toolbar-info').html('Preloading images: ' + percent + '%');
-                },
-                function preloadSuccess() {
-                    $('#stead-toolbar-info').html('<b>' + Game.name + '</b>');
-                }
-            );
+            if (Game.preload) {
+                self.preload(gameid);
+            }
             self.hide();
             Instead.startGame(Game.autosaveID);
         });
@@ -48,6 +42,17 @@ var Manager = {
         UI.hide();
     },
     */
+    preload: function preload(gameid) {
+        Preloader.load(
+            allGames[gameid].preload,
+            function preloadProgress(percent) {
+                $('#stead-toolbar-info').html('Preloading images: ' + percent + '%');
+            },
+            function preloadSuccess() {
+                $('#stead-toolbar-info').html('<b>' + Game.name + '</b>');
+            }
+        );
+    },
     hide: function hide() {
         this.el.hide();
         UI.show();
