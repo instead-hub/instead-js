@@ -159,7 +159,8 @@ var applyStyle = {
         e.$inventory.css('font-size', v + 'px');
     },
     'inv.fnt.height': function s(e, v) {
-        e.$inventory.css('line-height', v);
+        // default line height for browsers: 1.2
+        e.$inventory.css('line-height', +v * 1.2);
     },
 
     'menu.col.bg': function s(e, v) { e.$menu.css('background-color', v); },
