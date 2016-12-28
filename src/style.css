@@ -7,7 +7,7 @@ h1 {
 }
 
 body {
-    background-color: #333333;
+    background-color: #111111;
 }
 
 .wordwrap {
@@ -27,6 +27,9 @@ pre {
 #manager {
     text-align: center;
     color: #FFFFFF;
+    width: 760px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
 #manager div {
@@ -51,15 +54,53 @@ pre {
 }
 
 /* Set font */
-#manager *, #menu * {
+#manager *, #menu *, #stead-toolbar * {
     font-family: Tahoma,Verdana,Helvetica,Arial,sans-serif;
+}
+
+#stead-container {
+    width: 800px;
+    position: relative;
+    margin: 0 auto;
+}
+
+#stead-toolbar {
+    margin-top: 10px;
+    padding: 3px;
+    background-color: #333333;
+    border: 1px solid #333333;
+    display: none;
+}
+
+#stead-toolbar-info {
+    margin-left: 5px;
+    display: inline-block;
+    color: #CCCCCC;
+}
+
+#stead-toolbar-buttons {
+    display: inline-block;
+    float: right;
+}
+
+#stead-toolbar-buttons button {
+    border: none;
+    background-color: transparent;
+    position: relative;
+    color: #CCCCCC;
+    cursor: pointer;
+}
+
+#stead-toolbar-buttons button:focus {
+    outline:0;
 }
 
 #stead {
     width: 800px;
+    position: relative;
 }
 
-#stead, #win, #inventory, #cog, #menu_button {
+#win, #inventory, #menu_button {
 	position: absolute;
 }
 
@@ -143,22 +184,18 @@ l {
     width: 99%;
 }
 
-#log-window {
+#log {
+    z-index: 9000;
     position: absolute;
-    top: 620px;
-    color: #CCCCCC;
+    left: 0px;
+    top: 25px;
+    width: 780px;
+    height: 590px;
+    opacity: 0.98;
+    background-color: #CCCCCC;
+    color: #333333;
     font-family: Consolas;
     font-size: 12px;
-    display: none;
-}
-
-#show-log {
-    cursor: pointer;
-}
-
-#log {
-    width: 800px;
-    height: 300px;
     border: 1px solid #999999;
     padding: 10px;
     overflow: auto;

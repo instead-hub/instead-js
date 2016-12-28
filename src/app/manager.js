@@ -21,26 +21,18 @@ var Manager = {
             var gameid = $(this).attr('data-ref');
             Game.path = gamepath + gameid + '/';
             Game.id = gameid;
+            Game.name = allGames[gameid].name;
             Preloader.load(
                 allGames[gameid].preload,
                 function preloadProgress(percent) {
-                    self.el.html('<p>Preloading images: ' + percent + '%</p>');
+                    $('#stead-toolbar-info').html('Preloading images: ' + percent + '%');
                 },
                 function preloadSuccess() {
-                    self.hide();
-                    Instead.startGame(Game.autosaveID);
+                    $('#stead-toolbar-info').html('<b>' + Game.name + '</b>');
                 }
             );
-        });
-
-        $('#show-log').on('click', function toggleLog() {
-            if ($('#log').is(':visible')) {
-                $('#log').hide();
-                $(this).html('Game log &#9658;');
-            } else {
-                $('#log').show();
-                $(this).html('Game log &#9660;');
-            }
+            self.hide();
+            Instead.startGame(Game.autosaveID);
         });
 
         $.get(gameList, function listGames(data) {
@@ -59,7 +51,7 @@ var Manager = {
     hide: function hide() {
         this.el.hide();
         UI.show();
-        $('#log-window').show();
+        $('#stead-toolbar').show();
     }
 };
 

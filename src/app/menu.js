@@ -2,11 +2,30 @@ var $ = require('jquery');
 var Game = require('./game');
 var Storage = require('./storage');
 
+var UTFsymbol = {
+    mute: '<div style="position:absolute; color: #CC0000; text-shadow: 0px 0px 2px #000000">&#10006;</div>&#128266;',
+    sound: '&#128266;'
+};
+
 var Menu = {
     element: {},
     init: function init(elements, steadHandler) {
         this.element = elements;
         var self = this;
+
+        function toggleMute() {
+            if (Game.mute) {
+                steadHandler.mute(false);
+                $('#menu-mute').text('Mute');
+                $('#toolbar-mute').html(UTFsymbol.sound);
+            } else {
+                steadHandler.mute(true);
+                $('#menu-mute').text('Unmute');
+                $('#toolbar-mute').html(UTFsymbol.mute);
+            }
+        }
+        toggleMute();
+
         this.element.$menuButton.on('click', this.toggleMenu.bind(this));
         this.element.$menu.on('click', 'a', function handler(e) {
             e.preventDefault();
@@ -37,17 +56,20 @@ var Menu = {
                 self.toggleSaveload();
                 break;
             case 'mute':
-                if ($(this).text() === 'Mute') {
-                    steadHandler.mute(true);
-                    $(this).text('Unmute');
-                } else {
-                    steadHandler.mute(false);
-                    $(this).text('Mute');
-                }
+                toggleMute();
                 break;
             default:
                 self.toggleMenu();
             }
+        });
+
+        $('#toolbar-log').on('click', function toggleLog(e) {
+            e.preventDefault();
+            $('#log').toggle().scrollTop(function sh() { return this.scrollHeight; });
+        });
+        $('#toolbar-mute').on('click', function toggleLog(e) {
+            e.preventDefault();
+            toggleMute();
         });
     },
     toggleMenu: function toggleMenu() {
