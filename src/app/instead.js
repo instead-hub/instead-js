@@ -141,7 +141,7 @@ var Instead = {
             if (musicPath.indexOf(Game.path) === -1) {
                 musicPath = Game.path + musicPath;
             }
-            HTMLAudio.playMusic(musicPath);
+            HTMLAudio.playMusic(musicPath, 0);
         }
     },
 
