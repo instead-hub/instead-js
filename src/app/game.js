@@ -3,6 +3,7 @@ var Storage = require('./storage');
 var Game = {
     id: 'default',
     name: 'Default Game',
+    mute: true,
     autosaveID: 9,
     saveSlots: 5,
     inventory_mode: 'vertical',
