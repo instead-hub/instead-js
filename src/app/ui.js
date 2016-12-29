@@ -36,7 +36,8 @@ var currentUI = {
     ways: null,
     text: null,
     inventory: null,
-    picture: null
+    picture: null,
+    winContent: null
 };
 
 function isUnchangedUI(type, content) {
@@ -47,6 +48,14 @@ function isUnchangedUI(type, content) {
     return false;
 }
 
+function isUnchangedWin() {
+    var winContent = currentUI.title + currentUI.ways + currentUI.text + currentUI.picture;
+    if (currentUI.winContent === winContent) {
+        return true;
+    }
+    currentUI.winContent = winContent;
+    return false;
+}
 
 var UI = {
     element: {
@@ -134,6 +143,7 @@ var UI = {
         }
         Logger.log(':inv: ' + content);
         setContent(this.element.$inventory, content, 'Inv');
+        this.element.$inventory.perfectScrollbar('update');
     },
     setPicture: function setPicture(content) {
         if (isUnchangedUI('picture', content)) {
@@ -147,13 +157,15 @@ var UI = {
         }
     },
     refresh: function refresh() {
+        if (isUnchangedWin()) {
+            return;
+        }
         if (Game.scroll_mode === 'bottom') {
             this.element.$win.scrollTop(function h() { return this.scrollHeight; });
         } else {
             this.element.$win.scrollTop(0);
         }
         this.element.$win.perfectScrollbar('update');
-        this.element.$inventory.perfectScrollbar('update');
     },
 
     clickHandlerLink: function clickHandlerLink(clickCallback, e, obj) {
