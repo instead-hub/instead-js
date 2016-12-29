@@ -201,3 +201,18 @@ l {
     overflow: auto;
     display: none;
 }
+
+#log .event {
+    color: #006666;
+}
+
+#log .command {
+    color: #333399;
+}
+
+#log .block {
+    display:inline-block;
+    width: 50px;
+    font-weight: bold;
+    border-right: 3px solid #C0C0C0;
+}
