@@ -46,7 +46,7 @@ var Instead = {
     },
 
     saveGame: function saveGame(id) {
-        this.ifaceCmd('save ' + Game.getSaveName(id), true);
+        this.ifaceCmd('save ' + Game.getSaveName(id));
     },
 
     loadGame: function loadGame(id) {
@@ -145,14 +145,13 @@ var Instead = {
         }
     },
 
-    ifaceCmd: function ifaceCmd(command, noUpdateUI) {
+    ifaceCmd: function ifaceCmd(command) {
         var cmd = 'iface.cmd(iface, "' + command + '")';
         var retVal = interpreter.call(cmd);
-        if (noUpdateUI) {
-            return;
+        if (command !== 'user_timer') {
+            Logger.log('> ' + command);
         }
-        Logger.log('> ' + command);
-        if (retVal && retVal[0] !== null) {
+        if (retVal && retVal[0] !== null && command.indexOf('save') !== 0) {
             UI.setText(retVal[0]);
         }
     },
@@ -178,7 +177,7 @@ function setTimer(t) {
     } else {
         LuaTimer = window.setInterval(
             function LuaTimeout() {
-                Instead.ifaceCmd('user_timer', true);
+                Instead.ifaceCmd('user_timer');
                 Instead.refreshInterface();
             }, time);
     }
