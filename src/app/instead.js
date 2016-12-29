@@ -148,14 +148,11 @@ var Instead = {
     ifaceCmd: function ifaceCmd(command) {
         var cmd = 'iface.cmd(iface, "' + command + '")';
         var retVal = interpreter.call(cmd);
-        Logger.log('');
-        Logger.log('> ' + command);
-        Logger.log(JSON.stringify(retVal));
-        if (retVal && retVal[0] !== null) {
-            var cmdAnswer = retVal[0];
-            if (cmdAnswer !== '') {
-                UI.setText(cmdAnswer);
-            }
+        if (command !== 'user_timer') {
+            Logger.log('> ' + command);
+        }
+        if (retVal && retVal[0] !== null && command.indexOf('save') !== 0) {
+            UI.setText(retVal[0]);
         }
     },
 
@@ -164,8 +161,10 @@ var Instead = {
         HTMLAudio.mute(value);
     },
 
-    autoSave: function autoSave() {
-        this.saveGame(Game.autosaveID); // autosave
+    autoSave: function autoSave(force) {
+        if (Game.autosave_on_click || force) {
+            this.saveGame(Game.autosaveID); // autosave
+        }
     }
 };
 
@@ -174,9 +173,9 @@ var LuaTimer; // eslint-disable-line no-unused-vars
 function setTimer(t) {
     var time = parseInt(t, 10);
     if (time === 0) {
-        LuaTimer = null;
+        window.clearInterval(LuaTimer);
     } else {
-        LuaTimer = window.setTimeout(
+        LuaTimer = window.setInterval(
             function LuaTimeout() {
                 Instead.ifaceCmd('user_timer');
                 Instead.refreshInterface();
@@ -185,5 +184,11 @@ function setTimer(t) {
 }
 
 window.instead_settimer = setTimer;
+
+window.onbeforeunload = function autoSaveOnClose() {
+    if (Game.id) {
+        Instead.autoSave(true); // force autosave
+    }
+};
 
 module.exports = Instead;

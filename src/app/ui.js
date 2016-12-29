@@ -31,6 +31,32 @@ function setContent(element, content, field) {
     element.html('<pre>' + normalizeContent(content, field) + '</pre>');
 }
 
+var currentUI = {
+    title: null,
+    ways: null,
+    text: null,
+    inventory: null,
+    picture: null,
+    winContent: null
+};
+
+function isUnchangedUI(type, content) {
+    if (currentUI[type] === content) {
+        return true;
+    }
+    currentUI[type] = content;
+    return false;
+}
+
+function isUnchangedWin() {
+    var winContent = currentUI.title + currentUI.ways + currentUI.text + currentUI.picture;
+    if (currentUI.winContent === winContent) {
+        return true;
+    }
+    currentUI.winContent = winContent;
+    return false;
+}
+
 var UI = {
     element: {
         $title: $('#title'),
@@ -86,7 +112,10 @@ var UI = {
         Theme.setCursor(this.isAct);
     },
     setTitle: function setTitle(content) {
-        Logger.log('TITLE: ' + content);
+        if (isUnchangedUI('title', content)) {
+            return;
+        }
+        Logger.log(':title: ' + content);
         var title = content === true ? '' : content;
         setContent(
             this.element.$title,
@@ -95,18 +124,32 @@ var UI = {
         );
     },
     setWays: function setWays(content) {
-        Logger.log('WAYS: ' + content);
+        if (isUnchangedUI('ways', content)) {
+            return;
+        }
+        Logger.log(':ways: ' + content);
         setContent(this.element.$ways, content, 'Ways');
     },
     setText: function setText(content) {
+        if (isUnchangedUI('text', content)) {
+            return;
+        }
+        Logger.log(':text: ' + content);
         setContent(this.element.$text, content, 'Text');
     },
     setInventory: function setInventory(content) {
-        Logger.log('INV: ' + content);
+        if (isUnchangedUI('inventory', content)) {
+            return;
+        }
+        Logger.log(':inv: ' + content);
         setContent(this.element.$inventory, content, 'Inv');
+        this.element.$inventory.perfectScrollbar('update');
     },
     setPicture: function setPicture(content) {
-        Logger.log('PICTURE: ' + content);
+        if (isUnchangedUI('picture', content)) {
+            return;
+        }
+        Logger.log(':picture: ' + content);
         if (content) {
             this.element.$picture.html(parseImg(null, content));
         } else {
@@ -114,13 +157,15 @@ var UI = {
         }
     },
     refresh: function refresh() {
+        if (isUnchangedWin()) {
+            return;
+        }
         if (Game.scroll_mode === 'bottom') {
-            this.element.$win.scrollTop(9999);
+            this.element.$win.scrollTop(function h() { return this.scrollHeight; });
         } else {
             this.element.$win.scrollTop(0);
         }
         this.element.$win.perfectScrollbar('update');
-        this.element.$inventory.perfectScrollbar('update');
     },
 
     clickHandlerLink: function clickHandlerLink(clickCallback, e, obj) {
@@ -128,14 +173,14 @@ var UI = {
         e.stopPropagation();
         var ref = obj.attr('data-ref');
         var type = obj.attr('data-type');
-        Logger.log('CLICK ' + obj.attr('data-ref') + ':' + obj.attr('data-type') + '> "' + obj.text() + '"');
+        Logger.log('[click] ' + obj.attr('data-ref') + ':' + obj.attr('data-type') + ' "' + obj.text() + '"');
         clickCallback(ref, type);
     },
 
     clickHandler: function clickHandler(clickCallback, e) {
         e.preventDefault();
         if (this.isAct) {
-            Logger.log('CLICK - reset onAct');
+            Logger.log('[click] reset onAct');
             clickCallback('', 0, true);
         }
     }
