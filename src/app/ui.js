@@ -31,6 +31,23 @@ function setContent(element, content, field) {
     element.html('<pre>' + normalizeContent(content, field) + '</pre>');
 }
 
+var currentUI = {
+    title: null,
+    ways: null,
+    text: null,
+    inventory: null,
+    picture: null
+};
+
+function isUnchangedUI(type, content) {
+    if (currentUI[type] === content) {
+        return true;
+    }
+    currentUI[type] = content;
+    return false;
+}
+
+
 var UI = {
     element: {
         $title: $('#title'),
@@ -86,7 +103,10 @@ var UI = {
         Theme.setCursor(this.isAct);
     },
     setTitle: function setTitle(content) {
-        Logger.log('TITLE: ' + content);
+        if (isUnchangedUI('title', content)) {
+            return;
+        }
+        Logger.log(':title: ' + content);
         var title = content === true ? '' : content;
         setContent(
             this.element.$title,
@@ -95,18 +115,31 @@ var UI = {
         );
     },
     setWays: function setWays(content) {
-        Logger.log('WAYS: ' + content);
+        if (isUnchangedUI('ways', content)) {
+            return;
+        }
+        Logger.log(':ways: ' + content);
         setContent(this.element.$ways, content, 'Ways');
     },
     setText: function setText(content) {
+        if (isUnchangedUI('text', content)) {
+            return;
+        }
+        Logger.log(':text: ' + content);
         setContent(this.element.$text, content, 'Text');
     },
     setInventory: function setInventory(content) {
-        Logger.log('INV: ' + content);
+        if (isUnchangedUI('inventory', content)) {
+            return;
+        }
+        Logger.log(':inv: ' + content);
         setContent(this.element.$inventory, content, 'Inv');
     },
     setPicture: function setPicture(content) {
-        Logger.log('PICTURE: ' + content);
+        if (isUnchangedUI('picture', content)) {
+            return;
+        }
+        Logger.log(':picture: ' + content);
         if (content) {
             this.element.$picture.html(parseImg(null, content));
         } else {
@@ -128,14 +161,14 @@ var UI = {
         e.stopPropagation();
         var ref = obj.attr('data-ref');
         var type = obj.attr('data-type');
-        Logger.log('CLICK ' + obj.attr('data-ref') + ':' + obj.attr('data-type') + '> "' + obj.text() + '"');
+        Logger.log('[click] ' + obj.attr('data-ref') + ':' + obj.attr('data-type') + ' "' + obj.text() + '"');
         clickCallback(ref, type);
     },
 
     clickHandler: function clickHandler(clickCallback, e) {
         e.preventDefault();
         if (this.isAct) {
-            Logger.log('CLICK - reset onAct');
+            Logger.log('[click] reset onAct');
             clickCallback('', 0, true);
         }
     }

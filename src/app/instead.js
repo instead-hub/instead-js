@@ -46,7 +46,7 @@ var Instead = {
     },
 
     saveGame: function saveGame(id) {
-        this.ifaceCmd('save ' + Game.getSaveName(id));
+        this.ifaceCmd('save ' + Game.getSaveName(id), true);
     },
 
     loadGame: function loadGame(id) {
@@ -145,17 +145,15 @@ var Instead = {
         }
     },
 
-    ifaceCmd: function ifaceCmd(command) {
+    ifaceCmd: function ifaceCmd(command, noUpdateUI) {
         var cmd = 'iface.cmd(iface, "' + command + '")';
         var retVal = interpreter.call(cmd);
-        Logger.log('');
+        if (noUpdateUI) {
+            return;
+        }
         Logger.log('> ' + command);
-        Logger.log(JSON.stringify(retVal));
         if (retVal && retVal[0] !== null) {
-            var cmdAnswer = retVal[0];
-            if (cmdAnswer !== '') {
-                UI.setText(cmdAnswer);
-            }
+            UI.setText(retVal[0]);
         }
     },
 
@@ -180,7 +178,7 @@ function setTimer(t) {
     } else {
         LuaTimer = window.setInterval(
             function LuaTimeout() {
-                Instead.ifaceCmd('user_timer');
+                Instead.ifaceCmd('user_timer', true);
                 Instead.refreshInterface();
             }, time);
     }
