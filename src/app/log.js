@@ -5,10 +5,14 @@ var Logger = {
         var message = Array.prototype.join.call(arguments, ', ');
         var style = '';
         if (message.indexOf('>') === 0) {
-            style = 'style="color: #333399"';
+            style = 'class="command"';
+        }
+        if (message.indexOf('[') === 0) {
+            style = 'class="event"';
         }
         message = message.replace(/</g, '&lt;');
         message = message.replace(/>/g, '&gt;');
+        message = message.replace(/:(title|ways|text|inv|picture):/g, '<span class="block">$1</span>');
         var el = $('#log');
         el.append('<span ' + style + '>' + message + '<br/></span>');
         el.scrollTop(function h() { return this.scrollHeight; });
