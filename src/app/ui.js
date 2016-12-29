@@ -148,7 +148,7 @@ var UI = {
     },
     refresh: function refresh() {
         if (Game.scroll_mode === 'bottom') {
-            this.element.$win.scrollTop(9999);
+            this.element.$win.scrollTop(function h() { return this.scrollHeight; });
         } else {
             this.element.$win.scrollTop(0);
         }
