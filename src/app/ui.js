@@ -5,6 +5,7 @@ var Theme = require('./theme');
 var Logger = require('./log');
 
 var parseImg = require('./ui/parse_image');
+var Sprite = require('./ui/sprite'); // eslint-disable-line no-unused-vars
 
 function normalizeContent(input, field) {
     var output = input;
@@ -151,7 +152,12 @@ var UI = {
         }
         Logger.log(':picture: ' + content);
         if (content) {
-            this.element.$picture.html(parseImg(null, content));
+            if (Sprite.is(content)) {
+                this.element.$picture.html('');
+                Sprite.initCanvas(this.element.$picture, content);
+            } else {
+                this.element.$picture.html(parseImg(null, content));
+            }
         } else {
             this.element.$picture.html('');
         }
