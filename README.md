@@ -44,7 +44,9 @@ Congratulations, you did it! Now you can put contents of `build` folder to the w
 - [x] Images
     - [x] Blank images
     - [x] Composite image
-    - [ ] Sprites (?)
+    - [x] Sprites
+    - [ ] Sprites - fonts
+    - [ ] Sprites - scale, rotate
 - [x] Themes
     - [x] Standard and user-defined themes
     - [x] Changing theme on-the-fly (module 'theme')
@@ -66,3 +68,4 @@ Congratulations, you did it! Now you can put contents of `build` folder to the w
     - [x] Preload images before running game
 - [ ] Keyboard input (?)
 - [x] Timer
+- [ ] URQ module (?)

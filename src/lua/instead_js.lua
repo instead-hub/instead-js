@@ -2,6 +2,16 @@ INSTEAD_PLACEHOLDER = function()
     return
 end
 
+-- call JS function with given parameters
+insteadjs_call = function(jsfn, arg)
+    local arguments = ''
+    for i,v in ipairs(arg) do
+        arguments = arguments .. '"' .. tostring(v) .. '",'
+    end
+    arguments = arguments:sub(1, -2)
+    js.run(jsfn .. '(' .. arguments .. ')')
+end
+
 table_get_maxn = function(tbl)
 	local c=0
 	for k in pairs(tbl) do
@@ -46,23 +56,63 @@ instead_timer = function(t)
 end
 
 -- sprites are not supported (yet?)
-instead_font_load = INSTEAD_PLACEHOLDER
-instead_font_free = INSTEAD_PLACEHOLDER
-instead_font_scaled_size = INSTEAD_PLACEHOLDER
-instead_sprite_alpha = INSTEAD_PLACEHOLDER
-instead_sprite_dup = INSTEAD_PLACEHOLDER
-instead_sprite_scale = INSTEAD_PLACEHOLDER
-instead_sprite_rotate = INSTEAD_PLACEHOLDER
-instead_sprite_text = INSTEAD_PLACEHOLDER
-instead_sprite_text_size = INSTEAD_PLACEHOLDER
-instead_sprite_draw = INSTEAD_PLACEHOLDER
-instead_sprite_copy = INSTEAD_PLACEHOLDER
-instead_sprite_compose = INSTEAD_PLACEHOLDER
-instead_sprite_fill = INSTEAD_PLACEHOLDER
-instead_sprite_pixel = INSTEAD_PLACEHOLDER
-instead_sprite_load = INSTEAD_PLACEHOLDER
-instead_sprite_free = INSTEAD_PLACEHOLDER
-instead_sprite_size = INSTEAD_PLACEHOLDER
+sprite_descriptors = {}
+
+instead_font_load = function()
+    print('NOT IMPLEMENTED: sprite.font_load')
+end
+instead_font_free = function()
+    print('NOT IMPLEMENTED: sprite.font_free')
+end
+instead_font_scaled_size = function()
+    print('NOT IMPLEMENTED: sprite.font_scaled_size')
+end
+instead_sprite_alpha = function()
+    print('NOT IMPLEMENTED: sprite.sprite_alpha')
+end
+instead_sprite_dup = function()
+    print('NOT IMPLEMENTED: sprite.dup')
+end
+instead_sprite_scale = function()
+    print('NOT IMPLEMENTED: sprite.scale')
+end
+instead_sprite_rotate = function()
+    print('NOT IMPLEMENTED: sprite.rotate')
+end
+instead_sprite_text = function()
+    print('NOT IMPLEMENTED: sprite.text')
+end
+instead_sprite_text_size = function()
+    print('NOT IMPLEMENTED: sprite.text_size')
+end
+instead_sprite_draw = function(...)
+    insteadjs_call('Sprite.draw', {...})
+end
+instead_sprite_copy = function(...)
+    insteadjs_call('Sprite.copy', {...})
+end
+instead_sprite_compose = function(...)
+    insteadjs_call('Sprite.compose', {...})
+end
+instead_sprite_fill = function(...)
+    insteadjs_call('Sprite.fill', {...})
+end
+instead_sprite_pixel = function(...)
+    insteadjs_call('Sprite.pixel', {...})
+end
+instead_sprite_load = function(filename)
+    js.run('Sprite.load("' .. tostring(filename) .. '")')
+    return sprite_descriptors[filename]
+end
+js_instead_sprite_load = function(filename, id)
+    sprite_descriptors[filename] = id
+end
+instead_sprite_free = function(descriptor)
+    js.run('Sprite.free("' .. tostring(descriptor) .. '")')
+end
+instead_sprite_size = function()
+    print('NOT IMPLEMENTED: sprite.size')
+end
 instead_sprites_free = INSTEAD_PLACEHOLDER
 instead_sprite_colorkey = INSTEAD_PLACEHOLDER
 
