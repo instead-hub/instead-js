@@ -71,10 +71,11 @@ function copySprite(srcID, fx, fy, fw, fh, dstID, x, y, alpha, mode) {
             x: trgX,
             y: trgY,
             width: width,
-            height: height
+            height: height,
+            dstID: dstID
         };
     } else {
-        if (nextCopy.clear) {
+        if (nextCopy.clear && nextCopy.dstID === dstID) {
             nextCopy.clear = false;
             ctx.clearRect(nextCopy.x, nextCopy.y, nextCopy.width, nextCopy.height);
         }
