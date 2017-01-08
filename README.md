@@ -8,7 +8,7 @@ This is an attempt to recreate functionality of INSTEAD in the web application.
 
 Prerequisites: nodejs 6.3+, npm 3.10+
 
-    git clone https://github.com/technix/instead-js.git
+    git clone https://github.com/instead-hub/instead-js.git
     cd instead-js
     git submodule init
     git submodule update
