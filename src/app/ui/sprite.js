@@ -12,7 +12,7 @@ var nextCopy = {
 };
 
 function luaToNumber(val) {
-    if (val === 'nil') {
+    if (typeof val === 'undefined' || val === 'nil') {
         return 0;
     }
     return +val;
@@ -133,17 +133,17 @@ var Sprite = {
     },
     copy: function spriteCopy() {
         var args = Array.prototype.slice.call(arguments);
-        args.push('copy');
+        args[9] = 'copy';
         return copySprite.apply(this, args);
     },
     compose: function spriteCompose() {
         var args = Array.prototype.slice.call(arguments);
-        args.push('compose');
+        args[9] = 'compose';
         return copySprite.apply(this, args);
     },
     draw: function spriteDraw() {
         var args = Array.prototype.slice.call(arguments);
-        args.push('draw');
+        args[9] = 'draw';
         return copySprite.apply(this, args);
     },
     free: function spriteFree(spriteID) {
