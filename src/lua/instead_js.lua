@@ -34,6 +34,10 @@ instead_realpath=function()
   return nil
 end
 
+function instead_mouse_filter(...)
+  insteadjs_call('console.log', {...})
+end
+
 -- theme
 function instead_theme_var(name, value)
     -- TODO: get theme variable from JS
@@ -180,5 +184,36 @@ instead_loadgame = function(content)
             return assert(loadstring(file_content));
         end
         iface.cmd(iface, 'load INSTEAD_SAVED_GAME')
+    end
+end
+
+-- keyboard
+function instead_define_keyboard_hooks()
+    hook_keys = function(...)
+        stead.hook_keys(...)
+        local i
+        local s
+        local a = {...};
+        for i = 1, stead.table.maxn(a) do
+            s = tostring(a[i])
+            if (s == '\\') then
+                s = '\\\\'
+            end
+            js.run('Keyboard.hookKey("' .. s .. '")')
+        end
+    end
+
+    unhook_keys = function(...)
+        stead.unhook_keys(...)
+        local i
+        local s
+        local a = {...};
+        for i = 1, stead.table.maxn(a) do
+            s = tostring(a[i])
+            if (s == '\\') then
+                s = '\\\\'
+            end
+            js.run('Keyboard.unhookKey("' .. s .. '")')
+        end
     end
 end
