@@ -1,4 +1,5 @@
 var Game = require('../game');
+var Sprite = require('./sprite');
 
 function parseEmptyImage(fullString, box, params) {
     var d = params.split(',');
@@ -46,6 +47,9 @@ function parseImg(fullString, img) {
     var image = img;
     var style = 'max-width: 100%;';
     var parsedImg = '';
+    if (Sprite.is(img)) {
+        return Sprite.asImage(img);
+    }
     // Parse pseudo-images (box, blank)
     if (img.indexOf('box') === 0 || img.indexOf('blank') === 0) {
         return img.replace(/(box|blank):(.+)/, parseEmptyImage);
