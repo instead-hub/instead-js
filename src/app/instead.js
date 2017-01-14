@@ -2,6 +2,7 @@ var interpreter = require('../lua/interpreter');
 var UI = require('./ui');
 var Game = require('./game');
 var HTMLAudio = require('./audio');
+var Keyboard = require('./ui/keyboard');
 
 var Logger = require('./log');
 
@@ -14,6 +15,8 @@ var Instead = {
             load: this.loadGame.bind(this),
             mute: this.soundMute.bind(this)
         };
+        document.body.addEventListener('keydown', kbdEvent);
+        document.body.addEventListener('keyup', kbdEvent);
 
         // preloader
         interpreter.init();
@@ -36,6 +39,7 @@ var Instead = {
 
     initGame: function initGame() {
         interpreter.load(Game.path + 'main.lua');
+        interpreter.call('instead_define_keyboard_hooks()');
         interpreter.call('stead.game_ini(game)');
     },
 
@@ -105,6 +109,13 @@ var Instead = {
         }
     },
 
+    kbd: function keyboardHandler(ev) {
+        if (ev) {
+            interpreter.call('instead.input("kbd", ' + ev.down +  ', "' + ev.key + '")');
+            this.ifaceCmd('user_kbd');
+        }
+    },
+
     getInv: function getInv() {
         var horizontalInventory = (Game.inventory_mode === 'horizontal');
         var retVal = interpreter.call('instead.get_inv(' + horizontalInventory + ')');
@@ -167,6 +178,11 @@ var Instead = {
         }
     }
 };
+
+function kbdEvent(event) {
+    Instead.kbd(Keyboard.handler(event));
+}
+
 
 var LuaTimer; // eslint-disable-line no-unused-vars
 

@@ -45,7 +45,7 @@ Congratulations, you did it! Now you can put contents of `build` folder to the w
     - [x] Blank images
     - [x] Composite image
     - [x] Sprites
-    - [ ] Sprites - fonts
+    - [x] Sprites - fonts (partial support)
     - [ ] Sprites - scale, rotate
 - [x] Themes
     - [x] Standard and user-defined themes
@@ -66,6 +66,15 @@ Congratulations, you did it! Now you can put contents of `build` folder to the w
     - [x] Choose game to load
     - [x] Separate save slots for different games
     - [x] Preload images before running game
-- [ ] Keyboard input (?)
+- [x] Keyboard input
+    - [ ] Bug: backspace breaks UTF-encoded symbols
+    - [ ] Bug: backslash does not work
 - [x] Timer
+- [ ] Mouse input
+- [x] Metaparser
+    - [x] Dictionary loading
+    - [ ] Bug: keyboard input does not work well
 - [ ] URQ module (?)
+    - [x] Quest file loading
+    - [ ] Bug: encoding issues
+    - [ ] Bug: command parsing issues

@@ -34,6 +34,10 @@ instead_realpath=function()
   return nil
 end
 
+function instead_mouse_filter(...)
+  insteadjs_call('console.log', {...})
+end
+
 -- theme
 function instead_theme_var(name, value)
     -- TODO: get theme variable from JS
@@ -57,15 +61,22 @@ end
 
 -- sprites are not supported (yet?)
 sprite_descriptors = {}
+font_descriptors = {}
 
-instead_font_load = function()
-    print('NOT IMPLEMENTED: sprite.font_load')
+instead_font_load = function(filename, size)
+    js.run('Sprite.font("' .. tostring(filename) .. '","' .. tostring(size) .. '")')
+    return font_descriptors[filename .. size]
+end
+js_instead_font_load = function(font, id)
+    font_descriptors[font] = id
 end
 instead_font_free = function()
-    print('NOT IMPLEMENTED: sprite.font_free')
+    -- fonts are not taking much memory, no need to 'free' them
+    return
 end
-instead_font_scaled_size = function()
-    print('NOT IMPLEMENTED: sprite.font_scaled_size')
+instead_font_scaled_size = function(size)
+    -- TODO: return size as-is
+    return size
 end
 instead_sprite_alpha = function()
     print('NOT IMPLEMENTED: sprite.sprite_alpha')
@@ -79,8 +90,17 @@ end
 instead_sprite_rotate = function()
     print('NOT IMPLEMENTED: sprite.rotate')
 end
-instead_sprite_text = function()
-    print('NOT IMPLEMENTED: sprite.text')
+instead_sprite_text = function(font, text, col, style)
+    local arguments = ''
+    arguments = arguments .. '"' .. tostring(font) .. '",'
+    arguments = arguments .. '"' .. tostring(text) .. '",'
+    arguments = arguments .. '"' .. tostring(col) .. '",'
+    arguments = arguments .. '"' .. tostring(style) .. '"'
+    js.run('Sprite.text(' .. arguments .. ')')
+    return sprite_descriptors[font]
+end
+js_instead_sprite_text = function(font, id)
+    sprite_descriptors[font] = id
 end
 instead_sprite_text_size = function()
     print('NOT IMPLEMENTED: sprite.text_size')
@@ -164,5 +184,76 @@ instead_loadgame = function(content)
             return assert(loadstring(file_content));
         end
         iface.cmd(iface, 'load INSTEAD_SAVED_GAME')
+    end
+end
+
+
+-- io.open
+mock_handle = {}
+
+io.open = function (file, mode)
+	mock_handle[file] = {}
+	mock_handle[file].lines = {}
+	mock_handle[file].mode = mode
+    js.run('Lua.openFile("' .. tostring(file) .. '")')
+
+    local i = 0
+	return {
+        file = file,
+        lines = function (_)
+            local n = #mock_handle[_.file].lines
+            return function ()
+               i = i + 1
+               if i < n then return mock_handle[_.file].lines[i] end
+            end
+        end,
+        close = function (_, s)
+            return
+        end,
+		setvbuf = function (_, s)
+			return
+		end,
+		write = function (_, s)
+			return
+		end
+	}
+end
+
+instead_openfile = function(file, content)
+    local t = {}
+    local str = url_decode(content)
+    local function helper(line) table.insert(t, line) return "" end
+    helper((str:gsub("(.-)\r?\n", helper)))
+    mock_handle[file].lines = t
+end
+
+-- keyboard
+function instead_define_keyboard_hooks()
+    hook_keys = function(...)
+        stead.hook_keys(...)
+        local i
+        local s
+        local a = {...};
+        for i = 1, stead.table.maxn(a) do
+            s = tostring(a[i])
+            if (s == '\\') then
+                s = '\\\\'
+            end
+            js.run('Keyboard.hookKey("' .. s .. '")')
+        end
+    end
+
+    unhook_keys = function(...)
+        stead.unhook_keys(...)
+        local i
+        local s
+        local a = {...};
+        for i = 1, stead.table.maxn(a) do
+            s = tostring(a[i])
+            if (s == '\\') then
+                s = '\\\\'
+            end
+            js.run('Keyboard.unhookKey("' .. s .. '")')
+        end
     end
 end

@@ -1,8 +1,14 @@
+var $ = require('jquery');
 var interpreter = require('../../lua/interpreter');
 var Game = require('../game');
+var Theme = require('./theme_css');
 
 var sprites = {};
 var spriteCounter = 0;
+var spriteUniqueID = 0;
+var fonts = {};
+var fontNames = {};
+var fontCounter = 0;
 var nextCopy = {
     clear: false,
     x: null,
@@ -10,6 +16,20 @@ var nextCopy = {
     width: null,
     height: null
 };
+
+function getFontSize(font, text) {
+    var o = $('<div>' + text + '</div>')
+            .css({
+                position: 'absolute', float: 'left', 'white-space': 'nowrap',
+                visibility: 'hidden', font: font
+            })
+            .appendTo($('body'));
+    var w = o.width();
+    var h = o.height();
+    o.remove();
+    return {width: w, height: h};
+}
+
 
 function luaToNumber(val) {
     if (typeof val === 'undefined' || val === 'nil') {
@@ -71,10 +91,11 @@ function copySprite(srcID, fx, fy, fw, fh, dstID, x, y, alpha, mode) {
             x: trgX,
             y: trgY,
             width: width,
-            height: height
+            height: height,
+            dstID: dstID
         };
     } else {
-        if (nextCopy.clear) {
+        if (nextCopy.clear && nextCopy.dstID === dstID) {
             nextCopy.clear = false;
             ctx.clearRect(nextCopy.x, nextCopy.y, nextCopy.width, nextCopy.height);
         }
@@ -101,6 +122,19 @@ var Sprite = {
     },
     initCanvas: function initCanvas(parentElement, spriteID) {
         parentElement.append(sprites[spriteID].canvas);
+    },
+    asImage: function spriteAsImage(spriteID) {
+        spriteUniqueID++;
+        var sprite = spriteID + '__' + spriteUniqueID;
+        setTimeout(function populateSprite() {
+            var sp = sprites[spriteID].canvas;
+            var sc = document.getElementById(sprite);
+            sc.width = sp.width;
+            sc.height = sp.height;
+            var ctx = sc.getContext('2d');
+            ctx.drawImage(sp, 0, 0, sp.width, sp.height, 0, 0, sp.width, sp.height);
+        }, 50);
+        return '<canvas id="' + sprite + '"></canvas>';
     },
     load: function spriteLoad(fileName) {
         spriteCounter++;
@@ -184,6 +218,50 @@ var Sprite = {
         sprite.ctx.fillStyle = color;
         sprite.ctx.fillRect(x, y, w, h);
         sprite.waitOp = false;
+    },
+    font: function spriteFont(fileName, size) {
+        fontCounter++;
+        var fontID = 'sprite_font_' + fontCounter;
+        var font = {
+            id: fontID,
+            name: fileName,
+            size: +size
+        };
+
+        fonts[fontID] = font;
+        if (!fontNames.hasOwnProperty(fileName)) {
+            Theme.applyParamStyle('SPRITE.FNT', fontID, fileName, Game.path);
+        }
+        fontNames[fileName] = true;
+        interpreter.call('js_instead_font_load("' + fileName + size + '", "' + fontID + '")');
+    },
+    text: function spriteText(fontID, text, color) {
+        spriteCounter++;
+        var spriteID = this.id(spriteCounter);
+        interpreter.call('js_instead_sprite_text("' + fontID + '", "' + spriteID + '")');
+
+        var sprite = {
+            id: spriteID,
+            canvas: document.createElement('canvas'),
+            unavailable: true,
+            waitOp: true
+        };
+        sprite.ctx = sprite.canvas.getContext('2d');
+        sprites[spriteID] = sprite;
+
+        var fontName = fonts[fontID].size + 'px ' + fontID;
+        var fontSize = getFontSize(fontName, text);
+        sprite.canvas.width = fontSize.width;
+        sprite.canvas.height = fontSize.height;
+        sprite.ctx.font = fontName;
+        sprite.ctx.textBaseline = 'top';
+        if (color && color !== 'nil') {
+            sprite.ctx.fillStyle = color;
+        } else {
+            sprite.ctx.fillStyle = '#FFFFFF'; // white font by default
+        }
+        sprite.ctx.fillText(text, 0, 0);
+        sprite.unavailable = false;
     }
 };
 

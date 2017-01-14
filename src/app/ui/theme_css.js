@@ -66,7 +66,9 @@ function setFontCSS(selector, fontName, v, p) {
     if (fntCSS === '' && v) {
         fntCSS = setFont(fontName, p + v); // one font for all types
     }
-    fntCSS = fntCSS + selector + ' * {font-family:' + fontName + ',Arial,Helvetica,sans-serif;}';
+    if (selector) {
+        fntCSS = fntCSS + selector + ' * {font-family:' + fontName + ',Arial,Helvetica,sans-serif;}';
+    }
     return fntCSS;
 }
 
@@ -118,7 +120,7 @@ var applyStyle = {
         if (+v === 3) {
             Game.scroll_mode = 'bottom';
         } else if (+v > 0) {
-            Game.scroll_mode = 'change';
+            Game.scroll_mode = 'bottom'; // implement 'change' mode later
         }
     },
     'win.ways.mode': function s(e, v) {
@@ -201,6 +203,11 @@ var applyStyle = {
     },
     'inv.col.alink': function s(e, v) {
         dynamicStyles['inv.col.alink'] = '#inventory a:hover {color:' + v + '}';
+        setCSS();
+    },
+
+    'SPRITE.FNT': function s(fontID, v, p) {
+        dynamicStyles[fontID] = setFontCSS(null, fontID, v, p);
         setCSS();
     },
 
