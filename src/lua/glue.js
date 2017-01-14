@@ -75,6 +75,15 @@ function loadFile(path) {
     return Storage.load(path);
 }
 
+function openFile(path) {
+    var filepath = path;
+    if (filepath.indexOf(Game.path) === -1) {
+        filepath = Game.path + path; // add game path if it's not present already
+    }
+    var content = encodeURIComponent(utf8encode(ajaxGetSync(filepath)));
+    return Lua.eval('instead_openfile("' + path + '","' + content + '")');
+}
+
 var Glue = {
     init: function glueInit() {
         Lua.requires = {};
@@ -82,6 +91,7 @@ var Glue = {
         Lua.inject(luaDofile, 'dofile');
         Lua.saveFile = saveFile;
         Lua.loadFile = loadFile;
+        Lua.openFile = openFile;
     },
     runLuaFromPath: runLuaFromPath
 };
