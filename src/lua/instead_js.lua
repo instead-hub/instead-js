@@ -187,6 +187,46 @@ instead_loadgame = function(content)
     end
 end
 
+
+-- io.open
+mock_handle = {}
+
+io.open = function (file, mode)
+	mock_handle[file] = {}
+	mock_handle[file].lines = {}
+	mock_handle[file].mode = mode
+    js.run('Lua.openFile("' .. tostring(file) .. '")')
+
+    local i = 0
+	return {
+        file = file,
+        lines = function (_)
+            local n = #mock_handle[_.file].lines
+            return function ()
+               i = i + 1
+               if i < n then return mock_handle[_.file].lines[i] end
+            end
+        end,
+        close = function (_, s)
+            return
+        end,
+		setvbuf = function (_, s)
+			return
+		end,
+		write = function (_, s)
+			return
+		end
+	}
+end
+
+instead_openfile = function(file, content)
+    local t = {}
+    local str = url_decode(content)
+    local function helper(line) table.insert(t, line) return "" end
+    helper((str:gsub("(.-)\r?\n", helper)))
+    mock_handle[file].lines = t
+end
+
 -- keyboard
 function instead_define_keyboard_hooks()
     hook_keys = function(...)
