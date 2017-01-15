@@ -68,11 +68,19 @@ function luaDofile(filepath) {
 }
 
 function saveFile(path, data) {
-    Storage.save(path, data);
+    var filepath = path;
+    if (path.search(/prefs\.tmp/) !== -1) {
+        filepath = 'PREFS';
+    }
+    Storage.save(filepath, data);
 }
 
 function loadFile(path) {
-    return Storage.load(path);
+    var filepath = path;
+    if (path.search(/prefs/) !== -1) {
+        filepath = 'PREFS';
+    }
+    return Lua.eval('instead_loadfile("' + path + '","' + Storage.load(filepath) + '")');
 }
 
 function openFile(path) {
