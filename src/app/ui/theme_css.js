@@ -97,7 +97,7 @@ var applyStyle = {
     'scr.gfx.x': function s(e, v) { e.$picture.css('left', v + 'px'); },
     'scr.gfx.y': function s(e, v) { e.$picture.css('top', v + 'px'); },
     'scr.gfx.mode': function s(e, v) {
-        if (v === 'float') {
+        if (v.search('float') !== -1) {
             e.$picture.appendTo('#stead').css('position', 'absolute');
         }
     },
