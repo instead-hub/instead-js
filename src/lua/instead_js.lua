@@ -159,64 +159,52 @@ function url_encode(str)
   return str
 end
 
-stead.io.open = function(filename, mode)
-    return {
-        name = filename,
-        content = '',
-        write = function(self, ...)
-            local a = { ... }
-            for i,v in ipairs(a) do
-                self.content = self.content .. tostring(v);
-            end
-        end,
-        flush = INSTEAD_PLACEHOLDER,
-        close = function(self)
-            js.run('Lua.saveFile("' .. self.name .. '", "' .. url_encode(self.content) ..'")')
-        end
-    }
-end
-
-instead_loadgame = function(content)
-    file_content = url_decode(content)
-    do
-        -- redefine loadfile to return custom content
-        loadfile = function()
-            return assert(loadstring(file_content));
-        end
-        iface.cmd(iface, 'load INSTEAD_SAVED_GAME')
-    end
-end
-
-
--- io.open
+-- io.open proxy
 mock_handle = {}
 
-io.open = function (file, mode)
-	mock_handle[file] = {}
-	mock_handle[file].lines = {}
-	mock_handle[file].mode = mode
-    js.run('Lua.openFile("' .. tostring(file) .. '")')
-
+io.open = function (filename, mode)
+	mock_handle[filename] = {}
+	mock_handle[filename].lines = {}
+    mock_handle[filename].content = ''
+	mock_handle[filename].mode = mode
     local i = 0
 	return {
-        file = file,
+        name = filename,
         lines = function (_)
-            local n = #mock_handle[_.file].lines
+            js.run('Lua.openFile("' .. tostring(_.name) .. '")')
+            local n = #mock_handle[_.name].lines
             return function ()
                i = i + 1
-               if i < n then return mock_handle[_.file].lines[i] end
+               if i < n then return mock_handle[_.name].lines[i] end
             end
-        end,
-        close = function (_, s)
-            return
         end,
 		setvbuf = function (_, s)
 			return
 		end,
-		write = function (_, s)
-			return
-		end
+        write = function(_, ...)
+            local a = { ... }
+            for i,v in ipairs(a) do
+                mock_handle[_.name].content = mock_handle[_.name].content .. tostring(v)
+            end
+        end,
+        flush = INSTEAD_PLACEHOLDER,
+        close = function(_)
+            if (mock_handle[_.name].content ~= '') then
+                js.run('Lua.saveFile("' .. _.name .. '", "' .. url_encode( mock_handle[_.name].content) ..'")')
+            end
+        end
 	}
+end
+
+os.remove = INSTEAD_PLACEHOLDER
+os.rename = INSTEAD_PLACEHOLDER
+
+-- loadfile proxy
+loadfile = function(file)
+    js.run('Lua.loadFile("' .. file .. '")')
+    if (mock_handle[file].content ~= '') then
+        return assert(loadstring(mock_handle[file].content))
+    end
 end
 
 instead_openfile = function(file, content)
@@ -227,13 +215,21 @@ instead_openfile = function(file, content)
     mock_handle[file].lines = t
 end
 
+instead_loadfile = function(file, content)
+    mock_handle[file] = {}
+    mock_handle[file].content = ''
+    if (content ~= '') then
+        mock_handle[file].content = url_decode(content)
+    end
+end
+
 -- keyboard
 function instead_define_keyboard_hooks()
     hook_keys = function(...)
         stead.hook_keys(...)
         local i
         local s
-        local a = {...};
+        local a = {...}
         for i = 1, stead.table.maxn(a) do
             s = tostring(a[i])
             if (s == '\\') then
@@ -247,7 +243,7 @@ function instead_define_keyboard_hooks()
         stead.unhook_keys(...)
         local i
         local s
-        local a = {...};
+        local a = {...}
         for i = 1, stead.table.maxn(a) do
             s = tostring(a[i])
             if (s == '\\') then
