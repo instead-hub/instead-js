@@ -14,9 +14,6 @@ var Interpreter = {
     load: function interpreterLoad(path) {
         Glue.runLuaFromPath(path);
     },
-    loadgame: function loadgame(path) {
-        return Lua.eval('instead_loadgame("' + Lua.loadFile(path) + '")');
-    },
     clear: function interpreterClear() {
         Lua.destroy();
         this.init();

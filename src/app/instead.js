@@ -31,7 +31,7 @@ var Instead = {
         UI.loadTheme();
         this.initGame();
         if (savedGameID) {
-            interpreter.loadgame(Game.getSaveName(savedGameID));
+            this.ifaceCmd('load ' + Game.getSaveName(savedGameID));
         }
         this.ifaceCmd('look');
         this.refreshInterface();
