@@ -29,6 +29,7 @@ var Instead = {
         setTimer(0);
 
         UI.loadTheme();
+        this.clickSound(true); // preload click sound
         this.initGame();
         if (savedGameID) {
             this.ifaceCmd('load ' + Game.getSaveName(savedGameID));
@@ -64,17 +65,9 @@ var Instead = {
         }
     },
 
-    refreshInterface: function refreshInterface() {
-        this.getTitle();
-        this.getWays();
-        this.getInv();
-        this.getPicture();
-        this.getMusic();
-        UI.refresh();
-    },
-
     click: function click(uiref, field, onStead) {
         var ref = uiref;
+        this.clickSound(); // play click sound
         if (!onStead && (UI.isAct || field === 'Inv')) {
             ref = ref.substr(1);
             if (ref.substr(0, 3) === 'act') {
@@ -116,39 +109,40 @@ var Instead = {
         }
     },
 
-    getInv: function getInv() {
-        var horizontalInventory = (Game.inventory_mode === 'horizontal');
-        var retVal = interpreter.call('instead.get_inv(' + horizontalInventory + ')');
-        if (retVal[0] === null) {
-            UI.setInventory('');
-        } else {
-            UI.setInventory(retVal[0]);
-        }
-    },
-
-    getWays: function getWays()    {
-        var waysAnswer = interpreter.call('instead.get_ways()');
-        UI.setWays(waysAnswer[0]);
+    refreshInterface: function refreshInterface() {
+        this.getTitle();
+        this.getWays();
+        this.getInv();
+        this.getPicture();
+        this.getMusic();
+        UI.refresh();
     },
 
     getTitle: function getTitle() {
-        var retVal = interpreter.call('instead.get_title()');
-        UI.setTitle(retVal[0]);
+        UI.setTitle(interpreter.call('instead.get_title()'));
+    },
+
+    getWays: function getWays()    {
+        UI.setWays(interpreter.call('instead.get_ways()'));
+    },
+
+    getInv: function getInv() {
+        var horizontalInventory = (Game.inventory_mode === 'horizontal');
+        var inventory = interpreter.call('instead.get_inv(' + horizontalInventory + ')');
+        if (inventory === null) {
+            UI.setInventory('');
+        } else {
+            UI.setInventory(inventory);
+        }
     },
 
     getPicture: function getPicture() {
-        var picturePath;
-        var retVal = interpreter.call('instead.get_picture()');
-        if (retVal[0] !== null) {
-            picturePath = retVal[0];
-        }
-        UI.setPicture(picturePath);
+        UI.setPicture(interpreter.call('instead.get_picture()'));
     },
 
     getMusic: function getMusic() {
-        var retVal = interpreter.call('instead.get_music()');
-        if (retVal[0] !== null) {
-            var musicPath = retVal[0];
+        var musicPath = interpreter.call('instead.get_music()');
+        if (musicPath !== null) {
             if (musicPath.indexOf(Game.path) === -1) {
                 musicPath = Game.path + musicPath;
             }
@@ -158,12 +152,12 @@ var Instead = {
 
     ifaceCmd: function ifaceCmd(command) {
         var cmd = 'iface.cmd(iface, "' + command + '")';
-        var retVal = interpreter.call(cmd);
+        var text = interpreter.call(cmd);
         if (command !== 'user_timer') {
             Logger.log('> ' + command);
         }
-        if (retVal && retVal[0] !== null && command.indexOf('save') !== 0) {
-            UI.setText(retVal[0]);
+        if (text !== null && command.indexOf('save') !== 0) {
+            UI.setText(text);
         }
     },
 
@@ -175,6 +169,12 @@ var Instead = {
     autoSave: function autoSave(force) {
         if (Game.autosave_on_click || force) {
             this.saveGame(Game.autosaveID); // autosave
+        }
+    },
+
+    clickSound: function clickSound(isCache) {
+        if (Game.clickSound) {
+            HTMLAudio.playSound(Game.clickSound, null, isCache);
         }
     }
 };

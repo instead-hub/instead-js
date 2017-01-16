@@ -13,13 +13,10 @@ var Game = {
     ways_mode: 'top',
     path: './game/',
     themePath: './themes/',
+    clickSound: null,
     getSaveName: function getSaveName(i) {
         var id = i ? i : 0;
         return this.id + '-save-' + id;
-    },
-    getPrefsName: function getPrefsName(i) {
-        var id = i ? i : 0;
-        return this.id + '-prefs-' + id;
     },
     saveExists: function saveExists(id) {
         return Storage.exists(this.getSaveName(id));

@@ -81,7 +81,6 @@ var UI = {
 
         this.element.$stead.on('click', 'a', function handler(e) {
             var obj = $(this);
-            Theme.click(); // play click sound, if defined
             self.clickHandlerLink(steadHandler.click, e, obj);
         });
         this.element.$stead.on('click', function handler(e) {
@@ -151,15 +150,13 @@ var UI = {
             return;
         }
         Logger.log(':picture: ' + content);
-        if (content) {
-            if (Sprite.is(content)) {
-                this.element.$picture.html('');
-                Sprite.initCanvas(this.element.$picture, content);
-            } else {
-                this.element.$picture.html(parseImg(null, content));
-            }
-        } else {
+        if (content === null) {
             this.element.$picture.html('');
+        } else if (Sprite.is(content)) {
+            this.element.$picture.html('');
+            Sprite.initCanvas(this.element.$picture, content);
+        } else {
+            this.element.$picture.html(parseImg(null, content));
         }
     },
     refresh: function refresh() {
