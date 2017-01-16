@@ -68,6 +68,16 @@ var Instead = {
     click: function click(uiref, field, onStead) {
         var ref = uiref;
         this.clickSound(); // play click sound
+
+        if (typeof ref === 'object') {
+            var text = interpreter.call('instead_click(' + ref.x + ', ' + ref.y + ')');
+            if (text !== null) {
+                UI.setText(text);
+                this.refreshInterface();
+            }
+            return;
+        }
+
         if (!onStead && (UI.isAct || field === 'Inv')) {
             ref = ref.substr(1);
             if (ref.substr(0, 3) === 'act') {
