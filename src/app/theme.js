@@ -8,26 +8,33 @@ var Theme = {
     theme: {},
     themeUrl: {},
     load: function load(elements, themePath) {
+        var defaultTheme = null;
+        var customTheme = null;
+        var includedThemeName = null;
+        var includedTheme = null;
+
         this.elements = elements;
         // reset styles
         themeCSS.resetStyles();
 
         // load default theme
-        var defaultTheme = ajaxGetSync(themePath + 'default/' + this.themeFile);
+        defaultTheme = ajaxGetSync(themePath + 'default/' + this.themeFile);
         this.parseTheme(defaultTheme, themePath + 'default/');
 
-        // try to load custom theme
-        var customTheme = ajaxGetSync(Game.path + this.themeFile);
-        if (customTheme) {
-            interpreter.call('js_instead_theme_name(".")');
-            var include = this.parseTheme(customTheme, Game.path);
-        }
+        if (Game.ownTheme) {
+            // try to load custom theme
+            customTheme = ajaxGetSync(Game.path + this.themeFile);
+            if (customTheme) {
+                interpreter.call('js_instead_theme_name(".")');
+                includedThemeName = this.parseTheme(customTheme, Game.path);
+            }
 
-        // load included theme
-        if (include) {
-            var includedTheme = ajaxGetSync(themePath + include + '/' + this.themeFile);
-            this.parseTheme(includedTheme, themePath + include + '/');
-            this.parseTheme(customTheme, Game.path);
+            // load included theme
+            if (includedThemeName) {
+                includedTheme = ajaxGetSync(themePath + includedThemeName + '/' + this.themeFile);
+                this.parseTheme(includedTheme, themePath + includedThemeName + '/');
+                this.parseTheme(customTheme, Game.path);
+            }
         }
         // apply theme
         themeCSS.immediate(false); // disable auto-updating stylesheet while theme rules are generated
