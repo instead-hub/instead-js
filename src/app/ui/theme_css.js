@@ -23,24 +23,21 @@ function setFontCSS(selector, fontName, v, p) {
     var fntCSS = '';
 
     function setFont(name, file, type) {
-        var fnt = '';
+        var fnt = '@font-face{font-family:"' + name + '";src:url("' + file + '") format("truetype");';
         switch (type) {
         case 'b':
-            fnt = '@font-face{font-family:"' + name + '";src:url("' + file +
-                  '") format("truetype");font-weight:bold;}';
+            fnt += 'font-weight:bold;';
             break;
         case 'i':
-            fnt = '@font-face{font-family:"' + name + '";src:url("' + file +
-                  '") format("truetype");font-style:italic;}';
+            fnt += 'font-style:italic;';
             break;
         case 'bi':
-            fnt = '@font-face{font-family:"' + name + '";src:url("' + file +
-                  '") format("truetype");font-weight:bold;font-style:italic;}';
+            fnt += 'font-weight:bold;font-style:italic;';
             break;
         default:
-            fnt = '@font-face{font-family:"' + name + '";src:url("' + file +
-                  '") format("truetype");}';
+            // unknown style/weight, do nothing
         }
+        fnt += '}';
         return fnt;
     }
 

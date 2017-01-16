@@ -11,7 +11,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'build'),
         publicPath: './',
-        filename: 'app.js'
+        filename: 'instead.js'
     },
     module: {
         loaders: [
