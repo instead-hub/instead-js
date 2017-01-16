@@ -83,9 +83,12 @@ var UI = {
             var obj = $(this);
             self.clickHandlerLink(steadHandler.click, e, obj);
         });
-        this.element.$stead.on('click', function handler(e) {
+        this.element.$picture.on('click', function handler(e) {
             var obj = $(this);
             self.clickHandler(steadHandler.click, e, obj);
+        });
+        this.element.$stead.on('click', function handler(e) {
+            self.clickHandler(steadHandler.click, e);
         });
 
         this.element.$win.perfectScrollbar({wheelSpeed: 1});
@@ -180,11 +183,14 @@ var UI = {
         clickCallback(ref, type);
     },
 
-    clickHandler: function clickHandler(clickCallback, e) {
+    clickHandler: function clickHandler(clickCallback, e, obj) {
         e.preventDefault();
         if (this.isAct) {
             Logger.log('[click] reset onAct');
             clickCallback('', 0, true);
+        }
+        if (obj) {
+            clickCallback({x: e.offsetX, y: e.offsetY}); // clicked on picture
         }
     }
 };
