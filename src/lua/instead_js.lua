@@ -253,3 +253,11 @@ function instead_define_keyboard_hooks()
         end
     end
 end
+
+-- click
+instead_click = function(x,y)
+    local cmd = instead.input('mouse', true, 1, x, y, x, y)
+    if (cmd) then
+       return iface.cmd(iface, cmd)
+    end
+end

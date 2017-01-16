@@ -1,10 +1,7 @@
 var Game = require('./game');
 var themeCSS = require('./ui/theme_css');
-
 var ajaxGetSync = require('../ajax');
 var interpreter = require('../lua/interpreter');
-var HTMLAudio = require('./audio');
-
 
 var Theme = {
     themeFile: 'theme.ini',
@@ -39,7 +36,6 @@ var Theme = {
         themeCSS.update();
 
         this.setCursor();
-        this.click(true); // preload click sound
     },
     parseTheme: function parseTheme(data, url) {
         var self = this;
@@ -86,6 +82,9 @@ var Theme = {
         Object.keys(theme).forEach(function parseParam(key) {
             themeCSS.applyParamStyle(key, elements, theme[key], themeUrl[key]);
         });
+        if ('snd.click' in theme && theme['snd.click']) {
+            Game.clickSound = themeUrl['snd.click'] + theme['snd.click'];
+        }
     },
     setCursor: function setCursor(isAct) {
         var cursor = this.themeUrl['scr.gfx.cursor.normal'] + this.theme['scr.gfx.cursor.normal'];
@@ -96,11 +95,6 @@ var Theme = {
     },
     setStyle: function setStyle(name, value) {
         themeCSS.applyParamStyle(name, this.elements, value, Game.path);
-    },
-    click: function click(isCache) {
-        if ('snd.click' in this.theme && this.theme['snd.click']) {
-            HTMLAudio.playSound(this.themeUrl['snd.click'] + this.theme['snd.click'], null, isCache);
-        }
     }
 };
 
