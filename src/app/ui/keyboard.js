@@ -84,6 +84,7 @@ var keycodes = {
     144: 'numlock',
     145: 'scroll lock',
     173: '-',
+    186: ';',
     187: '=',
     188: ',',
     189: '-',
@@ -96,19 +97,8 @@ var keycodes = {
     222: "'"
 };
 
-var keys = {};
-
 var Keyboard = {
-    hookKey: function unhookKey(k) {
-        keys[k] = true;
-    },
-    unhookKey: function unhookKey(k) {
-        delete keys[k];
-    },
     handler: function keyboardHandler(e) {
-        if (!keys.hasOwnProperty(keycodes[e.keyCode])) {
-            return null;
-        }
         e.preventDefault();
         return {
             key: keycodes[e.keyCode],
@@ -116,7 +106,5 @@ var Keyboard = {
         };
     }
 };
-
-window.Keyboard = Keyboard;
 
 module.exports = Keyboard;

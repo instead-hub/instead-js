@@ -40,7 +40,6 @@ var Instead = {
 
     initGame: function initGame() {
         interpreter.load(Game.path + 'main.lua');
-        interpreter.call('instead_define_keyboard_hooks()');
         interpreter.call('stead.game_ini(game)');
     },
 
@@ -114,8 +113,10 @@ var Instead = {
 
     kbd: function keyboardHandler(ev) {
         if (ev) {
-            interpreter.call('instead.input("kbd", ' + ev.down +  ', "' + ev.key + '")');
-            this.ifaceCmd('user_kbd');
+            var kbdHandler = interpreter.call('instead.input("kbd", ' + ev.down +  ', "' + ev.key + '")');
+            if (kbdHandler && kbdHandler !== 'nil') {
+                this.ifaceCmd(kbdHandler);
+            }
         }
     },
 
