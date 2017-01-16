@@ -1,11 +1,12 @@
 var $ = require('jquery');
+var Game = require('../game');
 
 var Preloader = {
     progress: 0,
     load: function load(imgArray, callbackProgress, callbackFinished) {
         var self = this;
         imgArray.forEach(function preloadImg(image) {
-            $('<img>').attr('src', image).on('load', function complete() {
+            $('<img>').attr('src', Game.path + image).on('load', function complete() {
                 self.progress = self.progress + 1;
             });
         });

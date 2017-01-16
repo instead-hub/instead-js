@@ -13,6 +13,7 @@ var Game = {
     ways_mode: 'top',
     path: './game/',
     themePath: './themes/',
+    ownTheme: false,
     clickSound: null,
     getSaveName: function getSaveName(i) {
         var id = i ? i : 0;
