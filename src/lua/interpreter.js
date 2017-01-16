@@ -10,7 +10,10 @@ var Interpreter = {
     },
     call: function interpreterCall(command) {
         var result = Lua.eval(command);
-        return result[0];
+        if (result) {
+            return result[0];
+        }
+        return null;
     },
     load: function interpreterLoad(path) {
         Glue.runLuaFromPath(path);
