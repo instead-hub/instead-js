@@ -223,37 +223,6 @@ instead_loadfile = function(file, content)
     end
 end
 
--- keyboard
-function instead_define_keyboard_hooks()
-    hook_keys = function(...)
-        stead.hook_keys(...)
-        local i
-        local s
-        local a = {...}
-        for i = 1, stead.table.maxn(a) do
-            s = tostring(a[i])
-            if (s == '\\') then
-                s = '\\\\'
-            end
-            js.run('Keyboard.hookKey("' .. s .. '")')
-        end
-    end
-
-    unhook_keys = function(...)
-        stead.unhook_keys(...)
-        local i
-        local s
-        local a = {...}
-        for i = 1, stead.table.maxn(a) do
-            s = tostring(a[i])
-            if (s == '\\') then
-                s = '\\\\'
-            end
-            js.run('Keyboard.unhookKey("' .. s .. '")')
-        end
-    end
-end
-
 -- click
 instead_click = function(x,y)
     local cmd = instead.input('mouse', true, 1, x, y, x, y)
