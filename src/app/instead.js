@@ -30,17 +30,16 @@ var Instead = {
 
         UI.loadTheme();
         this.clickSound(true); // preload click sound
-        this.initGame();
+        // init game
+        interpreter.load(Game.path + 'main.lua');
+        interpreter.call('stead.game_ini(game)');
+        // load game, if required
         if (savedGameID) {
             this.ifaceCmd('load ' + Game.getSaveName(savedGameID));
         }
+        // start game
         this.ifaceCmd('look');
         this.refreshInterface();
-    },
-
-    initGame: function initGame() {
-        interpreter.load(Game.path + 'main.lua');
-        interpreter.call('stead.game_ini(game)');
     },
 
     resetGame: function resetGame() {
@@ -122,44 +121,33 @@ var Instead = {
     },
 
     refreshInterface: function refreshInterface() {
-        this.getTitle();
-        this.getWays();
-        this.getInv();
-        this.getPicture();
-        this.getMusic();
-        UI.refresh();
-    },
-
-    getTitle: function getTitle() {
+        var inventory;
+        var horizontalInventory;
+        var musicPath;
+        // title
         UI.setTitle(interpreter.call('instead.get_title()'));
-    },
-
-    getWays: function getWays()    {
+        // ways
         UI.setWays(interpreter.call('instead.get_ways()'));
-    },
-
-    getInv: function getInv() {
-        var horizontalInventory = (Game.inventory_mode === 'horizontal');
-        var inventory = interpreter.call('instead.get_inv(' + horizontalInventory + ')');
+        // inventory
+        horizontalInventory = (Game.inventory_mode === 'horizontal');
+        inventory = interpreter.call('instead.get_inv(' + horizontalInventory + ')');
         if (inventory === null) {
             UI.setInventory('');
         } else {
             UI.setInventory(inventory);
         }
-    },
-
-    getPicture: function getPicture() {
+        // picture
         UI.setPicture(interpreter.call('instead.get_picture()'));
-    },
-
-    getMusic: function getMusic() {
-        var musicPath = interpreter.call('instead.get_music()');
+        // music
+        musicPath = interpreter.call('instead.get_music()');
         if (musicPath !== null) {
             if (musicPath.indexOf(Game.path) === -1) {
                 musicPath = Game.path + musicPath;
             }
             HTMLAudio.playMusic(musicPath, 0);
         }
+        // refresh
+        UI.refresh();
     },
 
     ifaceCmd: function ifaceCmd(command) {

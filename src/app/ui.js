@@ -13,14 +13,19 @@ function normalizeContent(input, field) {
         // do not process empty outputs
         return '';
     }
-    var r = /<a(:)([^>]+)>(<i>|)((&#160;)+)/g;
-    output = output.replace(r, '$4<a href="" data-ref="#$2" data-type="' + field + '">$3');
-    r = /<a(:)([^>]+)/g;
-    output = output.replace(r, '<a href="" data-ref="#$2", data-type="' + field + '"');
-    r = /<w:([^>]+)>/g;
-    output = output.replace(r, '<span class="nowrap">$1</span>');
-    r = /<g:([^>]+)>/g;
-    output = output.replace(r, parseImg);
+    output = output.replace(
+        /<a(:)([^>]+)>(<i>|)((&#160;)+)/g,
+        '$4<a href="" data-ref="#$2" data-type="' + field + '">$3'
+    ).replace(
+        /<a(:)([^>]+)/g,
+        '<a href="" data-ref="#$2", data-type="' + field + '"'
+    ).replace(
+        /<w:([^>]+)>/g,
+        '<span class="nowrap">$1</span>'
+    ).replace(
+        /<g:([^>]+)>/g,
+        parseImg
+    );
     /* TODO: txttab support
     r = /<x:([^>,]+),?([^>]+)?>/g;
     output = output.replace(r, '[x : $1 : $2]');
