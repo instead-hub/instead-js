@@ -124,7 +124,7 @@ var UI = {
             return;
         }
         Logger.log(':title: ' + content);
-        var title = content === true ? '' : content;
+        var title = (!content || content === true) ? '' : content;
         setContent(
             this.element.$title,
             '<a href="" data-ref="#look" data-type="Title">' + title + '</a>',
