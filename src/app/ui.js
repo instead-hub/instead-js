@@ -5,7 +5,7 @@ var Theme = require('./theme');
 var Logger = require('./log');
 
 var parseImg = require('./ui/parse_image');
-var Sprite = require('./ui/sprite'); // eslint-disable-line no-unused-vars
+var Sprite = require('./ui/sprite');
 
 function normalizeContent(input, field) {
     var output = input;
@@ -99,26 +99,32 @@ var UI = {
         this.element.$win.perfectScrollbar({wheelSpeed: 1});
         this.element.$inventory.perfectScrollbar({wheelSpeed: 1});
     },
+
     show: function show() {
         this.element.$stead.show();
     },
+
     hide: function hide() {
         this.element.$stead.hide();
     },
+
     loadTheme: function loadTheme() {
         Theme.load(this.element, Game.themePath);
         if (Game.ways_mode === 'bottom') {
             this.element.$ways = $('#ways-bottom');
         }
     },
+
     setAct: function setAct(act, obj) {
         this.isAct = act;
         this.actObj = obj;
         this.updateUse();
     },
+
     updateUse: function updateUse() {
         Theme.setCursor(this.isAct);
     },
+
     setTitle: function setTitle(content) {
         if (isUnchangedUI('title', content)) {
             return;
@@ -131,6 +137,7 @@ var UI = {
             'Title'
         );
     },
+
     setWays: function setWays(content) {
         if (isUnchangedUI('ways', content)) {
             return;
@@ -138,6 +145,7 @@ var UI = {
         Logger.log(':ways: ' + content);
         setContent(this.element.$ways, content, 'Ways');
     },
+
     setText: function setText(content) {
         if (isUnchangedUI('text', content)) {
             return;
@@ -145,6 +153,7 @@ var UI = {
         Logger.log(':text: ' + content);
         setContent(this.element.$text, content, 'Text');
     },
+
     setInventory: function setInventory(content) {
         if (isUnchangedUI('inventory', content)) {
             return;
@@ -153,6 +162,7 @@ var UI = {
         setContent(this.element.$inventory, content, 'Inv');
         this.element.$inventory.perfectScrollbar('update');
     },
+
     setPicture: function setPicture(content) {
         if (isUnchangedUI('picture', content)) {
             return;
@@ -167,6 +177,7 @@ var UI = {
             this.element.$picture.html(parseImg(null, content));
         }
     },
+
     refresh: function refresh() {
         if (isUnchangedWin()) {
             return;
