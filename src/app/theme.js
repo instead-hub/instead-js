@@ -46,12 +46,11 @@ var Theme = {
     },
     parseTheme: function parseTheme(data, url) {
         var self = this;
-        var pair;
-        var name;
-        var value;
         var isInclude;
         data.split('\n').forEach(function parse(line) {
-            pair = line.split('=');
+            var name;
+            var value;
+            var pair = line.split('=');
             if (pair.length === 2) {
                 name = pair[0].trim();
                 value = (pair[1].split(';'))[0].trim();
