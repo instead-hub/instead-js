@@ -30,17 +30,15 @@ var Instead = {
 
         UI.loadTheme();
         this.clickSound(true); // preload click sound
-        this.initGame();
+        // init game
+        interpreter.load(Game.path + 'main.lua');
+        interpreter.call('stead.game_ini(game)');
+        // load game, if required
         if (savedGameID) {
             this.ifaceCmd('load ' + Game.getSaveName(savedGameID));
         }
-        this.ifaceCmd('look');
-        this.refreshInterface();
-    },
-
-    initGame: function initGame() {
-        interpreter.load(Game.path + 'main.lua');
-        interpreter.call('stead.game_ini(game)');
+        // start game
+        this.ifaceCmd('look', true);
     },
 
     resetGame: function resetGame() {
@@ -81,8 +79,7 @@ var Instead = {
             ref = ref.substr(1);
             if (ref.substr(0, 3) === 'act') {
                 ref = 'use ' + ref.substr(4);
-                this.ifaceCmd(ref);
-                this.refreshInterface();
+                this.ifaceCmd(ref, true);
                 this.autoSave();
                 return;
             }
@@ -90,12 +87,11 @@ var Instead = {
             if (UI.isAct) {
                 if (field !== 'Ways' && field !== 'Title') {
                     if (ref === UI.actObj) {
-                        this.ifaceCmd('use ' + ref);
+                        this.ifaceCmd('use ' + ref, true);
                     } else {
-                        this.ifaceCmd('use ' + UI.actObj + ',' + ref);
+                        this.ifaceCmd('use ' + UI.actObj + ',' + ref, true);
                     }
                     UI.setAct(false, '');
-                    this.refreshInterface();
                     this.autoSave();
                 }
             } else {
@@ -105,8 +101,7 @@ var Instead = {
             if (UI.isAct) {
                 UI.setAct(false, '');
             }
-            this.ifaceCmd(ref);
-            this.refreshInterface();
+            this.ifaceCmd(ref, true);
             this.autoSave();
         }
     },
@@ -115,53 +110,42 @@ var Instead = {
         if (ev) {
             var kbdHandler = interpreter.call('instead.input("kbd", ' + ev.down +  ', "' + ev.key + '")');
             if (kbdHandler && kbdHandler !== 'nil') {
-                this.ifaceCmd(kbdHandler);
+                this.ifaceCmd(kbdHandler, true);
             }
         }
     },
 
     refreshInterface: function refreshInterface() {
-        this.getTitle();
-        this.getWays();
-        this.getInv();
-        this.getPicture();
-        this.getMusic();
-        UI.refresh();
-    },
-
-    getTitle: function getTitle() {
+        var inventory;
+        var horizontalInventory;
+        var musicPath;
+        // title
         UI.setTitle(interpreter.call('instead.get_title()'));
-    },
-
-    getWays: function getWays()    {
+        // ways
         UI.setWays(interpreter.call('instead.get_ways()'));
-    },
-
-    getInv: function getInv() {
-        var horizontalInventory = (Game.inventory_mode === 'horizontal');
-        var inventory = interpreter.call('instead.get_inv(' + horizontalInventory + ')');
+        // inventory
+        horizontalInventory = (Game.inventory_mode === 'horizontal');
+        inventory = interpreter.call('instead.get_inv(' + horizontalInventory + ')');
         if (inventory === null) {
             UI.setInventory('');
         } else {
             UI.setInventory(inventory);
         }
-    },
-
-    getPicture: function getPicture() {
+        // picture
         UI.setPicture(interpreter.call('instead.get_picture()'));
-    },
-
-    getMusic: function getMusic() {
-        var musicPath = interpreter.call('instead.get_music()');
+        // music
+        musicPath = interpreter.call('instead.get_music()');
         if (musicPath !== null) {
             if (musicPath.indexOf(Game.path) === -1) {
                 musicPath = Game.path + musicPath;
             }
             HTMLAudio.playMusic(musicPath, 0);
         }
+        // refresh
+        UI.refresh();
     },
 
-    ifaceCmd: function ifaceCmd(command) {
+    ifaceCmd: function ifaceCmd(command, refreshUI) {
         var cmd = 'iface.cmd(iface, "' + command + '")';
         var text = interpreter.call(cmd);
         if (command !== 'user_timer') {
@@ -169,6 +153,9 @@ var Instead = {
         }
         if (text !== null && command.indexOf('save') !== 0) {
             UI.setText(text);
+        }
+        if (refreshUI) {
+            this.refreshInterface();
         }
     },
 
@@ -204,9 +191,10 @@ function setTimer(t) {
     } else {
         LuaTimer = window.setInterval(
             function LuaTimeout() {
-                Instead.ifaceCmd('user_timer');
-                Instead.refreshInterface();
-            }, time);
+                Instead.ifaceCmd('user_timer', true);
+            },
+            time
+        );
     }
 }
 

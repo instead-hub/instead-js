@@ -103,32 +103,32 @@ var Menu = {
             });
             var i;
             if (action === 'save') {
-                html = html + '<h3>Save game</h3>';
+                html += '<h3>Save game</h3>';
                 for (i = 1; i <= Game.saveSlots; i++) {
-                    html = html + '<a href="" data-action="save" data-id="' + i + '" class="slot-selector">';
+                    html += '<a href="" data-action="save" data-id="' + i + '" class="slot-selector">';
                     if (slots[i]) {
-                        html = html + i + ' - ' + slots[i];
+                        html += i + ' - ' + slots[i];
                     } else {
-                        html = html + i + ' - empty';
+                        html += i + ' - empty';
                     }
-                    html = html + '</a>';
+                    html += '</a>';
                 }
             } else {
-                html = html + '<h3>Load game</h3>';
-                html = html + '<a href="" data-action="load" data-id="' + Game.autosaveID +
-                              '" class="slot-selector">0 - Autosave</a>';
+                html += '<h3>Load game</h3>';
+                html += '<a href="" data-action="load" data-id="' + Game.autosaveID +
+                        '" class="slot-selector">0 - Autosave</a>';
                 for (i = 1; i <= Game.saveSlots; i++) {
                     if (slots[i]) {
-                        html = html + '<a href="" data-action="load" data-id="' + i + '" class="slot-selector">';
-                        html = html + i + ' - ' + slots[i];
-                        html = html + '</a>';
+                        html += '<a href="" data-action="load" data-id="' + i + '" class="slot-selector">';
+                        html += i + ' - ' + slots[i];
+                        html += '</a>';
                     } else {
-                        html = html + '<div class="slot-selector">' + i + ' - empty</div>';
+                        html += '<div class="slot-selector">' + i + ' - empty</div>';
                     }
                 }
             }
 
-            html = html + '<a href="" data-action="cancel">Cancel</a>';
+            html += '<a href="" data-action="cancel">Cancel</a>';
             $('#menu-saveload').html(html);
             $('#menu-saveload').show();
         } else {

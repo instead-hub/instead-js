@@ -10,9 +10,9 @@ var Logger = {
         if (message.indexOf('[') === 0) {
             style = 'class="event"';
         }
-        message = message.replace(/</g, '&lt;');
-        message = message.replace(/>/g, '&gt;');
-        message = message.replace(/:(title|ways|text|inv|picture):/g, '<span class="block">$1</span>');
+        message = message.replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/:(title|ways|text|inv|picture):/g, '<span class="block">$1</span>');
         var el = $('#log');
         el.append('<span ' + style + '>' + message + '<br/></span>');
         el.scrollTop(function h() { return this.scrollHeight; });
