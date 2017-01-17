@@ -1,21 +1,6 @@
 var Game = require('../game');
 var Sprite = require('./sprite');
 
-function parseEmptyImage(fullString, box, params) {
-    var d = params.split(',');
-    var imgSize = d[0].match(/(\d+)x(\d+)/);
-    var style = 'width:' + imgSize[1] + 'px;' +
-            'height:' + imgSize[2] + 'px;';
-    if (d[1]) {
-        style = style + 'background-color:' + d[1] + ';';
-    }
-    if (d[2]) {
-        style = style + 'opacity:' + (d[2] / 256) + ';';
-    }
-    style = style + 'display:inline-block;';
-    return '<div style="' + style + '"></div>';
-}
-
 function parseCompositeImage(image) {
     var parsedImg = image.split(';');
     var images = '<img src="' + Game.path + parsedImg[0] + '">';
@@ -47,6 +32,22 @@ function parseImg(fullString, img) {
     var image = img;
     var style = 'max-width: 100%;';
     var parsedImg = '';
+
+    function parseEmptyImage(fullReplaceString, box, params) {
+        var d = params.split(',');
+        var imgSize = d[0].match(/(\d+)x(\d+)/);
+        var eStyle = style + 'width:' + imgSize[1] + 'px;' +
+                'height:' + imgSize[2] + 'px;';
+        if (d[1]) {
+            eStyle = eStyle + 'background-color:' + d[1] + ';';
+        }
+        if (d[2]) {
+            eStyle = eStyle + 'opacity:' + (d[2] / 256) + ';';
+        }
+        eStyle = eStyle + 'display:inline-block;';
+        return '<div style="' + eStyle + '"></div>';
+    }
+
     if (Sprite.is(img)) {
         return Sprite.asImage(img);
     }
@@ -56,9 +57,12 @@ function parseImg(fullString, img) {
     }
     // parse padded images
     if (image.indexOf('pad') === 0) {
-        parsedImg = image.match(/pad:(.+),(.+)/);
+        parsedImg = image.match(/pad:(.+?),(.+)/);
         style = style + 'margin:' + parsedImg[1].replace(/(\d+)/g, '$1px') + ';';
         image = parsedImg[2];
+        if (image.indexOf('box') === 0 || image.indexOf('blank') === 0) {
+            return image.replace(/(box|blank):(.+)/, parseEmptyImage);
+        }
     }
     // parse aligned images
     if (image.indexOf('\|') !== -1) {
