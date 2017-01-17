@@ -116,6 +116,7 @@ var Instead = {
             var kbdHandler = interpreter.call('instead.input("kbd", ' + ev.down +  ', "' + ev.key + '")');
             if (kbdHandler && kbdHandler !== 'nil') {
                 this.ifaceCmd(kbdHandler);
+                this.refreshInterface();
             }
         }
     },
