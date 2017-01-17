@@ -23,24 +23,21 @@ function setFontCSS(selector, fontName, v, p) {
     var fntCSS = '';
 
     function setFont(name, file, type) {
-        var fnt = '';
+        var fnt = '@font-face{font-family:"' + name + '";src:url("' + file + '") format("truetype");';
         switch (type) {
         case 'b':
-            fnt = '@font-face{font-family:"' + name + '";src:url("' + file +
-                  '") format("truetype");font-weight:bold;}';
+            fnt += 'font-weight:bold;';
             break;
         case 'i':
-            fnt = '@font-face{font-family:"' + name + '";src:url("' + file +
-                  '") format("truetype");font-style:italic;}';
+            fnt += 'font-style:italic;';
             break;
         case 'bi':
-            fnt = '@font-face{font-family:"' + name + '";src:url("' + file +
-                  '") format("truetype");font-weight:bold;font-style:italic;}';
+            fnt += 'font-weight:bold;font-style:italic;';
             break;
         default:
-            fnt = '@font-face{font-family:"' + name + '";src:url("' + file +
-                  '") format("truetype");}';
+            // unknown style/weight, do nothing
         }
+        fnt += '}';
         return fnt;
     }
 
@@ -97,7 +94,7 @@ var applyStyle = {
     'scr.gfx.x': function s(e, v) { e.$picture.css('left', v + 'px'); },
     'scr.gfx.y': function s(e, v) { e.$picture.css('top', v + 'px'); },
     'scr.gfx.mode': function s(e, v) {
-        if (v === 'float') {
+        if (v.search('float') !== -1) {
             e.$picture.appendTo('#stead').css('position', 'absolute');
         }
     },

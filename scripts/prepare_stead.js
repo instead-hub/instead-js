@@ -4,8 +4,12 @@ var dirname = './instead/git/instead/stead/';
 var output = {};
 
 function loadFile(dir, filename) {
+    var fc;
     if (filename.indexOf('\.lua') !== -1) {
-        output[filename] = fs.readFileSync(dir + filename, 'utf-8');
+        fc = fs.readFileSync(dir + filename, 'utf-8');
+        fc = fc.replace(/(\t+)/g, '');
+        fc = fc.replace(/(\n+)/g, '\n');
+        output[filename] = fc;
     }
 }
 

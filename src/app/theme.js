@@ -1,36 +1,40 @@
 var Game = require('./game');
 var themeCSS = require('./ui/theme_css');
-
 var ajaxGetSync = require('../ajax');
 var interpreter = require('../lua/interpreter');
-var HTMLAudio = require('./audio');
-
 
 var Theme = {
     themeFile: 'theme.ini',
     theme: {},
     themeUrl: {},
     load: function load(elements, themePath) {
+        var defaultTheme = null;
+        var customTheme = null;
+        var includedThemeName = null;
+        var includedTheme = null;
+
         this.elements = elements;
         // reset styles
         themeCSS.resetStyles();
 
         // load default theme
-        var defaultTheme = ajaxGetSync(themePath + 'default/' + this.themeFile);
+        defaultTheme = ajaxGetSync(themePath + 'default/' + this.themeFile);
         this.parseTheme(defaultTheme, themePath + 'default/');
 
-        // try to load custom theme
-        var customTheme = ajaxGetSync(Game.path + this.themeFile);
-        if (customTheme) {
-            interpreter.call('js_instead_theme_name(".")');
-            var include = this.parseTheme(customTheme, Game.path);
-        }
+        if (Game.ownTheme) {
+            // try to load custom theme
+            customTheme = ajaxGetSync(Game.path + this.themeFile);
+            if (customTheme) {
+                interpreter.call('js_instead_theme_name(".")');
+                includedThemeName = this.parseTheme(customTheme, Game.path);
+            }
 
-        // load included theme
-        if (include) {
-            var includedTheme = ajaxGetSync(themePath + include + '/' + this.themeFile);
-            this.parseTheme(includedTheme, themePath + include + '/');
-            this.parseTheme(customTheme, Game.path);
+            // load included theme
+            if (includedThemeName) {
+                includedTheme = ajaxGetSync(themePath + includedThemeName + '/' + this.themeFile);
+                this.parseTheme(includedTheme, themePath + includedThemeName + '/');
+                this.parseTheme(customTheme, Game.path);
+            }
         }
         // apply theme
         themeCSS.immediate(false); // disable auto-updating stylesheet while theme rules are generated
@@ -39,7 +43,6 @@ var Theme = {
         themeCSS.update();
 
         this.setCursor();
-        this.click(true); // preload click sound
     },
     parseTheme: function parseTheme(data, url) {
         var self = this;
@@ -86,6 +89,9 @@ var Theme = {
         Object.keys(theme).forEach(function parseParam(key) {
             themeCSS.applyParamStyle(key, elements, theme[key], themeUrl[key]);
         });
+        if ('snd.click' in theme && theme['snd.click']) {
+            Game.clickSound = themeUrl['snd.click'] + theme['snd.click'];
+        }
     },
     setCursor: function setCursor(isAct) {
         var cursor = this.themeUrl['scr.gfx.cursor.normal'] + this.theme['scr.gfx.cursor.normal'];
@@ -96,11 +102,6 @@ var Theme = {
     },
     setStyle: function setStyle(name, value) {
         themeCSS.applyParamStyle(name, this.elements, value, Game.path);
-    },
-    click: function click(isCache) {
-        if ('snd.click' in this.theme && this.theme['snd.click']) {
-            HTMLAudio.playSound(this.themeUrl['snd.click'] + this.theme['snd.click'], null, isCache);
-        }
     }
 };
 

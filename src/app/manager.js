@@ -22,6 +22,7 @@ var Manager = {
             Game.path = gamepath + gameid + '/';
             Game.id = gameid;
             Game.name = allGames[gameid].name;
+            Game.ownTheme = allGames[gameid].theme;
             if (Game.preload) {
                 self.preload(gameid);
             }

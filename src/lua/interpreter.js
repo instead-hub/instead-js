@@ -9,7 +9,11 @@ var Interpreter = {
         Glue.init();
     },
     call: function interpreterCall(command) {
-        return Lua.eval(command);
+        var result = Lua.eval(command);
+        if (result) {
+            return result[0];
+        }
+        return null;
     },
     load: function interpreterLoad(path) {
         Glue.runLuaFromPath(path);
