@@ -44,27 +44,27 @@ function setFontCSS(selector, fontName, v, p) {
     var fonts = v.match(/(.*?){(.*?),(.*?),(.*?),(.*?)}(\.\w+)/);
     if (fonts) {
         if (fonts[2]) {
-            fntCSS = fntCSS + setFont(fontName, p + fonts[1] + fonts[2] + fonts[6]);
+            fntCSS += setFont(fontName, p + fonts[1] + fonts[2] + fonts[6]);
         }
         if (fonts[3]) {
-            fntCSS = fntCSS + setFont(fontName, p + fonts[1] + fonts[3] + fonts[6], 'b');
+            fntCSS += setFont(fontName, p + fonts[1] + fonts[3] + fonts[6], 'b');
         }
         if (fonts[4]) {
-            fntCSS = fntCSS + setFont(fontName, p + fonts[1] + fonts[4] + fonts[6], 'i');
+            fntCSS += setFont(fontName, p + fonts[1] + fonts[4] + fonts[6], 'i');
         }
         if (fonts[5]) {
-            fntCSS = fntCSS + setFont(fontName, p + fonts[1] + fonts[5] + fonts[6], 'bi');
+            fntCSS += setFont(fontName, p + fonts[1] + fonts[5] + fonts[6], 'bi');
         }
     }
     fonts = v.match(/(.*?){([\d\w]+)}(\.\w+)/);
     if (fntCSS === '' && fonts && fonts[2]) {
-        fntCSS = fntCSS + setFont(fontName, p + fonts[1] + fonts[2] + fonts[3]);
+        fntCSS += setFont(fontName, p + fonts[1] + fonts[2] + fonts[3]);
     }
     if (fntCSS === '' && v) {
-        fntCSS = setFont(fontName, p + v); // one font for all types
+        fntCSS += setFont(fontName, p + v); // one font for all types
     }
     if (selector) {
-        fntCSS = fntCSS + selector + ' * {font-family:' + fontName + ',Arial,Helvetica,sans-serif;}';
+        fntCSS += selector + ' * {font-family:' + fontName + ',Arial,Helvetica,sans-serif;}';
     }
     return fntCSS;
 }

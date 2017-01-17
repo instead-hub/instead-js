@@ -5,7 +5,7 @@ function parseCompositeImage(image) {
     var parsedImg = image.split(';');
     var images = '<img src="' + Game.path + parsedImg[0] + '">';
     for (var i = 1; i < parsedImg.length; i++) {
-        images = images + parseCompositePart(parsedImg[i]);
+        images += parseCompositePart(parsedImg[i]);
     }
     return '<div class="compositeImage">' + images + '</div>';
 }
@@ -39,12 +39,12 @@ function parseImg(fullString, img) {
         var eStyle = style + 'width:' + imgSize[1] + 'px;' +
                 'height:' + imgSize[2] + 'px;';
         if (d[1]) {
-            eStyle = eStyle + 'background-color:' + d[1] + ';';
+            eStyle += 'background-color:' + d[1] + ';';
         }
         if (d[2]) {
-            eStyle = eStyle + 'opacity:' + (d[2] / 256) + ';';
+            eStyle += 'opacity:' + (d[2] / 256) + ';';
         }
-        eStyle = eStyle + 'display:inline-block;';
+        eStyle += 'display:inline-block;';
         return '<div style="' + eStyle + '"></div>';
     }
 
@@ -58,7 +58,7 @@ function parseImg(fullString, img) {
     // parse padded images
     if (image.indexOf('pad') === 0) {
         parsedImg = image.match(/pad:(.+?),(.+)/);
-        style = style + 'margin:' + parsedImg[1].replace(/(\d+)/g, '$1px') + ';';
+        style += 'margin:' + parsedImg[1].replace(/(\d+)/g, '$1px') + ';';
         image = parsedImg[2];
         if (image.indexOf('box') === 0 || image.indexOf('blank') === 0) {
             return image.replace(/(box|blank):(.+)/, parseEmptyImage);
@@ -68,7 +68,7 @@ function parseImg(fullString, img) {
     if (image.indexOf('\|') !== -1) {
         parsedImg = image.match(/(.+)\\\|(.+)/);
         image = parsedImg[1];
-        style = style + 'float:' + parsedImg[2] + ';';
+        style += 'float:' + parsedImg[2] + ';';
     }
     // composite image
     if (image.indexOf(';') !== -1) {

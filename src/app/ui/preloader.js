@@ -7,7 +7,7 @@ var Preloader = {
         var self = this;
         imgArray.forEach(function preloadImg(image) {
             $('<img>').attr('src', Game.path + image).on('load', function complete() {
-                self.progress = self.progress + 1;
+                self.progress += 1;
             });
         });
         this.calcPercent = setInterval(function updatePercent() {
