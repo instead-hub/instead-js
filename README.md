@@ -4,6 +4,16 @@ The main application is written in C, the game engine and games themselves are w
 
 This is an attempt to recreate functionality of INSTEAD in the web application.
 
+## Ready to use version
+
+You can download latest stable version here: https://instead-hub.github.io/instead-js/instead-js.zip
+
+Add/remove games to 'games' folder, then run 
+
+    node list_games.js
+
+to update games list.
+
 ## Installation
 
 Prerequisites: nodejs 6.3+, npm 3.10+
