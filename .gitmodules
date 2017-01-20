@@ -3,4 +3,4 @@
 	url = https://github.com/instead-hub/instead.git
 [submodule "instead/git/weblua"]
 	path = instead/git/weblua
-	url = https://github.com/gl00my/weblua.git
+	url = https://github.com/technix/weblua.git

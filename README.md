@@ -8,7 +8,7 @@ This is an attempt to recreate functionality of INSTEAD in the web application.
 
 Prerequisites: nodejs 6.3+, npm 3.10+
 
-    git clone https://github.com/instead-hub/instead-js.git
+    git clone https://github.com/technix/instead-js.git
     cd instead-js
     git submodule init
     git submodule update
@@ -67,13 +67,10 @@ Congratulations, you did it! Now you can put contents of `build` folder to the w
     - [x] Separate save slots for different games
     - [x] Preload images before running game
 - [x] Keyboard input
-    - [ ] Bug: backspace breaks UTF-encoded symbols
-    - [ ] Bug: backslash does not work
 - [x] Timer
-- [ ] Mouse input
+- [x] Mouse input
 - [x] Metaparser
     - [x] Dictionary loading
-    - [ ] Bug: keyboard input does not work well
 - [ ] URQ module (?)
     - [x] Quest file loading
     - [ ] Bug: encoding issues
