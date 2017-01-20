@@ -14,28 +14,39 @@ var Manager = {
     init: function init() {
         this.el = $('#manager');
         this.el.perfectScrollbar({wheelSpeed: 1});
+        this.el.append('<a href="" id="loading">Loading...</a>');
 
         var self = this;
         this.el.on('click', 'a', function selectGame(e) {
             e.preventDefault();
             var gameid = $(this).attr('data-ref');
-            Game.path = gamepath + gameid + '/';
-            Game.id = gameid;
-            Game.name = allGames[gameid].name;
-            Game.ownTheme = allGames[gameid].theme;
-            if (Game.preload) {
-                self.preload(gameid);
-            }
-            self.hide();
-            Instead.startGame(Game.autosaveID);
+            self.startGame(gameid);
         });
 
         $.get(gameList, function listGames(data) {
             allGames = data;
-            Object.keys(data).forEach(function listGame(id) {
-                self.el.append('<a href="" data-ref="' + id + '">' + data[id].name + '</a>');
-            });
+            var gameIds = Object.keys(data);
+            if (gameIds.length === 1) {
+                // If there is only one game, start it immediately
+                self.startGame(gameIds[0]);
+            } else {
+                $('#loading').remove();
+                gameIds.forEach(function listGame(id) {
+                    self.el.append('<a href="" data-ref="' + id + '">' + data[id].name + '</a>');
+                });
+            }
         });
+    },
+    startGame: function startGame(gameid) {
+        Game.path = gamepath + gameid + '/';
+        Game.id = gameid;
+        Game.name = allGames[gameid].name;
+        Game.ownTheme = allGames[gameid].theme;
+        if (Game.preload) {
+            this.preload(gameid);
+        }
+        this.hide();
+        Instead.startGame(Game.autosaveID);
     },
     /* TODO: return to game selection menu
     show: function show() {

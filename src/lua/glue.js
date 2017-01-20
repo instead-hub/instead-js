@@ -6,24 +6,6 @@ var ajaxGetSync = require('../ajax');
 var Game = require('../app/game');
 var Storage = require('../app/storage');
 
-// convert non latin symbols
-function utf8encode(str) {
-    var string = str;
-    string = string.replace(/\r\n/g, '\n');
-    var utftext = '';
-    for (var n = 0; n < string.length; n++) {
-        var c = string.charCodeAt(n);
-        if (c < 128) {
-            utftext += String.fromCharCode(c);
-        } else if (c > 127) {
-            utftext += '&#';
-            utftext += c;
-            utftext += ';';
-        }
-    }
-    return utftext;
-}
-
 // synchronous ajax to get file, so code executed before function returns
 function runLuaFromPath(path) {
     try {
@@ -35,9 +17,8 @@ function runLuaFromPath(path) {
                          ' val=' + String(luacode));
         }
 
-        var code = utf8encode(luacode);
         Lua.cache.items = {}; // Clear cache;
-        return Lua.exec(code, path);
+        return Lua.exec(luacode, path);
     } catch (e) {
         console.error('Error: file ' + path + ' : ' + String(e) + ' :\n', e); // eslint-disable-line no-console
     }
@@ -88,7 +69,7 @@ function openFile(path) {
     if (filepath.indexOf(Game.path) === -1) {
         filepath = Game.path + path; // add game path if it's not present already
     }
-    var content = encodeURIComponent(utf8encode(ajaxGetSync(filepath)));
+    var content = encodeURIComponent(ajaxGetSync(filepath));
     return Lua.eval('instead_openfile("' + path + '","' + content + '")');
 }
 
