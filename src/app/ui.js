@@ -69,11 +69,9 @@ var UI = {
         $ways: $('#ways-top'),
         $text: $('#text'),
         $picture: $('#picture'),
-        $canvas: $('#canvas'),
         $win: $('#win'),
         $stead: $('#stead'),
         $inventory: $('#inventory'),
-        $use: $('#cog'),
         $menuButton: $('#menu_button'),
         $menuImage: $('#menu_image'),
         $menu: $('#menu')
