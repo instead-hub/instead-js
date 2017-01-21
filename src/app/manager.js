@@ -24,15 +24,15 @@ var Manager = {
         });
 
         $.get(gameList, function listGames(data) {
-            allGames = data;
-            var gameIds = Object.keys(data);
+            allGames = typeof data === 'object' ? data : JSON.parse(data);
+            var gameIds = Object.keys(allGames);
             if (gameIds.length === 1) {
                 // If there is only one game, start it immediately
                 self.startGame(gameIds[0]);
             } else {
                 $('#loading').remove();
                 gameIds.forEach(function listGame(id) {
-                    self.el.append('<a href="" data-ref="' + id + '">' + data[id].name + '</a>');
+                    self.el.append('<a href="" data-ref="' + id + '">' + allGames[id].name + '</a>');
                 });
             }
         });
