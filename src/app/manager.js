@@ -1,5 +1,4 @@
 var $ = require('jquery');
-require('perfect-scrollbar/jquery')($);
 
 var Game = require('./game');
 var Instead = require('./instead');
@@ -25,19 +24,31 @@ var Manager = {
 
         $.get(gameList, function listGames(data) {
             allGames = typeof data === 'object' ? data : JSON.parse(data);
+            var chosenGame = null;
             var gameIds = Object.keys(allGames);
             if (gameIds.length === 1) {
                 // If there is only one game, start it immediately
-                self.startGame(gameIds[0]);
+                chosenGame = gameIds[0];
+            } else {
+                var gameUrl = window.location.hash.replace('#/', '');
+                var gid = gameIds.indexOf(gameUrl);
+                if (gid !== -1) {
+                    chosenGame = gameIds[gid];
+                }
+            }
+
+            if (chosenGame) {
+                self.startGame(chosenGame);
             } else {
                 $('#loading').remove();
                 gameIds.forEach(function listGame(id) {
-                    self.el.append('<a href="" data-ref="' + id + '">' + allGames[id].name + '</a>');
+                    self.el.append('<a href="#/' + id + '" data-ref="' + id + '">' + allGames[id].name + '</a>');
                 });
             }
         });
     },
     startGame: function startGame(gameid) {
+        window.location.hash = '#/' + gameid;
         Game.path = gamepath + gameid + '/';
         Game.id = gameid;
         Game.name = allGames[gameid].name;
