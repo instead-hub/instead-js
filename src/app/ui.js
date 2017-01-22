@@ -74,7 +74,12 @@ var UI = {
         $inventory: $('#inventory'),
         $menuButton: $('#menu_button'),
         $menuImage: $('#menu_image'),
-        $menu: $('#menu')
+        $menu: $('#menu'),
+        $menu_saveload: $('#menu-saveload'),
+        $menu_content: $('#menu-content'),
+        $toolbar_mute: $('#toolbar-mute'),
+        $toolbar_log: $('#toolbar-log'),
+        $menu_mute: $('#menu-mute')
     },
     isAct: false,
     actObj: null,
