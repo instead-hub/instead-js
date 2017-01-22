@@ -71,6 +71,20 @@ var Menu = {
             e.preventDefault();
             toggleMute();
         });
+
+        function importLoad(e) {
+            var gameId = Game.getSaveName(Game.importID);
+            Storage.save(gameId, e.target.result);
+            self.toggleSaveload();
+            self.toggleMenu();
+            steadHandler.load(Game.importID);
+        }
+
+        ui.$menu.on('change', '#load-import',  function fileCtrl() {
+            var reader = new FileReader();
+            reader.onload = importLoad;
+            reader.readAsText(this.files[0]);
+        });
     },
     toggleMenu: function toggleMenu() {
         var ui = this.element;
@@ -128,6 +142,9 @@ var Menu = {
                         html += '<div class="slot-selector">' + i + ' - empty</div>';
                     }
                 }
+                html += '<h3>Import</h3>';
+                html += '<input type="file" id="load-import" style="font-size: 0.8em"/>';
+                html += '<br><br>';
             }
 
             html += '<a href="" data-action="cancel">Cancel</a>';
