@@ -163,6 +163,10 @@ pre {
 	display: block;
 }
 
+#menu h3 {
+    margin-top: 5px;
+}
+
 .slot-selector {
     height: 24px;
     text-align: left;

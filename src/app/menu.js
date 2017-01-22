@@ -42,6 +42,9 @@ var Menu = {
             case 'menu-load':
                 self.toggleSaveload('load');
                 break;
+            case 'menu-export':
+                self.toggleSaveload('export');
+                break;
             case 'save':
                 self.toggleSaveload();
                 self.toggleMenu();
@@ -51,6 +54,9 @@ var Menu = {
                 self.toggleSaveload();
                 self.toggleMenu();
                 steadHandler.load(id);
+                break;
+            case 'export':
+                self.exportSave(id);
                 break;
             case 'cancel':
                 self.toggleSaveload();
@@ -129,7 +135,7 @@ var Menu = {
                     }
                     html += '</a>';
                 }
-            } else {
+            } else if (action === 'load') {
                 html += '<h3>Load game</h3>';
                 html += '<a href="" data-action="load" data-id="' + Game.autosaveID +
                         '" class="slot-selector">0 - Autosave</a>';
@@ -145,6 +151,19 @@ var Menu = {
                 html += '<h3>Import</h3>';
                 html += '<input type="file" id="load-import" style="font-size: 0.8em"/>';
                 html += '<br><br>';
+            } else {
+                html += '<h3>Export saved game</h3>';
+                html += '<a href="" data-action="export" data-id="' + Game.autosaveID +
+                        '" class="slot-selector">0 - Autosave</a>';
+                for (i = 1; i <= Game.saveSlots; i++) {
+                    if (slots[i]) {
+                        html += '<a href="" data-action="export" data-id="' + i + '" class="slot-selector">';
+                        html += i + ' - ' + slots[i];
+                        html += '</a>';
+                    } else {
+                        html += '<div class="slot-selector">' + i + ' - empty</div>';
+                    }
+                }
             }
 
             html += '<a href="" data-action="cancel">Cancel</a>';
@@ -154,6 +173,20 @@ var Menu = {
             ui.$menu_saveload.hide();
             ui.$menu_content.show();
         }
+    },
+    exportSave: function exportSave(id) {
+        var savename = Game.getSaveName(id);
+        var content = Storage.load(savename);
+        var data = new Blob([content], {type: 'octet/stream'});
+        var dataUrl = window.URL.createObjectURL(data);
+        var ref = document.createElement('a');
+        document.body.appendChild(ref);
+        ref.style = 'display: none';
+        ref.href = dataUrl;
+        ref.download = savename + '.lua';
+        ref.click();
+        window.URL.revokeObjectURL(dataUrl);
+        ref.remove();
     }
 };
 
