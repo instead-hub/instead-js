@@ -9,25 +9,25 @@ var UTFsymbol = {
 
 var Menu = {
     element: {},
-    init: function init(elements, steadHandler) {
-        this.element = elements;
+    init: function init(ui, steadHandler) {
+        this.element = ui;
         var self = this;
 
         function toggleMute() {
             if (Game.mute) {
                 steadHandler.mute(false);
-                $('#menu-mute').text('Mute');
-                $('#toolbar-mute').html(UTFsymbol.sound);
+                ui.$menu_mute.text('Mute');
+                ui.$toolbar_mute.html(UTFsymbol.sound);
             } else {
                 steadHandler.mute(true);
-                $('#menu-mute').text('Unmute');
-                $('#toolbar-mute').html(UTFsymbol.mute);
+                ui.$menu_mute.text('Unmute');
+                ui.$toolbar_mute.html(UTFsymbol.mute);
             }
         }
         toggleMute();
 
-        this.element.$menuButton.on('click', this.toggleMenu.bind(this));
-        this.element.$menu.on('click', 'a', function handler(e) {
+        ui.$menuButton.on('click', this.toggleMenu.bind(this));
+        ui.$menu.on('click', 'a', function handler(e) {
             e.preventDefault();
             var action = $(this).attr('data-action');
             var id = $(this).attr('data-id');
@@ -42,6 +42,9 @@ var Menu = {
             case 'menu-load':
                 self.toggleSaveload('load');
                 break;
+            case 'menu-export':
+                self.toggleSaveload('export');
+                break;
             case 'save':
                 self.toggleSaveload();
                 self.toggleMenu();
@@ -51,6 +54,9 @@ var Menu = {
                 self.toggleSaveload();
                 self.toggleMenu();
                 steadHandler.load(id);
+                break;
+            case 'export':
+                self.exportSave(id);
                 break;
             case 'cancel':
                 self.toggleSaveload();
@@ -63,30 +69,46 @@ var Menu = {
             }
         });
 
-        $('#toolbar-log').on('click', function toggleLog(e) {
+        ui.$toolbar_log.on('click', function toggleLog(e) {
             e.preventDefault();
             $('#log').toggle().scrollTop(function sh() { return this.scrollHeight; });
         });
-        $('#toolbar-mute').on('click', function toggleLog(e) {
+        ui.$toolbar_mute.on('click', function toggleLog(e) {
             e.preventDefault();
             toggleMute();
         });
+
+        function importLoad(e) {
+            var gameId = Game.getSaveName(Game.importID);
+            Storage.save(gameId, e.target.result);
+            self.toggleSaveload();
+            self.toggleMenu();
+            steadHandler.load(Game.importID);
+        }
+
+        ui.$menu.on('change', '#load-import',  function fileCtrl() {
+            var reader = new FileReader();
+            reader.onload = importLoad;
+            reader.readAsText(this.files[0]);
+        });
     },
     toggleMenu: function toggleMenu() {
-        $('#menu-saveload').hide();
-        $('#menu-content').show();
-        this.element.$menu.toggle();
-        if (this.element.$menu.is(':visible')) {
-            this.element.$stead.css('opacity', 0.5);
+        var ui = this.element;
+        ui.$menu_saveload.hide();
+        ui.$menu_content.show();
+        ui.$menu.toggle();
+        if (ui.$menu.is(':visible')) {
+            ui.$stead.css('opacity', 0.5);
         } else {
-            this.element.$stead.css('opacity', 1);
+            ui.$stead.css('opacity', 1);
         }
     },
     toggleSaveload: function toggleSaveload(action) {
+        var ui = this.element;
         var html = '';
         var slots = [];
         if (action) {
-            $('#menu-content').hide();
+            ui.$menu_content.hide();
 
             Storage.get(Game.id).forEach(function f(item) {
                 var saveId = item.id.match(/save-(\d+)/);
@@ -113,7 +135,7 @@ var Menu = {
                     }
                     html += '</a>';
                 }
-            } else {
+            } else if (action === 'load') {
                 html += '<h3>Load game</h3>';
                 html += '<a href="" data-action="load" data-id="' + Game.autosaveID +
                         '" class="slot-selector">0 - Autosave</a>';
@@ -126,15 +148,45 @@ var Menu = {
                         html += '<div class="slot-selector">' + i + ' - empty</div>';
                     }
                 }
+                html += '<h3>Import</h3>';
+                html += '<input type="file" id="load-import" style="font-size: 0.8em"/>';
+                html += '<br><br>';
+            } else {
+                html += '<h3>Export saved game</h3>';
+                html += '<a href="" data-action="export" data-id="' + Game.autosaveID +
+                        '" class="slot-selector">0 - Autosave</a>';
+                for (i = 1; i <= Game.saveSlots; i++) {
+                    if (slots[i]) {
+                        html += '<a href="" data-action="export" data-id="' + i + '" class="slot-selector">';
+                        html += i + ' - ' + slots[i];
+                        html += '</a>';
+                    } else {
+                        html += '<div class="slot-selector">' + i + ' - empty</div>';
+                    }
+                }
             }
 
             html += '<a href="" data-action="cancel">Cancel</a>';
-            $('#menu-saveload').html(html);
-            $('#menu-saveload').show();
+            ui.$menu_saveload.html(html);
+            ui.$menu_saveload.show();
         } else {
-            $('#menu-saveload').hide();
-            $('#menu-content').show();
+            ui.$menu_saveload.hide();
+            ui.$menu_content.show();
         }
+    },
+    exportSave: function exportSave(id) {
+        var savename = Game.getSaveName(id);
+        var content = Storage.load(savename);
+        var data = new Blob([content], {type: 'octet/stream'});
+        var dataUrl = window.URL.createObjectURL(data);
+        var ref = document.createElement('a');
+        document.body.appendChild(ref);
+        ref.style = 'display: none';
+        ref.href = dataUrl;
+        ref.download = savename + '.lua';
+        ref.click();
+        window.URL.revokeObjectURL(dataUrl);
+        ref.remove();
     }
 };
 

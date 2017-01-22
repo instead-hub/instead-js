@@ -8,6 +8,13 @@ h1 {
 
 body {
     background-color: #111111;
+    /* disallow text selection */
+    -webkit-touch-callout: none;
+      -webkit-user-select: none;
+       -khtml-user-select: none;
+         -moz-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
 }
 
 .wordwrap {
@@ -154,6 +161,10 @@ pre {
 	width: 100%;
     padding: 1px;
 	display: block;
+}
+
+#menu h3 {
+    margin-top: 5px;
 }
 
 .slot-selector {

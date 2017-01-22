@@ -2,6 +2,9 @@
 require('perfect-scrollbar/dist/css/perfect-scrollbar.css');
 require('./style.css');
 
+var $ = require('jquery');
+require('perfect-scrollbar/jquery')($);
+
 var Manager = require('./app/manager');
 
 var Instead = require('./app/instead');

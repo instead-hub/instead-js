@@ -34,11 +34,12 @@ var Instead = {
         interpreter.load(Game.path + 'main.lua');
         interpreter.call('stead.game_ini(game)');
         // load game, if required
-        if (savedGameID) {
-            this.ifaceCmd('load ' + Game.getSaveName(savedGameID));
+        if (Game.saveExists(savedGameID)) {
+            this.ifaceCmd('load ' + Game.getSaveName(savedGameID), true);
+        } else {
+            // start game
+            this.ifaceCmd('look', true);
         }
-        // start game
-        this.ifaceCmd('look', true);
     },
 
     resetGame: function resetGame() {

@@ -48,12 +48,13 @@ function luaDofile(filepath) {
     return runLuaFromPath(Game.path + filepath);
 }
 
-function saveFile(path, data) {
+function saveFile(path) {
     var filepath = path;
     if (path.search(/prefs\.tmp/) !== -1) {
         filepath = 'PREFS';
     }
-    Storage.save(filepath, data);
+    var data = Lua.eval('instead_file_get_content("' + path + '")');
+    Storage.save(filepath, data[1]);
 }
 
 function loadFile(path) {
@@ -61,7 +62,7 @@ function loadFile(path) {
     if (path.search(/prefs/) !== -1) {
         filepath = 'PREFS';
     }
-    return Lua.eval('instead_loadfile("' + path + '","' + Storage.load(filepath) + '")');
+    return Storage.load(filepath);
 }
 
 function openFile(path) {
@@ -69,8 +70,7 @@ function openFile(path) {
     if (filepath.indexOf(Game.path) === -1) {
         filepath = Game.path + path; // add game path if it's not present already
     }
-    var content = encodeURIComponent(ajaxGetSync(filepath));
-    return Lua.eval('instead_openfile("' + path + '","' + content + '")');
+    return ajaxGetSync(filepath);
 }
 
 var Glue = {

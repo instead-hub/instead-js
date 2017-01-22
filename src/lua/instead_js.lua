@@ -142,23 +142,6 @@ require "gui"
 
 stead.init(stead)
 
--- save/load support
-function url_decode(str)
-  str = string.gsub (str, "+", " ")
-  str = string.gsub (str, "%%(%x%x)",
-      function(h) return string.char(tonumber(h,16)) end)
-  return str
-end
-
-function url_encode(str)
-  if (str) then
-    str = string.gsub (str, "([^%w %-%_%.%~])",
-        function (c) return string.format ("%%%02X", string.byte(c)) end)
-    str = string.gsub (str, " ", "+")
-  end
-  return str
-end
-
 -- io.open proxy
 mock_handle = {}
 
@@ -171,7 +154,7 @@ io.open = function (filename, mode)
 	return {
         name = filename,
         lines = function (_)
-            js.run('Lua.openFile("' .. tostring(_.name) .. '")')
+            instead_file_set_content(tostring(_.name), js.run_string('Lua.openFile("' .. tostring(_.name) .. '")'))
             local n = #mock_handle[_.name].lines
             return function ()
                i = i + 1
@@ -190,7 +173,7 @@ io.open = function (filename, mode)
         flush = INSTEAD_PLACEHOLDER,
         close = function(_)
             if (mock_handle[_.name].content ~= '') then
-                js.run('Lua.saveFile("' .. _.name .. '", "' .. url_encode( mock_handle[_.name].content) ..'")')
+                js.run('Lua.saveFile("' .. _.name .. '")')
             end
         end
 	}
@@ -199,27 +182,27 @@ end
 os.remove = INSTEAD_PLACEHOLDER
 os.rename = INSTEAD_PLACEHOLDER
 
--- loadfile proxy
-loadfile = function(file)
-    js.run('Lua.loadFile("' .. file .. '")')
-    if (mock_handle[file].content ~= '') then
-        return assert(loadstring(mock_handle[file].content))
-    end
+instead_file_get_content = function(file)
+    return mock_handle[file].content
 end
 
-instead_openfile = function(file, content)
-    local t = {}
-    local str = url_decode(content)
-    local function helper(line) table.insert(t, line) return "" end
-    helper((str:gsub("(.-)\r?\n", helper)))
-    mock_handle[file].lines = t
-end
-
-instead_loadfile = function(file, content)
+instead_file_set_content = function(file, content)
     mock_handle[file] = {}
     mock_handle[file].content = ''
     if (content ~= '') then
-        mock_handle[file].content = url_decode(content)
+        mock_handle[file].content = content
+    end
+    local t = {}
+    local function helper(line) table.insert(t, line) return "" end
+    helper((content:gsub("(.-)\r?\n", helper)))
+    mock_handle[file].lines = t
+end
+
+-- loadfile proxy
+loadfile = function(file)
+    local content = js.run_string('Lua.loadFile("' .. file .. '")')
+    if (content ~= '') then
+        return assert(loadstring(content))
     end
 end
 
