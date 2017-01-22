@@ -10,7 +10,8 @@
     "prebuild": "node ./scripts/build_stead.js",
     "build": "webpack -p --config webpack.config.js",
     "postbuild": "cd ./build && node list_games.js",
-    "lint": "./node_modules/.bin/eslint ./src/ --ext .js"
+    "lint": "./node_modules/.bin/eslint ./src/ --ext .js",
+    "dist": "bash ./scripts/make_dist.sh"
   },
   "author": "Serhii Mozhaiskyi (sergei.mozhaisky@gmail.com)",
   "license": "MIT",
