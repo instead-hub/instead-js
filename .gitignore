@@ -1,5 +1,6 @@
 /build/
 /node_modules/
+/dist/
 /instead/stead.js
 .eslintcache
 npm-debug.log
