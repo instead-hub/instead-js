@@ -117,7 +117,9 @@ var applyStyle = {
         if (+v === 3) {
             Game.scroll_mode = 'bottom';
         } else if (+v > 0) {
-            Game.scroll_mode = 'bottom'; // implement 'change' mode later
+            Game.scroll_mode = 'change';
+        } else {
+            Game.scroll_mode = 'top';
         }
     },
     'win.ways.mode': function s(e, v) {

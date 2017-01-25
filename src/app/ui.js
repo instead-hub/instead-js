@@ -43,10 +43,18 @@ var currentUI = {
     text: null,
     inventory: null,
     picture: null,
-    winContent: null
+    winContent: null,
+    updatedTextContent: true
 };
 
 function isUnchangedUI(type, content) {
+    if (type === 'text') {
+        if (content.indexOf(currentUI[type]) !== -1) {
+            currentUI.updatedTextContent = true;
+        } else {
+            currentUI.updatedTextContent = false;
+        }
+    }
     if (currentUI[type] === content) {
         return true;
     }
@@ -185,11 +193,14 @@ var UI = {
         if (isUnchangedWin()) {
             return;
         }
-        if (Game.scroll_mode === 'bottom') {
-            this.element.$win.scrollTop(function h() { return this.scrollHeight; });
-        } else {
-            this.element.$win.scrollTop(0);
+        var scrollTarget = 0;
+        if (Game.scroll_mode === 'bottom' ||
+           (Game.scroll_mode === 'change' && currentUI.updatedTextContent)
+           ) {
+            scrollTarget = function h() { return this.scrollHeight; };
         }
+
+        this.element.$win.scrollTop(scrollTarget);
         this.element.$win.perfectScrollbar('update');
     },
 
