@@ -1,0 +1,36 @@
+# INSTEAD-JS Features
+
+- [x] Images
+    - [x] Blank images
+    - [x] Composite image
+    - [x] Sprites
+    - [x] Sprites - fonts (partial support)
+    - [ ] Sprites - scale, rotate
+- [x] Themes
+    - [x] Standard and user-defined themes
+    - [x] Changing theme on-the-fly (module 'theme')
+    - [x] win.scroll.mode
+    - [x] Theme fonts and font sizes
+    - [ ] src.gfx.mode = 'float'
+- [x] Music and sounds
+    - [x] Play music and sound
+    - [x] Loop music
+    - [ ] Sounds on multiple channels
+- [x] Save/load game
+    - [x] use LocalStorage to save game
+    - [x] multiple save slots
+    - [x] autosave
+    - [x] import/export saves
+    - [ ] clean save slots
+- [x] Game manager
+    - [x] Choose game to load
+    - [x] Separate save slots for different games
+    - [x] Preload images before running game
+- [x] Keyboard input
+- [x] Timer
+- [x] Mouse input
+- [x] Metaparser
+- [ ] URQ module (?)
+    - [x] Quest file loading
+    - [ ] Bug: encoding issues - only UTF8 is supported
+    - [ ] Bug: command parsing issues
