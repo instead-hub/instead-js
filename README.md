@@ -6,7 +6,7 @@ This is an attempt to recreate functionality of INSTEAD in the web application.
 
 ## Ready to use version
 
-You can download latest stable version here: https://technix.github.io/instead-js/instead-js.zip
+You can download latest stable version here: https://instead-hub.github.io/instead-js/instead-js.zip
 
 Add/remove games to 'games' folder, then run 
 
