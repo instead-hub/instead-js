@@ -120,6 +120,23 @@ var Instead = {
         var inventory;
         var horizontalInventory;
         var musicPath;
+        var soundPath;
+        // sound
+        soundPath = interpreter.call('instead.get_sound()');
+        if (soundPath !== null) {
+            if (soundPath.indexOf(Game.path) === -1) {
+                soundPath = Game.path + soundPath;
+            }
+            HTMLAudio.playSound(soundPath);
+        }
+        // music
+        musicPath = interpreter.call('instead.get_music()');
+        if (musicPath !== null) {
+            if (musicPath.indexOf(Game.path) === -1) {
+                musicPath = Game.path + musicPath;
+            }
+            HTMLAudio.playMusic(musicPath, 0);
+        }
         // title
         UI.setTitle(interpreter.call('instead.get_title()'));
         // ways
@@ -134,14 +151,6 @@ var Instead = {
         }
         // picture
         UI.setPicture(interpreter.call('instead.get_picture()'));
-        // music
-        musicPath = interpreter.call('instead.get_music()');
-        if (musicPath !== null) {
-            if (musicPath.indexOf(Game.path) === -1) {
-                musicPath = Game.path + musicPath;
-            }
-            HTMLAudio.playMusic(musicPath, 0);
-        }
         // refresh
         UI.refresh();
     },
