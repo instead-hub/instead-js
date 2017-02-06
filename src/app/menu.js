@@ -70,10 +70,14 @@ var Menu = {
             }
         });
 
-        ui.$toolbar_log.on('click', function toggleLog(e) {
-            e.preventDefault();
-            $('#log').toggle().scrollTop(function sh() { return this.scrollHeight; });
-        });
+        if (Game.log) {
+            ui.$toolbar_log.on('click', function toggleLog(e) {
+                e.preventDefault();
+                $('#log').toggle().scrollTop(function sh() { return this.scrollHeight; });
+            });
+        } else {
+            ui.$toolbar_log.hide();
+        }
         ui.$toolbar_mute.on('click', function toggleLog(e) {
             e.preventDefault();
             toggleMute();

@@ -3,9 +3,12 @@ var Storage = require('./storage');
 var Game = {
     id: null,
     name: 'Default Game',
-    mute: true,
-    preload: true,
-    autosave_on_click: false,
+    // === configurable options ===
+    mute: true,     // Mute all sounds
+    preload: true,  // Preload all images while game is starting
+    autosave_on_click: false,   // Autosave after each click
+    log: false,     // Enable logging
+    // === end of configurable options ===
     autosaveID: 9,
     importID: 10,
     saveSlots: 5,
@@ -22,6 +25,11 @@ var Game = {
     },
     saveExists: function saveExists(id) {
         return Storage.exists(this.getSaveName(id));
+    },
+    loadConfig: function loadConfig(cfg) {
+        Object.keys(cfg).forEach(function applyConfig(key) {
+            Game[key] = cfg[key];
+        });
     }
 };
 
