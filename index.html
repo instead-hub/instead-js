@@ -1,7 +1,35 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>INSTEAD.js</title>
+    <script type="text/javascript">
+        var INSTEADjs = {
+            mute: true,     // Mute all sounds
+            preload: true,  // Preload all images while game is starting
+            autosave_on_click: false, // Autosave after each click
+            log: false,      // Enable logging
+            translation: {
+                loading: 'Загрузка...',
+                preload: 'Кэширование картинок',
+                empty: 'пусто',
+                menu_back: 'Вернуться в игру',
+                menu_save: 'Сохранить',
+                menu_load: 'Загрузить',
+                menu_reset: 'Начать заново',
+                menu_mute: 'Выключить звук',
+                menu_unmute: 'Включить звук',
+                menu_savegame: 'Сохранить игру',
+                menu_loadgame: 'Загрузить игру',
+                menu_import: 'Импорт',
+                menu_export: 'Экспорт сохранения',
+                menu_autosave: 'Автосохранение',
+                menu_cancel: 'Отмена'
+            }
+        };
+    </script>
     <style id="theme_css"></style>
 <link href="./styles.css" rel="stylesheet"></head>
 <body>
@@ -11,12 +39,12 @@
     <div id="stead-container">
         <div id="menu">
             <div id="menu-content">
-            <a href="" data-action="back">Return to game</a>
-            <a href="" data-action="menu-save">Save</a>
-            <a href="" data-action="menu-load">Load</a>
-            <a href="" data-action="reset">Reset</a>
-            <a href="" id="menu-mute" data-action="mute">Mute</a>
-            <a href="" data-action="menu-export">Export saved game</a>
+            <a href="" id="menu-back" data-action="back"></a>
+            <a href="" id="menu-save" data-action="menu-save"></a>
+            <a href="" id="menu-load" data-action="menu-load"></a>
+            <a href="" id="menu-reset" data-action="reset"></a>
+            <a href="" id="menu-mute" data-action="mute"></a>
+            <a href="" id="menu-export" data-action="menu-export"></a>
             </div>
             <div id="menu-saveload">
             </div>
