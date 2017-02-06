@@ -24,6 +24,7 @@ var Menu = {
                 ui.$toolbar_mute.html(UTFsymbol.mute);
             }
         }
+        Game.mute = !Game.mute; // set correct mute state before switching
         toggleMute();
 
         ui.$menuButton.on('click', this.toggleMenu.bind(this));
