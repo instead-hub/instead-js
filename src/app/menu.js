@@ -1,6 +1,7 @@
 var $ = require('jquery');
 var Game = require('./game');
 var Storage = require('./storage');
+var i18n = require('./i18n');
 
 var UTFsymbol = {
     mute: '<div style="position:absolute; color: #CC0000; text-shadow: 0px 0px 2px #000000">&#10006;</div>&#128266;',
@@ -13,17 +14,25 @@ var Menu = {
         this.element = ui;
         var self = this;
 
+        // apply menu translations
+        $('#menu-back').text(i18n.t('menu_back'));
+        $('#menu-save').text(i18n.t('menu_save'));
+        $('#menu-load').text(i18n.t('menu_load'));
+        $('#menu-reset').text(i18n.t('menu_reset'));
+        $('#menu-export').text(i18n.t('menu_export'));
+
         function toggleMute() {
             if (Game.mute) {
                 steadHandler.mute(false);
-                ui.$menu_mute.text('Mute');
+                ui.$menu_mute.text(i18n.t('menu_mute'));
                 ui.$toolbar_mute.html(UTFsymbol.sound);
             } else {
                 steadHandler.mute(true);
-                ui.$menu_mute.text('Unmute');
+                ui.$menu_mute.text(i18n.t('menu_unmute'));
                 ui.$toolbar_mute.html(UTFsymbol.mute);
             }
         }
+        Game.mute = !Game.mute; // set correct mute state before switching
         toggleMute();
 
         ui.$menuButton.on('click', this.toggleMenu.bind(this));
@@ -69,10 +78,14 @@ var Menu = {
             }
         });
 
-        ui.$toolbar_log.on('click', function toggleLog(e) {
-            e.preventDefault();
-            $('#log').toggle().scrollTop(function sh() { return this.scrollHeight; });
-        });
+        if (Game.log) {
+            ui.$toolbar_log.on('click', function toggleLog(e) {
+                e.preventDefault();
+                $('#log').toggle().scrollTop(function sh() { return this.scrollHeight; });
+            });
+        } else {
+            ui.$toolbar_log.hide();
+        }
         ui.$toolbar_mute.on('click', function toggleLog(e) {
             e.preventDefault();
             toggleMute();
@@ -125,48 +138,48 @@ var Menu = {
             });
             var i;
             if (action === 'save') {
-                html += '<h3>Save game</h3>';
+                html += '<h3>' + i18n.t('menu_savegame') + '</h3>';
                 for (i = 1; i <= Game.saveSlots; i++) {
                     html += '<a href="" data-action="save" data-id="' + i + '" class="slot-selector">';
                     if (slots[i]) {
                         html += i + ' - ' + slots[i];
                     } else {
-                        html += i + ' - empty';
+                        html += i + ' - ' + i18n.t('empty');
                     }
                     html += '</a>';
                 }
             } else if (action === 'load') {
-                html += '<h3>Load game</h3>';
+                html += '<h3>' + i18n.t('menu_loadgame') + '</h3>';
                 html += '<a href="" data-action="load" data-id="' + Game.autosaveID +
-                        '" class="slot-selector">0 - Autosave</a>';
+                        '" class="slot-selector">0 - ' + i18n.t('menu_autosave') + '</a>';
                 for (i = 1; i <= Game.saveSlots; i++) {
                     if (slots[i]) {
                         html += '<a href="" data-action="load" data-id="' + i + '" class="slot-selector">';
                         html += i + ' - ' + slots[i];
                         html += '</a>';
                     } else {
-                        html += '<div class="slot-selector">' + i + ' - empty</div>';
+                        html += '<div class="slot-selector">' + i + ' - ' + i18n.t('empty') + '</div>';
                     }
                 }
-                html += '<h3>Import</h3>';
+                html += '<h3>' + i18n.t('menu_import') + '</h3>';
                 html += '<input type="file" id="load-import" style="font-size: 0.8em"/>';
                 html += '<br><br>';
             } else {
-                html += '<h3>Export saved game</h3>';
+                html += '<h3>' + i18n.t('menu_export') + '</h3>';
                 html += '<a href="" data-action="export" data-id="' + Game.autosaveID +
-                        '" class="slot-selector">0 - Autosave</a>';
+                        '" class="slot-selector">0 - ' + i18n.t('menu_autosave') + '</a>';
                 for (i = 1; i <= Game.saveSlots; i++) {
                     if (slots[i]) {
                         html += '<a href="" data-action="export" data-id="' + i + '" class="slot-selector">';
                         html += i + ' - ' + slots[i];
                         html += '</a>';
                     } else {
-                        html += '<div class="slot-selector">' + i + ' - empty</div>';
+                        html += '<div class="slot-selector">' + i + ' - ' + i18n.t('empty') + '</div>';
                     }
                 }
             }
 
-            html += '<a href="" data-action="cancel">Cancel</a>';
+            html += '<a href="" data-action="cancel">' + i18n.t('menu_cancel') + '</a>';
             ui.$menu_saveload.html(html);
             ui.$menu_saveload.show();
         } else {

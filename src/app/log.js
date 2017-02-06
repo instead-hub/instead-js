@@ -1,7 +1,11 @@
 var $ = require('jquery');
+var Game = require('./game');
 
 var Logger = {
     log: function showLog() {
+        if (!Game.log) {
+            return; // if log is disabled
+        }
         var message = Array.prototype.join.call(arguments, ', ');
         var style = '';
         if (message.indexOf('>') === 0) {
@@ -16,6 +20,7 @@ var Logger = {
         var el = $('#log');
         el.append('<span ' + style + '>' + message + '<br/></span>');
         el.scrollTop(function h() { return this.scrollHeight; });
+        return;
     }
 };
 
