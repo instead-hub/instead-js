@@ -1,5 +1,6 @@
 var $ = require('jquery');
 
+var i18n = require('./i18n');
 var Game = require('./game');
 var Instead = require('./instead');
 var UI = require('./ui');
@@ -13,7 +14,7 @@ var Manager = {
     init: function init() {
         this.el = $('#manager');
         this.el.perfectScrollbar({wheelSpeed: 1});
-        this.el.append('<a href="" id="loading">Loading...</a>');
+        this.el.append('<a href="" id="loading">' + i18n.t('loading') + '</a>');
 
         var self = this;
         this.el.on('click', 'a', function selectGame(e) {
@@ -69,7 +70,7 @@ var Manager = {
         Preloader.load(
             allGames[gameid].preload,
             function preloadProgress(percent) {
-                $('#stead-toolbar-info').html('Preloading images: ' + percent + '%');
+                $('#stead-toolbar-info').html(i18n.t('preload') + ': ' + percent + '%');
             },
             function preloadSuccess() {
                 $('#stead-toolbar-info').html('<b>' + Game.name + '</b>');
