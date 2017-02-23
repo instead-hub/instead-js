@@ -38,6 +38,19 @@ var Game = {
         Object.keys(cfg).forEach(function applyConfig(key) {
             Game[key] = cfg[key];
         });
+    },
+    load: function load(slotId) {
+        return Storage.load(Game.getSaveName(slotId));
+    },
+    save: function save(slotId, content) {
+        var slot = this.getSaveName(slotId);
+        Storage.save(slot, content);
+    },
+    importSave: function importSave(content) {
+        this.save(this.importID, content);
+    },
+    allSaves: function allSaves() {
+        return Storage.get(this.id);
     }
 };
 
