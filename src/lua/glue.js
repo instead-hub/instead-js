@@ -1,6 +1,6 @@
 /* global Lua */
 require('script-loader!../../instead/lua.vm.js');
-var stead = require('../../instead/stead.js');
+var vfs = require('../app/vfs');
 var ajaxGetSync = require('../ajax');
 
 var Game = require('../app/game');
@@ -9,7 +9,10 @@ var Storage = require('../app/storage');
 // synchronous ajax to get file, so code executed before function returns
 function runLuaFromPath(path) {
     try {
-        var luacode = stead.hasOwnProperty(path) ? stead[path] : ajaxGetSync(path);
+        var luacode = vfs.load(path);
+        if (!luacode) {
+            luacode = ajaxGetSync(path);
+        }
         // check if download worked
         if ((typeof luacode) !== 'string') {
             throw String('RunLuaFromPath failed "' + path + '" :' +
@@ -33,7 +36,7 @@ function luaRequire(filepath) {
         path = path.slice(0, -4); // require automatically appends .lua to the filepath later, remove it here
     }
     path = path.replace(/\./g, '/');
-    if (!stead.hasOwnProperty(path + '.lua')) {
+    if (!vfs.isStead(path + '.lua')) {
         // require unknown core module, assume loading from game files
         path = Game.path + path;
     }

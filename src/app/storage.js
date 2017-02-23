@@ -1,15 +1,15 @@
-var vfs = window.localStorage;
+var mfs = window.localStorage;
 
 var Storage = {
     get: function getSaves(key) {
-        var n = vfs.length;
+        var n = mfs.length;
         var saves = [];
         var k;
         var item;
         for (var i = 0; i < n; i++) {
-            k = vfs.key(i);
+            k = mfs.key(i);
             try {
-                item = JSON.parse(vfs.getItem(k));
+                item = JSON.parse(mfs.getItem(k));
             } catch (e) {
                 item = {timestamp: null};
             }
@@ -25,23 +25,23 @@ var Storage = {
         return saves;
     },
     save: function save(name, value) {
-        vfs.setItem(name, JSON.stringify({
+        mfs.setItem(name, JSON.stringify({
             timestamp: Date.now(),
             data: value
         }));
     },
     load: function load(name) {
-        var content = JSON.parse(vfs.getItem(name));
+        var content = JSON.parse(mfs.getItem(name));
         if (content) {
             return content.data;
         }
         return '';
     },
     exists: function exists(name) {
-        return !!vfs.getItem(name);
+        return !!mfs.getItem(name);
     },
     clear: function clear() {
-        vfs.clear();
+        mfs.clear();
     }
 };
 
