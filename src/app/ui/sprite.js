@@ -181,7 +181,7 @@ var Sprite = {
         return copySprite.apply(this, args);
     },
     free: function spriteFree(spriteID) {
-        if (sprites[spriteID].waitOp) {
+        if (typeof sprites[spriteID] === 'object' && sprites[spriteID].waitOp) {
             setTimeout(function deferredFree() {
                 Sprite.free(spriteID);
             }, 511);
