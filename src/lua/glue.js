@@ -6,6 +6,13 @@ var ajaxGetSync = require('../ajax');
 var Game = require('../app/game');
 var Storage = require('../app/storage');
 
+
+function loadStead(version) {
+    var path = (version === 3) ? './stead3.json' : './stead2.json';
+    var stead = JSON.parse(ajaxGetSync(path));
+    vfs.updateStead(stead);
+}
+
 // synchronous ajax to get file, so code executed before function returns
 function runLuaFromPath(path) {
     try {
@@ -85,7 +92,8 @@ var Glue = {
         Lua.loadFile = loadFile;
         Lua.openFile = openFile;
     },
-    runLuaFromPath: runLuaFromPath
+    runLuaFromPath: runLuaFromPath,
+    loadStead: loadStead
 };
 
 module.exports = Glue;

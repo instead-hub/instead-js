@@ -20,6 +20,11 @@ var vfs = {
         // module is a part of INSTEAD core engine
         return stead.hasOwnProperty(path);
     },
+    updateStead: function updateStead(steadJson) {
+        Object.keys(steadJson).forEach(function upd(filename) {
+            stead[filename] = steadJson[filename];
+        });
+    },
     dump: function dump() {
         return JSON.stringify(vfsData);
     }

@@ -8,6 +8,7 @@ var gameDefaults = {
     log: false,     // Enable logging
     // === end of configurable options ===
     id: null,
+    stead: 2,
     name: 'Default Game',
     autosaveID: 9,
     importID: 10,
@@ -23,7 +24,7 @@ var gameDefaults = {
 
 var Game = {
     mainLua: function mainLua() {
-        return this.path + '/' + 'main.lua';
+        return this.path + '/' + (this.stead === 2 ? 'main.lua' : 'main3.lua');
     },
     reset: function reset() {
         Object.keys(gameDefaults).forEach(function resetConfig(key) {

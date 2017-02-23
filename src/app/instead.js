@@ -26,17 +26,24 @@ var Instead = {
     initStead: function initStead() {
         interpreter.load('instead_js.lua');
         interpreter.load('stead.lua');
-        interpreter.load('gui.lua');
+        interpreter.load('ext/gui.lua');
+        interpreter.load('ext/paths.lua');
+        interpreter.load('ext/sound.lua');
+        interpreter.load('ext/sprites.lua');
+        interpreter.load('ext/timer.lua');
         interpreter.call('stead:init()');
         interpreter.load('instead_fs.lua');
     },
 
     startGame: function startGame(savedGameID) {
-        this.initStead();
+        // load corresponding STEAD lua files
+        interpreter.loadStead(Game.stead);
 
-        setTimer(0);
-        UI.loadTheme();
-        this.clickSound(true); // preload click sound
+        this.initStead();       // initialize INSTEAD
+        setTimer(0);            // reset game timers
+        UI.loadTheme();         // load theme
+        this.clickSound(true);  // preload click sound
+
         // init game
         interpreter.call('js_instead_gamepath("' + Game.path + '")');
         interpreter.load(Game.mainLua());

@@ -54,6 +54,9 @@ var Manager = {
         Game.id = gameid;
         Game.name = allGames[gameid].name;
         Game.ownTheme = allGames[gameid].theme;
+        if (allGames[gameid].stead) {
+            Game.stead = allGames[gameid].stead; // stead version
+        }
         if (Game.preload) {
             this.preload(gameid);
         }

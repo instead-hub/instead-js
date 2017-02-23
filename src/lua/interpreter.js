@@ -8,6 +8,9 @@ var Interpreter = {
         Lua.initialize();
         Glue.init();
     },
+    loadStead: function loadStead(version) {
+        Glue.loadStead(version);
+    },
     call: function interpreterCall(command) {
         var result = Lua.eval(command);
         if (result) {
