@@ -38,8 +38,8 @@ var Instead = {
         UI.loadTheme();
         this.clickSound(true); // preload click sound
         // init game
-        interpreter.load(Game.mainLua());
         interpreter.call('js_instead_gamepath("' + Game.path + '")');
+        interpreter.load(Game.mainLua());
         interpreter.call('game:ini()');
         // load game, if required
         if (Game.saveExists(savedGameID)) {
