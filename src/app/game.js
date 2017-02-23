@@ -22,6 +22,9 @@ var gameDefaults = {
 };
 
 var Game = {
+    mainLua: function mainLua() {
+        return this.path + '/' + 'main.lua';
+    },
     reset: function reset() {
         Object.keys(gameDefaults).forEach(function resetConfig(key) {
             Game[key] = gameDefaults[key];

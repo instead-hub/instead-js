@@ -20,19 +20,27 @@ var Instead = {
 
         // preloader
         interpreter.init();
+        // interpreter.load('instead_js.lua');
+    },
+
+    initStead: function initStead() {
         interpreter.load('instead_js.lua');
+        interpreter.load('stead.lua');
+        interpreter.load('gui.lua');
+        interpreter.call('stead:init()');
+        interpreter.load('instead_fs.lua');
     },
 
     startGame: function startGame(savedGameID) {
-        interpreter.load('instead_js.lua');
-        interpreter.call('js_instead_gamepath("' + Game.path + '")');
-        setTimer(0);
+        this.initStead();
 
+        setTimer(0);
         UI.loadTheme();
         this.clickSound(true); // preload click sound
         // init game
-        interpreter.load(Game.path + 'main.lua');
-        interpreter.call('stead.game_ini(game)');
+        interpreter.load(Game.mainLua());
+        interpreter.call('js_instead_gamepath("' + Game.path + '")');
+        interpreter.call('game:ini()');
         // load game, if required
         if (Game.saveExists(savedGameID)) {
             this.ifaceCmd('load ' + Game.getSaveName(savedGameID), true);
