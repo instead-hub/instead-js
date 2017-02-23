@@ -3,8 +3,8 @@ var fs = require('fs');
 var dirname = './games/';
 var output = {};
 
-function getGameName(gamepath) {
-    var game = fs.readFileSync(gamepath + '/main.lua', 'utf-8');
+function getGameName(gamepath, mainFile, gamename) {
+    var game = fs.readFileSync(gamepath + '/' + mainFile, 'utf-8');
     var name = game.match(/\$Name\(ru\):(.+)\$/);
     if (name) {
         return name[1].trim();
@@ -13,7 +13,7 @@ function getGameName(gamepath) {
     if (name) {
         return name[1].trim();
     }
-    return null;
+    return gamename;
 }
 
 function walkSync(dir, filelist, gamedir) {
@@ -39,15 +39,26 @@ fs.readdir(dirname, function readFn(err, filenames) {
         var gameName;
         var images;
         var hasTheme = false;
+        var stead = null;
+        var mainFile;
         if (fs.lstatSync(gamepath).isDirectory()) {
-            gameName = getGameName(gamepath);
-            if (gameName) {
+            if (fs.existsSync(gamepath + '/main.lua')) {
+                stead = 2; // stead 2.x
+                mainFile = 'main.lua';
+            }
+            if (fs.existsSync(gamepath + '/main3.lua')) {
+                stead = 3; // stead 3.x
+                mainFile = 'main3.lua';
+            }
+            if (stead) {
+                gameName = getGameName(gamepath, mainFile, filename);
                 images = walkSync(gamepath, [], gamepath);
                 if (fs.existsSync(gamepath + '/theme.ini')) {
                     hasTheme = true;
                 }
                 output[filename] = {
                     name: gameName,
+                    stead: stead,
                     theme: hasTheme,
                     preload: images
                 };
