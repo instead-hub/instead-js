@@ -1,5 +1,5 @@
 -- io.open proxy
-mock_handle = {}
+local mock_handle = {}
 
 io.open = function (filename, mode)
 	mock_handle[filename] = {}

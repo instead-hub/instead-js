@@ -1,3 +1,5 @@
+STANDALONE = true
+
 INSTEAD_PLACEHOLDER = function()
     return
 end
@@ -21,6 +23,8 @@ table_get_maxn = function(tbl)
 	end
 	return c
 end
+
+local INSTEAD_GAMEPATH = nil
 
 js_instead_gamepath = function(path)
   INSTEAD_GAMEPATH=path
@@ -135,6 +139,9 @@ instead_sprite_size = function()
 end
 instead_sprites_free = INSTEAD_PLACEHOLDER
 instead_sprite_colorkey = INSTEAD_PLACEHOLDER
+instead_ticks = function()
+    return js.run_string('Date.now()')
+end
 
 -- click
 instead_click = function(x,y)
