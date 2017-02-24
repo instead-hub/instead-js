@@ -61,3 +61,8 @@ loadfile = function(file)
         return assert(loadstring(content))
     end
 end
+
+-- stead3
+if (std ~= nil) then
+    std.loadfile = loadfile;
+end
