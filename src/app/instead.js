@@ -199,6 +199,11 @@ var Instead = {
 };
 
 function kbdEvent(event) {
+    if (!Game.id) {
+        // do not handle keyboard events
+        // if game is not loaded yet
+        return;
+    }
     Instead.kbd(Keyboard.handler(event));
 }
 
