@@ -4,6 +4,8 @@ INSTEAD_PLACEHOLDER = function()
     return
 end
 
+instead_busy = INSTEAD_PLACEHOLDER
+
 -- call JS function with given parameters
 insteadjs_call = function(jsfn, arg)
     local arguments = ''
