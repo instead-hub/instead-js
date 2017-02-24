@@ -80,7 +80,6 @@ var Instead = {
 
     click: function click(uiref, field, onStead) {
         var ref = uiref;
-        var refID = ref.match(/([\d]+)/)[0];
         this.clickSound(); // play click sound
 
         if (typeof ref === 'object') {
@@ -92,6 +91,7 @@ var Instead = {
             return;
         }
 
+        var refID = ref.match(/([\d]+)/)[0];
         if (!onStead && (UI.isAct || field === 'Inv')) {
             if (ref.search('act') === 0 || ref.search('act') === 1 ) {
                 this.ifaceCmd('use ' + refID, true);
@@ -122,7 +122,7 @@ var Instead = {
 
     kbd: function keyboardHandler(ev) {
         if (ev) {
-            var kbdHandler = interpreter.call('instead.input("kbd", ' + ev.down +  ', "' + ev.key + '")');
+            var kbdHandler = interpreter.call('iface:input("kbd", ' + ev.down +  ', "' + ev.key + '")');
             if (kbdHandler && kbdHandler !== 'nil') {
                 this.ifaceCmd(kbdHandler, true);
             }
@@ -179,7 +179,7 @@ var Instead = {
         if (command[0] !== '#') {
             command = ifacecmd.replace(/^([^\/]+\/)/, '');
         }
-        var cmd = 'iface.cmd(iface, "' + command + '")';
+        var cmd = 'iface:cmd("' + command + '")';
         var text = interpreter.call(cmd);
         if (command !== 'user_timer') {
             Logger.log('> ' + command);
