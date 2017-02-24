@@ -4,8 +4,6 @@ INSTEAD_PLACEHOLDER = function()
     return
 end
 
-instead_busy = INSTEAD_PLACEHOLDER
-
 -- call JS function with given parameters
 insteadjs_call = function(jsfn, arg)
     local arguments = ''
@@ -39,10 +37,8 @@ end
 instead_realpath=function()
   return nil
 end
-
-function instead_mouse_filter(...)
-  insteadjs_call('console.log', {...})
-end
+instead_savepath = INSTEAD_PLACEHOLDER
+instead_exepath = INSTEAD_PLACEHOLDER
 
 -- theme
 function instead_theme_var(name, value)
@@ -64,6 +60,17 @@ end
 instead_timer = function(t)
     js.run('instead_settimer("' .. tostring(t) .. '")')
 end
+
+-- sound
+instead_sound = INSTEAD_PLACEHOLDER
+instead_sound_load = INSTEAD_PLACEHOLDER
+instead_sound_free = INSTEAD_PLACEHOLDER
+instead_sounds_free = INSTEAD_PLACEHOLDER
+instead_sound_channel = INSTEAD_PLACEHOLDER
+instead_sound_volume = INSTEAD_PLACEHOLDER
+instead_sound_panning = INSTEAD_PLACEHOLDER
+instead_sound_load_mem = INSTEAD_PLACEHOLDER -- stead 3
+instead_music_callback = INSTEAD_PLACEHOLDER -- stead 3
 
 -- sprites are not supported (yet?)
 sprite_descriptors = {}
@@ -144,6 +151,13 @@ instead_sprite_colorkey = INSTEAD_PLACEHOLDER
 instead_ticks = function()
     return js.run_string('Date.now()')
 end
+instead_mouse_pos = INSTEAD_PLACEHOLDER
+instead_mouse_show = INSTEAD_PLACEHOLDER
+instead_finger_pos = INSTEAD_PLACEHOLDER
+function instead_mouse_filter(...)
+  insteadjs_call('console.log', {...})
+end
+instead_busy = INSTEAD_PLACEHOLDER
 
 -- click
 instead_click = function(x,y)
