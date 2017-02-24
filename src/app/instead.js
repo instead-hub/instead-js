@@ -137,10 +137,15 @@ var Instead = {
         // sound
         soundPath = interpreter.call('instead.get_sound()');
         if (soundPath !== null) {
-            if (soundPath.indexOf(Game.path) === -1) {
-                soundPath = Game.path + soundPath;
-            }
-            HTMLAudio.playSound(soundPath);
+            soundPath.split(';').forEach(function parseSound(item) {
+                var soundFile = (item.split('@'))[0];
+                if (soundFile !== '') {
+                    if (soundFile.indexOf(Game.path) === -1) {
+                        soundFile = Game.path + soundFile;
+                    }
+                    HTMLAudio.playSound(soundFile);
+                }
+            });
         }
         // music
         musicPath = interpreter.call('instead.get_music()');
