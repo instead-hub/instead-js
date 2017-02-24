@@ -80,6 +80,7 @@ var Instead = {
 
     click: function click(uiref, field, onStead) {
         var ref = uiref;
+        var refID = ref.match(/([\d]+)/)[0];
         this.clickSound(); // play click sound
 
         if (typeof ref === 'object') {
@@ -92,7 +93,6 @@ var Instead = {
         }
 
         if (!onStead && (UI.isAct || field === 'Inv')) {
-            ref = ref.substr(1);
             if (ref.substr(0, 3) === 'act') {
                 ref = 'use ' + ref.substr(4);
                 this.ifaceCmd(ref, true);
@@ -102,16 +102,16 @@ var Instead = {
 
             if (UI.isAct) {
                 if (field !== 'Ways' && field !== 'Title') {
-                    if (ref === UI.actObj) {
-                        this.ifaceCmd('use ' + ref, true);
+                    if (refID === UI.actObj) {
+                        this.ifaceCmd('use ' + refID, true);
                     } else {
-                        this.ifaceCmd('use ' + UI.actObj + ',' + ref, true);
+                        this.ifaceCmd('use ' + UI.actObj + ',' + refID, true);
                     }
                     UI.setAct(false, '');
                     this.autoSave();
                 }
             } else {
-                UI.setAct(true, ref);
+                UI.setAct(true, refID);
             }
         } else {
             if (UI.isAct) {
@@ -170,7 +170,13 @@ var Instead = {
         UI.refresh();
     },
 
-    ifaceCmd: function ifaceCmd(command, refreshUI) {
+    ifaceCmd: function ifaceCmd(ifacecmd, refreshUI) {
+        // remove part of command before slash
+        var command = ifacecmd;
+        if (command[0] !== '#') {
+            command = ifacecmd.replace(/^([^\/]+\/)/, '');
+        }
+
         var cmd = 'iface.cmd(iface, "' + command + '")';
         var text = interpreter.call(cmd);
         if (command !== 'user_timer') {

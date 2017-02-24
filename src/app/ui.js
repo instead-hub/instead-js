@@ -13,12 +13,16 @@ function normalizeContent(input, field) {
         // do not process empty outputs
         return '';
     }
+    var delim = '#';
+    if (Game.stead !== 2) {
+        delim = '';
+    }
     output = output.replace(
         /<a(:)([^>]+)>(<i>|)((&#160;)+)/g,
-        '$4<a href="" data-ref="#$2" data-type="' + field + '">$3'
+        '$4<a href="" data-ref="' + delim + '$2" data-type="' + field + '">$3'
     ).replace(
         /<a(:)([^>]+)/g,
-        '<a href="" data-ref="#$2", data-type="' + field + '"'
+        '<a href="" data-ref="' + delim + '$2", data-type="' + field + '"'
     ).replace(
         /<w:([^>]+)>/g,
         '<span class="nowrap">$1</span>'
