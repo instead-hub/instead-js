@@ -93,13 +93,11 @@ var Instead = {
         }
 
         if (!onStead && (UI.isAct || field === 'Inv')) {
-            if (ref.substr(0, 3) === 'act') {
-                ref = 'use ' + ref.substr(4);
-                this.ifaceCmd(ref, true);
+            if (ref.search('act') === 0 || ref.search('act') === 1 ) {
+                this.ifaceCmd('use ' + refID, true);
                 this.autoSave();
                 return;
             }
-
             if (UI.isAct) {
                 if (field !== 'Ways' && field !== 'Title') {
                     if (refID === UI.actObj) {
@@ -176,7 +174,6 @@ var Instead = {
         if (command[0] !== '#') {
             command = ifacecmd.replace(/^([^\/]+\/)/, '');
         }
-
         var cmd = 'iface.cmd(iface, "' + command + '")';
         var text = interpreter.call(cmd);
         if (command !== 'user_timer') {
