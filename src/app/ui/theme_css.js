@@ -81,13 +81,13 @@ var applyStyle = {
 
     'scr.gfx.w': function s(e, v) {
         if (v > 0) {
-            dynamicStyles['scr.gfx.w'] = '#picture img {max-width:' + v + 'px}';
+            dynamicStyles['scr.gfx.w'] = '#picture img {max-width:' + v + 'px}\n#picture {width:' + v + 'px}';
             setCSS();
         }
     },
     'scr.gfx.h': function s(e, v) {
         if (v > 0) {
-            dynamicStyles['scr.gfx.h'] = '#picture img {max-height:' + v + 'px}';
+            dynamicStyles['scr.gfx.h'] = '#picture img {max-height:' + v + 'px}\n#picture {height:' + v + 'px}';
             setCSS();
         }
     },
