@@ -6,11 +6,6 @@ body {
     background-color: #111111;
 }
 
-.wordwrap {
-	word-wrap: normal;
-	white-space: pre-line;      /* CSS3 */
-}
-
 pre {
 	white-space: pre-line;
     margin: 0px;
@@ -134,8 +129,10 @@ pre {
     cursor: inherit;
 }
 
-#text {
+#instead--text {
 	text-align: justify;
+	word-wrap: normal;
+	white-space: pre-line;      /* CSS3 */
 }
 
 #menu {

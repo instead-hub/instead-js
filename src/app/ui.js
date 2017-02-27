@@ -79,7 +79,7 @@ var UI = {
     element: {
         $title: $('#title'),
         $ways: $('#ways-top'),
-        $text: $('#text'),
+        $text: $('#instead--text'),
         $picture: $('#picture'),
         $win: $('#win'),
         $stead: $('#stead'),
