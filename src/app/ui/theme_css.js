@@ -151,6 +151,10 @@ var applyStyle = {
         } else {
             var p = v.split('-');
             Game.inventory_mode = p[0];
+            if (p[0] === 'horizontal') {
+                // default text align for 'horizontal' mode
+                e.$inventory.css('text-align', 'center');
+            }
             if (p[1]) {
                 e.$inventory.css('text-align', p[1]);
             }
