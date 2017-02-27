@@ -18,6 +18,17 @@ function normalizeContent(input, field) {
         delim = '';
     }
     output = output.replace(
+        /<x:([^>]+)>([^<$]+)/g,
+        function parseTxttab(fullString, param, text) {
+            var s = param.split(',');
+            var margin = s[0] + 'px';
+            if (margin.search('%') !== -1) {
+                margin = s[0];
+            }
+            var align = s[1] || 'left';
+            return '<div style="padding-left:' + margin + '; text-align: ' + align + '">' + text + '</div>';
+        }
+    ).replace(
         /<a(:)([^>]+)>(<i>|)((&#160;)+)/g,
         '$4<a href="" data-ref="' + delim + '$2" data-type="' + field + '">$3'
     ).replace(
@@ -39,10 +50,7 @@ function normalizeContent(input, field) {
         /<g:([^>]+)>/g,
         parseImg
     );
-    /* TODO: txttab support
-    r = /<x:([^>,]+),?([^>]+)?>/g;
-    output = output.replace(r, '[x : $1 : $2]');
-    */
+
     return output;
 }
 
