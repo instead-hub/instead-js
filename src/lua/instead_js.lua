@@ -5,6 +5,10 @@ INSTEAD_PLACEHOLDER = function()
     return
 end
 
+INSTEAD_EMPTYSTR = function()
+  return ''
+end
+
 -- call JS function with given parameters
 insteadjs_call = function(jsfn, arg)
     local arguments = ''
@@ -25,7 +29,7 @@ table_get_maxn = function(tbl)
 	return c
 end
 
-local INSTEAD_GAMEPATH = nil
+local INSTEAD_GAMEPATH = ''
 
 js_instead_gamepath = function(path)
   INSTEAD_GAMEPATH=path
@@ -35,11 +39,9 @@ instead_gamepath=function()
   return INSTEAD_GAMEPATH
 end
 
-instead_realpath=function()
-  return nil
-end
-instead_savepath = INSTEAD_PLACEHOLDER
-instead_exepath = INSTEAD_PLACEHOLDER
+instead_realpath = INSTEAD_EMPTYSTR
+instead_savepath = INSTEAD_EMPTYSTR
+instead_exepath = INSTEAD_EMPTYSTR
 
 -- theme
 function instead_theme_var(name, value)
