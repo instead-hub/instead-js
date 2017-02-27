@@ -221,7 +221,7 @@ var UI = {
         e.preventDefault();
         if (this.isAct) {
             Logger.log('[click] reset onAct');
-            clickCallback('', 0, true);
+            clickCallback(null, null, true);
         }
         if (obj) {
             clickCallback({x: e.offsetX, y: e.offsetY}); // clicked on picture

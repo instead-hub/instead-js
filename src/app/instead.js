@@ -68,9 +68,10 @@ var Instead = {
 
     click: function click(uiref, field, onStead) {
         var ref = uiref;
+        var refID;
         this.clickSound(); // play click sound
 
-        if (typeof ref === 'object') {
+        if (uiref !== null && typeof ref === 'object') {
             var text = interpreter.call('instead_click(' + ref.x + ', ' + ref.y + ')');
             if (text !== null) {
                 UI.setText(text);
@@ -79,8 +80,8 @@ var Instead = {
             return;
         }
 
-        var refID = ref.match(/([\d]+)/)[0];
         if (!onStead && (UI.isAct || field === 'Inv')) {
+            refID = ref.match(/([\d]+)/)[0];
             if (ref.search('act') === 0 || ref.search('act') === 1 ) {
                 this.ifaceCmd('use ' + refID, true);
                 this.autoSave();
@@ -103,8 +104,10 @@ var Instead = {
             if (UI.isAct) {
                 UI.setAct(false, '');
             }
-            this.ifaceCmd(ref, true);
-            this.autoSave();
+            if (ref) {
+                this.ifaceCmd(ref, true);
+                this.autoSave();
+            }
         }
     },
 
