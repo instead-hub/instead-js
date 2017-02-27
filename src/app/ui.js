@@ -27,6 +27,15 @@ function normalizeContent(input, field) {
         /<w:([^>]+)>/g,
         '<span class="nowrap">$1</span>'
     ).replace(
+        /<y:([^>]+)>/g,
+        function parseTxty(fullString, tab) {
+            var margin = tab + 'px';
+            if (tab.search('%') !== -1) {
+                margin = tab;
+            }
+            return '<div style="margin-top: ' + margin + '" />';
+        }
+    ).replace(
         /<g:([^>]+)>/g,
         parseImg
     );
