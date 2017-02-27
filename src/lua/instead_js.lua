@@ -1,4 +1,5 @@
 STANDALONE = true
+local INSTEAD_THEME_NAME = ''
 
 INSTEAD_PLACEHOLDER = function()
     return
