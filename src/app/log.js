@@ -17,7 +17,7 @@ var Logger = {
         message = message.replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;')
                 .replace(/:(title|ways|text|inv|picture):/g, '<span class="block">$1</span>');
-        var el = $('#log');
+        var el = $('#instead--log');
         el.append('<span ' + style + '>' + message + '<br/></span>');
         el.scrollTop(function h() { return this.scrollHeight; });
         return;
