@@ -183,6 +183,13 @@ var Instead = {
         }
     },
 
+    timerCmd: function timerCmd() {
+        var timerHandler = interpreter.call('stead.timer()');
+        if (timerHandler && timerHandler !== 'nil') {
+            Instead.ifaceCmd(timerHandler, true); // use direct reference, since context is lost
+        }
+    },
+
     soundMute: function soundMute(value) {
         Game.mute = value;
         HTMLAudio.mute(value);
@@ -219,9 +226,7 @@ function setTimer(t) {
         window.clearInterval(LuaTimer);
     } else {
         LuaTimer = window.setInterval(
-            function LuaTimeout() {
-                Instead.ifaceCmd('user_timer', true);
-            },
+            Instead.timerCmd,
             time
         );
     }
