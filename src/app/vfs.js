@@ -1,17 +1,18 @@
 // virtual file system
 var stead = require('../../instead/stead.js');
+var ajaxGetSync = require('../ajax');
 
 var vfsData = {};
 
 var vfs = {
-    load: function load(path) {
+    readfile: function readfile(path) {
         if (stead.hasOwnProperty(path)) {
             return stead[path];
         }
         if (vfsData.hasOwnProperty(path)) {
             return vfsData[path];
         }
-        return null;
+        return ajaxGetSync(path);
     },
     save: function save(path, content) {
         vfsData[path] = content;

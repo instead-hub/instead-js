@@ -8,10 +8,7 @@ var Storage = require('../app/storage');
 // synchronous ajax to get file, so code executed before function returns
 function runLuaFromPath(path) {
     try {
-        var luacode = vfs.load(path);
-        if (!luacode) {
-            luacode = ajaxGetSync(path);
-        }
+        var luacode = vfs.readfile(path);
         // check if download worked
         if ((typeof luacode) !== 'string') {
             throw String('RunLuaFromPath failed "' + path + '" :' +
@@ -72,7 +69,7 @@ function openFile(path) {
     if (filepath.indexOf(Game.path) === -1) {
         filepath = Game.path + path; // add game path if it's not present already
     }
-    return ajaxGetSync(filepath);
+    return vfs.readfile(filepath);
 }
 
 var Interpreter = {
