@@ -80,19 +80,19 @@ var Instead = {
             return;
         }
 
-        if (!onStead && (UI.isAct || field === 'Inv')) {
+        if (!onStead && (Game.isAct || field === 'Inv')) {
             refID = ref.match(/([\d]+)/)[0];
             if (ref.search('act') === 0 || ref.search('act') === 1 ) {
                 this.ifaceCmd('use ' + refID, true);
                 this.autoSave();
                 return;
             }
-            if (UI.isAct) {
+            if (Game.isAct) {
                 if (field !== 'Ways' && field !== 'Title') {
-                    if (refID === UI.actObj) {
+                    if (refID === Game.actObj) {
                         this.ifaceCmd('use ' + refID, true);
                     } else {
-                        this.ifaceCmd('use ' + UI.actObj + ',' + refID, true);
+                        this.ifaceCmd('use ' + Game.actObj + ',' + refID, true);
                     }
                     UI.setAct(false, '');
                     this.autoSave();
@@ -101,8 +101,8 @@ var Instead = {
                 UI.setAct(true, refID);
             }
         } else {
-            if (UI.isAct) {
-                UI.setAct(false, '');
+            if (Game.isAct) {
+                Game.setAct(false, '');
             }
             if (ref) {
                 this.ifaceCmd(ref, true);

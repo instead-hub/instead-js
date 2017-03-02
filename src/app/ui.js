@@ -110,8 +110,6 @@ var UI = {
         $toolbar_log: $('#toolbar-log'),
         $menu_mute: $('#menu-mute')
     },
-    isAct: false,
-    actObj: null,
 
     init: function init(steadHandler) {
         var self = this;
@@ -148,13 +146,9 @@ var UI = {
     },
 
     setAct: function setAct(act, obj) {
-        this.isAct = act;
-        this.actObj = obj;
-        this.updateUse();
-    },
-
-    updateUse: function updateUse() {
-        Theme.setCursor(this.isAct);
+        Game.isAct = act;
+        Game.actObj = obj;
+        Theme.setCursor(Game.isAct);
     },
 
     setTitle: function setTitle(content) {
@@ -236,7 +230,7 @@ var UI = {
 
     clickHandler: function clickHandler(clickCallback, e, obj) {
         e.preventDefault();
-        if (this.isAct) {
+        if (Game.isAct) {
             Logger.log('[click] reset onAct');
             clickCallback(null, null, true);
         }

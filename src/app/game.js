@@ -19,7 +19,9 @@ var gameDefaults = {
     path: './game/',
     themePath: './themes/',
     ownTheme: false,
-    clickSound: null
+    clickSound: null,
+    isAct: false, // 'act' mode flag
+    actObj: null  // ref to act object
 };
 
 var Game = {
