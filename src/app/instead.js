@@ -102,7 +102,7 @@ var Instead = {
             }
         } else {
             if (Game.isAct) {
-                Game.setAct(false, '');
+                UI.setAct(false, '');
             }
             if (ref) {
                 this.ifaceCmd(ref, true);
