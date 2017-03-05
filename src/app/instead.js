@@ -74,8 +74,7 @@ var Instead = {
         if (uiref !== null && typeof ref === 'object') {
             var text = interpreter.call('instead_click(' + ref.x + ', ' + ref.y + ')');
             if (text !== null) {
-                UI.setText(text);
-                this.refreshInterface();
+                this.refreshInterface(text);
             }
             return;
         }
@@ -120,7 +119,19 @@ var Instead = {
         }
     },
 
-    refreshInterface: function refreshInterface() {
+    refreshInterface: function refreshInterface(text) {
+        var isFading = interpreter.call('instead.get_fading()');
+        if (isFading && Game.fading) {
+            UI.fadeOut(function fadeCallback() {
+                Instead.updateUI(text);
+                UI.fadeIn();
+            });
+        } else {
+            this.updateUI(text);
+        }
+    },
+
+    updateUI: function updateUI(text) {
         var inventory;
         var horizontalInventory;
         var musicPath;
@@ -160,11 +171,16 @@ var Instead = {
         }
         // picture
         UI.setPicture(interpreter.call('instead.get_picture()'));
+        // text
+        if (text) {
+            UI.setText(text);
+        }
         // refresh
         UI.refresh();
     },
 
     ifaceCmd: function ifaceCmd(ifacecmd, refreshUI) {
+        var ifaceOutput = null;
         // remove part of command before slash
         var command = ifacecmd;
         if (command[0] !== '#') {
@@ -176,10 +192,10 @@ var Instead = {
             Logger.log('> ' + command);
         }
         if (text !== null && command.indexOf('save') !== 0) {
-            UI.setText(text);
+            ifaceOutput = text;
         }
         if (refreshUI) {
-            this.refreshInterface();
+            this.refreshInterface(ifaceOutput);
         }
     },
 

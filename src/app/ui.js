@@ -219,6 +219,14 @@ var UI = {
         this.element.$win.perfectScrollbar('update');
     },
 
+    fadeOut: function fadeOut(callback) {
+        this.element.$stead.fadeOut('fast', callback);
+    },
+
+    fadeIn: function fadeIn() {
+        this.element.$stead.fadeIn('fast');
+    },
+
     clickHandlerLink: function clickHandlerLink(clickCallback, e, obj) {
         e.preventDefault();
         e.stopPropagation();

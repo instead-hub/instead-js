@@ -6,6 +6,7 @@ var gameDefaults = {
     preload: true,  // Preload all images while game is starting
     autosave_on_click: false,   // Autosave after each click
     log: false,     // Enable logging
+    fading: false,  // Enable fade between scenes
     // === end of configurable options ===
     id: null,
     stead: 2,
