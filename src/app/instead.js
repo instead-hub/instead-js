@@ -38,10 +38,10 @@ var Instead = {
         interpreter.call('game:ini()');
         // load game, if required
         if (Game.saveExists(savedGameID)) {
-            this.ifaceCmd('load ' + Game.getSaveName(savedGameID), true);
+            this.ifaceCmd('load ' + Game.getSaveName(savedGameID), true, true);
         } else {
             // start game
-            this.ifaceCmd('look', true);
+            this.ifaceCmd('look', true, true);
         }
     },
 
@@ -119,9 +119,10 @@ var Instead = {
         }
     },
 
-    refreshInterface: function refreshInterface(text) {
+    // do not use fade effect, if the game just started
+    refreshInterface: function refreshInterface(text, isStart) {
         var isFading = interpreter.call('instead.get_fading()');
-        if (isFading && Game.fading) {
+        if (isFading && Game.fading && !isStart) {
             UI.fadeOut(function fadeCallback() {
                 Instead.updateUI(text);
                 UI.fadeIn();
@@ -179,7 +180,7 @@ var Instead = {
         UI.refresh();
     },
 
-    ifaceCmd: function ifaceCmd(ifacecmd, refreshUI) {
+    ifaceCmd: function ifaceCmd(ifacecmd, refreshUI, isStart) {
         var ifaceOutput = null;
         // remove part of command before slash
         var command = ifacecmd;
@@ -195,7 +196,7 @@ var Instead = {
             ifaceOutput = text;
         }
         if (refreshUI) {
-            this.refreshInterface(ifaceOutput);
+            this.refreshInterface(ifaceOutput, isStart);
         }
     },
 
