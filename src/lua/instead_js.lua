@@ -45,9 +45,10 @@ instead_exepath = INSTEAD_EMPTYSTR
 
 -- theme
 function instead_theme_var(name, value)
-    -- TODO: get theme variable from JS
     if (value) then
-        js.run('insteadTheme("' .. tostring(name) .. '","' .. tostring(value) .. '")')
+        js.run('insteadThemeSet("' .. tostring(name) .. '","' .. tostring(value) .. '")')
+    else
+        return js.run_string('insteadThemeGet("' .. tostring(name) .. '")')
     end
 end
 

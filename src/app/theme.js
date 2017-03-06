@@ -101,11 +101,15 @@ var Theme = {
     },
     setStyle: function setStyle(name, value) {
         themeCSS.applyParamStyle(name, this.elements, value, Game.path);
+    },
+    getStyle: function getStyle(name) {
+        return this.theme[name];
     }
 };
 
-// configure global handler for 'theme' module
-window.insteadTheme = Theme.setStyle.bind(Theme);
+// configure global handlers for 'theme' module
+window.insteadThemeGet = Theme.getStyle.bind(Theme);
+window.insteadThemeSet = Theme.setStyle.bind(Theme);
 
 module.exports = Theme;
 
