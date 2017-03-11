@@ -5,11 +5,11 @@ var output = {};
 
 function getGameName(gamepath, mainFile, gamename) {
     var game = fs.readFileSync(gamepath + '/' + mainFile, 'utf-8');
-    var name = game.match(/\$Name\(ru\):(.+)\$*/);
+    var name = game.match(/\$Name\(ru\)\s*:\s*([^\$\n]+)/);
     if (name) {
         return name[1].trim();
     }
-    name = game.match(/\$Name:(.+)\$*/);
+    name = game.match(/\$Name\s*:\s*([^\$\n]+)/);
     if (name) {
         return name[1].trim();
     }
