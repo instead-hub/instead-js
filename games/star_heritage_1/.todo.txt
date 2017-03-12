@@ -1,9 +1,0 @@
-- одинаковые локации (r_125_end, r_135_end, r... в первой части НО! картинки везде разные!)
-
-- praggs_leader => отдать neurowhip
-
-- убрать в функцию?
-    health_finish._from = deref(here());
-    clock_next ();
-    status_change (-2, -1, -1, 0, 0);
-    return;
