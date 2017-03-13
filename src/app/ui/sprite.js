@@ -230,7 +230,7 @@ var Sprite = {
 
         fonts[fontID] = font;
         if (!fontNames.hasOwnProperty(fileName)) {
-            Theme.applyParamStyle('SPRITE.FNT', fontID, fileName, Game.path);
+            Theme.applyParamStyle('SPRITE.FNT', fontID, fileName, Game.fileURL);
         }
         fontNames[fileName] = true;
         interpreter.call('js_instead_font_load("' + fileName + size + '", "' + fontID + '")');

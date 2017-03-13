@@ -19,7 +19,7 @@ function setCSS() {
     $('#theme_css').text(css);
 }
 
-function setFontCSS(selector, fontName, v, p) {
+function setFontCSS(selector, fontName, v, getURL) {
     var fntCSS = '';
 
     function setFont(name, file, type) {
@@ -44,24 +44,24 @@ function setFontCSS(selector, fontName, v, p) {
     var fonts = v.match(/(.*?){(.*?),(.*?),(.*?),(.*?)}(\.\w+)/);
     if (fonts) {
         if (fonts[2]) {
-            fntCSS += setFont(fontName, p + fonts[1] + fonts[2] + fonts[6]);
+            fntCSS += setFont(fontName, getURL(fonts[1] + fonts[2] + fonts[6]));
         }
         if (fonts[3]) {
-            fntCSS += setFont(fontName, p + fonts[1] + fonts[3] + fonts[6], 'b');
+            fntCSS += setFont(fontName, getURL(fonts[1] + fonts[3] + fonts[6]), 'b');
         }
         if (fonts[4]) {
-            fntCSS += setFont(fontName, p + fonts[1] + fonts[4] + fonts[6], 'i');
+            fntCSS += setFont(fontName, getURL(fonts[1] + fonts[4] + fonts[6]), 'i');
         }
         if (fonts[5]) {
-            fntCSS += setFont(fontName, p + fonts[1] + fonts[5] + fonts[6], 'bi');
+            fntCSS += setFont(fontName, getURL(fonts[1] + fonts[5] + fonts[6]), 'bi');
         }
     }
     fonts = v.match(/(.*?){([\d\w]+)}(\.\w+)/);
     if (fntCSS === '' && fonts && fonts[2]) {
-        fntCSS += setFont(fontName, p + fonts[1] + fonts[2] + fonts[3]);
+        fntCSS += setFont(fontName, getURL(fonts[1] + fonts[2] + fonts[3]));
     }
     if (fntCSS === '' && v) {
-        fntCSS += setFont(fontName, p + v); // one font for all types
+        fntCSS += setFont(fontName, getURL(v)); // one font for all types
     }
     if (selector) {
         fntCSS += selector + ' * {font-family:' + fontName + ',Arial,Helvetica,sans-serif;}';
@@ -70,8 +70,8 @@ function setFontCSS(selector, fontName, v, p) {
 }
 
 var applyStyle = {
-    'scr.gfx.bg': function s(e, v, p) {
-        e.$stead.css('backgroundImage', 'url("' + p + v + '")');
+    'scr.gfx.bg': function s(e, v, getURL) {
+        e.$stead.css('backgroundImage', 'url("' + getURL(v) + '")');
     },
     'scr.col.bg': function s(e, v) {
         e.$stead.css('background-color', v);
@@ -125,8 +125,8 @@ var applyStyle = {
     'win.ways.mode': function s(e, v) {
         Game.ways_mode = v;
     },
-    'win.fnt.name': function s(e, v, p) {
-        dynamicStyles['win.fnt.name'] = setFontCSS('#win', 'insteadWin', v, p);
+    'win.fnt.name': function s(e, v, getURL) {
+        dynamicStyles['win.fnt.name'] = setFontCSS('#win', 'insteadWin', v, getURL);
         setCSS();
     },
     'win.fnt.size': function s(e, v) {
@@ -160,8 +160,8 @@ var applyStyle = {
             }
         }
     },
-    'inv.fnt.name': function s(e, v, p) {
-        dynamicStyles['inv.fnt.name'] = setFontCSS('#inventory', 'insteadInv', v, p);
+    'inv.fnt.name': function s(e, v, getURL) {
+        dynamicStyles['inv.fnt.name'] = setFontCSS('#inventory', 'insteadInv', v, getURL);
         setCSS();
     },
     'inv.fnt.size': function s(e, v) {
@@ -189,8 +189,8 @@ var applyStyle = {
     'menu.button.x': function s(e, v) { e.$menuButton.css('left', v + 'px'); },
     'menu.button.y': function s(e, v) { e.$menuButton.css('top', v + 'px'); },
 
-    'menu.gfx.button': function s(e, v, p) {
-        e.$menuImage.attr('src', p + v);
+    'menu.gfx.button': function s(e, v, getURL) {
+        e.$menuImage.attr('src', getURL(v));
     },
     'win.col.link': function s(e, v) {
         dynamicStyles['win.col.link'] = '#win a {color:' + v + '}';
@@ -209,13 +209,13 @@ var applyStyle = {
         setCSS();
     },
 
-    'SPRITE.FNT': function s(fontID, v, p) {
-        dynamicStyles[fontID] = setFontCSS(null, fontID, v, p);
+    'SPRITE.FNT': function s(fontID, v, getURL) {
+        dynamicStyles[fontID] = setFontCSS(null, fontID, v, getURL);
         setCSS();
     },
 
-    'CURSOR': function s(e, v) {
-        e.$stead.css('cursor', 'url(' + v + '), auto');
+    'CURSOR': function s(e, v, getURL) {
+        e.$stead.css('cursor', 'url(' + getURL(v) + '), auto');
     }
 };
 
@@ -230,9 +230,9 @@ var controller = {
     immediate: function immediate(v) {
         updateCSS = v;
     },
-    applyParamStyle: function applyParamStyle(key, elements, value, path) {
+    applyParamStyle: function applyParamStyle(key, elements, value, urlGetter) {
         if (key in applyStyle && value !== 'nil') {
-            applyStyle[key](elements, value, path);
+            applyStyle[key](elements, value, urlGetter);
         }
     }
 };
