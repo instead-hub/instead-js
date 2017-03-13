@@ -1,25 +1,9 @@
-* {
-	font-size: 100%;
-}
-
 h1 {
     font-size: 200%;
 }
 
 body {
     background-color: #111111;
-    /* disallow text selection */
-    -webkit-touch-callout: none;
-      -webkit-user-select: none;
-       -khtml-user-select: none;
-         -moz-user-select: none;
-          -ms-user-select: none;
-              user-select: none;
-}
-
-.wordwrap {
-	word-wrap: normal;
-	white-space: pre-line;      /* CSS3 */
 }
 
 pre {
@@ -37,11 +21,6 @@ pre {
     width: 760px;
     margin: 0 auto;
     padding: 20px;
-}
-
-#manager div {
-    width: 400px;
-    padding: 10px;
 }
 
 #manager a {
@@ -69,6 +48,17 @@ pre {
     width: 800px;
     position: relative;
     margin: 0 auto;
+    /* disallow text selection */
+    -webkit-touch-callout: none;
+      -webkit-user-select: none;
+       -khtml-user-select: none;
+         -moz-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
+}
+
+#stead-container * {
+	font-size: 100%;
 }
 
 #stead-toolbar {
@@ -124,7 +114,7 @@ pre {
 
 #ways-bottom {
 	text-align: center;
-    margin-top: 5px;
+    margin-top: 15px;
     margin-bottom: 5px;
 }
 
@@ -139,8 +129,10 @@ pre {
     cursor: inherit;
 }
 
-#text {
+#instead--text {
 	text-align: justify;
+	word-wrap: normal;
+	white-space: pre-line;      /* CSS3 */
 }
 
 #menu {
@@ -195,7 +187,7 @@ l {
     width: 99%;
 }
 
-#log {
+#instead--log {
     z-index: 9000;
     position: absolute;
     left: 0px;
@@ -213,15 +205,15 @@ l {
     display: none;
 }
 
-#log .event {
+#instead--log .event {
     color: #006666;
 }
 
-#log .command {
+#instead--log .command {
     color: #333399;
 }
 
-#log .block {
+#instead--log .block {
     display:inline-block;
     width: 50px;
     font-weight: bold;

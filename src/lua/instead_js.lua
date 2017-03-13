@@ -1,5 +1,12 @@
+STANDALONE = true
+local INSTEAD_THEME_NAME = ''
+
 INSTEAD_PLACEHOLDER = function()
     return
+end
+
+INSTEAD_EMPTYSTR = function()
+  return ''
 end
 
 -- call JS function with given parameters
@@ -22,6 +29,8 @@ table_get_maxn = function(tbl)
 	return c
 end
 
+local INSTEAD_GAMEPATH = ''
+
 js_instead_gamepath = function(path)
   INSTEAD_GAMEPATH=path
 end
@@ -30,19 +39,16 @@ instead_gamepath=function()
   return INSTEAD_GAMEPATH
 end
 
-instead_realpath=function()
-  return nil
-end
-
-function instead_mouse_filter(...)
-  insteadjs_call('console.log', {...})
-end
+instead_realpath = INSTEAD_EMPTYSTR
+instead_savepath = INSTEAD_EMPTYSTR
+instead_exepath = INSTEAD_EMPTYSTR
 
 -- theme
 function instead_theme_var(name, value)
-    -- TODO: get theme variable from JS
     if (value) then
-        js.run('insteadTheme("' .. tostring(name) .. '","' .. tostring(value) .. '")')
+        js.run('insteadThemeSet("' .. tostring(name) .. '","' .. tostring(value) .. '")')
+    else
+        return js.run_string('insteadThemeGet("' .. tostring(name) .. '")')
     end
 end
 
@@ -58,6 +64,17 @@ end
 instead_timer = function(t)
     js.run('instead_settimer("' .. tostring(t) .. '")')
 end
+
+-- sound
+instead_sound = INSTEAD_PLACEHOLDER
+instead_sound_load = INSTEAD_PLACEHOLDER
+instead_sound_free = INSTEAD_PLACEHOLDER
+instead_sounds_free = INSTEAD_PLACEHOLDER
+instead_sound_channel = INSTEAD_PLACEHOLDER
+instead_sound_volume = INSTEAD_PLACEHOLDER
+instead_sound_panning = INSTEAD_PLACEHOLDER
+instead_sound_load_mem = INSTEAD_PLACEHOLDER -- stead 3
+instead_music_callback = INSTEAD_PLACEHOLDER -- stead 3
 
 -- sprites are not supported (yet?)
 sprite_descriptors = {}
@@ -135,81 +152,21 @@ instead_sprite_size = function()
 end
 instead_sprites_free = INSTEAD_PLACEHOLDER
 instead_sprite_colorkey = INSTEAD_PLACEHOLDER
-
--- initialization
-require "stead"
-require "gui"
-
-stead.init(stead)
-
--- io.open proxy
-mock_handle = {}
-
-io.open = function (filename, mode)
-	mock_handle[filename] = {}
-	mock_handle[filename].lines = {}
-    mock_handle[filename].content = ''
-	mock_handle[filename].mode = mode
-    local i = 0
-	return {
-        name = filename,
-        lines = function (_)
-            instead_file_set_content(tostring(_.name), js.run_string('Lua.openFile("' .. tostring(_.name) .. '")'))
-            local n = #mock_handle[_.name].lines
-            return function ()
-               i = i + 1
-               if i < n then return mock_handle[_.name].lines[i] end
-            end
-        end,
-		setvbuf = function (_, s)
-			return
-		end,
-        write = function(_, ...)
-            local a = { ... }
-            for i,v in ipairs(a) do
-                mock_handle[_.name].content = mock_handle[_.name].content .. tostring(v)
-            end
-        end,
-        flush = INSTEAD_PLACEHOLDER,
-        close = function(_)
-            if (mock_handle[_.name].content ~= '') then
-                js.run('Lua.saveFile("' .. _.name .. '")')
-            end
-        end
-	}
+instead_ticks = function()
+    return js.run_string('Date.now()')
 end
-
-os.remove = INSTEAD_PLACEHOLDER
-os.rename = INSTEAD_PLACEHOLDER
-
-instead_file_get_content = function(file)
-    return mock_handle[file].content
+instead_mouse_pos = INSTEAD_PLACEHOLDER
+instead_mouse_show = INSTEAD_PLACEHOLDER
+instead_finger_pos = INSTEAD_PLACEHOLDER
+function instead_mouse_filter(...)
+  insteadjs_call('console.log', {...})
 end
-
-instead_file_set_content = function(file, content)
-    mock_handle[file] = {}
-    mock_handle[file].content = ''
-    if (content ~= '') then
-        mock_handle[file].content = content
-    end
-    local t = {}
-    local function helper(line) table.insert(t, line) return "" end
-    helper((content:gsub("(.-)\r?\n", helper)))
-    mock_handle[file].lines = t
-end
-
--- loadfile proxy
-loadfile = function(file)
-    local content = js.run_string('Lua.loadFile("' .. file .. '")')
-    if (content ~= '') then
-        return assert(loadstring(content))
-    end
-end
+instead_busy = INSTEAD_PLACEHOLDER
 
 -- click
 instead_click = function(x,y)
-    local cmd = instead.input('mouse', true, 1, x, y, x, y)
+    local cmd = iface:input('mouse', true, 1, x, y, x, y)
     if (cmd) then
-       return iface.cmd(iface, cmd)
+       return iface:cmd(cmd)
     end
 end

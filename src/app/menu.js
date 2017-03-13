@@ -1,6 +1,5 @@
 var $ = require('jquery');
 var Game = require('./game');
-var Storage = require('./storage');
 var i18n = require('./i18n');
 
 var UTFsymbol = {
@@ -81,7 +80,7 @@ var Menu = {
         if (Game.log) {
             ui.$toolbar_log.on('click', function toggleLog(e) {
                 e.preventDefault();
-                $('#log').toggle().scrollTop(function sh() { return this.scrollHeight; });
+                $('#instead--log').toggle().scrollTop(function sh() { return this.scrollHeight; });
             });
         } else {
             ui.$toolbar_log.hide();
@@ -92,8 +91,7 @@ var Menu = {
         });
 
         function importLoad(e) {
-            var gameId = Game.getSaveName(Game.importID);
-            Storage.save(gameId, e.target.result);
+            Game.importSave(e.target.result);
             self.toggleSaveload();
             self.toggleMenu();
             steadHandler.load(Game.importID);
@@ -123,7 +121,7 @@ var Menu = {
         if (action) {
             ui.$menu_content.hide();
 
-            Storage.get(Game.id).forEach(function f(item) {
+            Game.allSaves().forEach(function f(item) {
                 var saveId = item.id.match(/save-(\d+)/);
                 var timestamp = new Date(item.timestamp);
                 slots[saveId[1]] = timestamp.toLocaleString('en-US', {
@@ -189,7 +187,7 @@ var Menu = {
     },
     exportSave: function exportSave(id) {
         var savename = Game.getSaveName(id);
-        var content = Storage.load(savename);
+        var content = Game.load(id);
         var data = new Blob([content], {type: 'octet/stream'});
         var dataUrl = window.URL.createObjectURL(data);
         var ref = document.createElement('a');

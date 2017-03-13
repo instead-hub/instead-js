@@ -13,23 +13,44 @@ function normalizeContent(input, field) {
         // do not process empty outputs
         return '';
     }
+    var delim = '#';
+    if (Game.stead !== 2) {
+        delim = '';
+    }
     output = output.replace(
+        /<x:([^>]+)>([^<$]+)/g,
+        function parseTxttab(fullString, param, text) {
+            var s = param.split(',');
+            var margin = s[0] + 'px';
+            if (margin.search('%') !== -1) {
+                margin = s[0];
+            }
+            var align = s[1] || 'left';
+            return '<div style="padding-left:' + margin + '; text-align: ' + align + '">' + text + '</div>';
+        }
+    ).replace(
         /<a(:)([^>]+)>(<i>|)((&#160;)+)/g,
-        '$4<a href="" data-ref="#$2" data-type="' + field + '">$3'
+        '$4<a href="" data-ref="' + delim + '$2" data-type="' + field + '">$3'
     ).replace(
         /<a(:)([^>]+)/g,
-        '<a href="" data-ref="#$2", data-type="' + field + '"'
+        '<a href="" data-ref="' + delim + '$2", data-type="' + field + '"'
     ).replace(
         /<w:([^>]+)>/g,
         '<span class="nowrap">$1</span>'
     ).replace(
+        /<y:([^>]+)>/g,
+        function parseTxty(fullString, tab) {
+            var margin = tab + 'px';
+            if (tab.search('%') !== -1) {
+                margin = tab;
+            }
+            return '<div style="margin-top: ' + margin + '" />';
+        }
+    ).replace(
         /<g:([^>]+)>/g,
         parseImg
     );
-    /* TODO: txttab support
-    r = /<x:([^>,]+),?([^>]+)?>/g;
-    output = output.replace(r, '[x : $1 : $2]');
-    */
+
     return output;
 }
 
@@ -75,7 +96,7 @@ var UI = {
     element: {
         $title: $('#title'),
         $ways: $('#ways-top'),
-        $text: $('#text'),
+        $text: $('#instead--text'),
         $picture: $('#picture'),
         $win: $('#win'),
         $stead: $('#stead'),
@@ -89,8 +110,6 @@ var UI = {
         $toolbar_log: $('#toolbar-log'),
         $menu_mute: $('#menu-mute')
     },
-    isAct: false,
-    actObj: null,
 
     init: function init(steadHandler) {
         var self = this;
@@ -127,13 +146,9 @@ var UI = {
     },
 
     setAct: function setAct(act, obj) {
-        this.isAct = act;
-        this.actObj = obj;
-        this.updateUse();
-    },
-
-    updateUse: function updateUse() {
-        Theme.setCursor(this.isAct);
+        Game.isAct = act;
+        Game.actObj = obj;
+        Theme.setCursor(Game.isAct);
     },
 
     setTitle: function setTitle(content) {
@@ -204,6 +219,14 @@ var UI = {
         this.element.$win.perfectScrollbar('update');
     },
 
+    fadeOut: function fadeOut(callback) {
+        this.element.$stead.fadeOut('fast', callback);
+    },
+
+    fadeIn: function fadeIn() {
+        this.element.$stead.fadeIn('fast');
+    },
+
     clickHandlerLink: function clickHandlerLink(clickCallback, e, obj) {
         e.preventDefault();
         e.stopPropagation();
@@ -215,9 +238,9 @@ var UI = {
 
     clickHandler: function clickHandler(clickCallback, e, obj) {
         e.preventDefault();
-        if (this.isAct) {
+        if (Game.isAct) {
             Logger.log('[click] reset onAct');
-            clickCallback('', 0, true);
+            clickCallback(null, null, true);
         }
         if (obj) {
             clickCallback({x: e.offsetX, y: e.offsetY}); // clicked on picture

@@ -17,15 +17,15 @@ module.exports = {
         loaders: [
             {
                 test: /\.css/,
-                loader: ExtractTextPlugin.extract('style', 'css')
+                loader: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'})
             },
             {
                 test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot|ico)$/,
-                loader: 'file'
+                loader: 'file-loader'
             },
             {
                 test: /\.html$/,
-                loader: 'raw'
+                loader: 'raw-loader'
             }
         ]
     },
@@ -33,7 +33,9 @@ module.exports = {
         new CopyWebpackPlugin([
             {from: 'instead/themes', to: 'themes'},
             {from: 'instead/git/instead/icon/sdl_instead_1x32.png', to: 'instead.png'},
-            {from: 'scripts/list_games.js'}
+            {from: 'scripts/list_games.js'},
+            {from: 'instead/stead2.json'},
+            {from: 'instead/stead3.json'}
         ], {
             ignore: [
                 'Makefile',

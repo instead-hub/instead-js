@@ -7,10 +7,11 @@
     <title>INSTEAD.js</title>
     <script type="text/javascript">
         var INSTEADjs = {
-            mute: true,     // Mute all sounds
-            preload: true,  // Preload all images while game is starting
-            autosave_on_click: false, // Autosave after each click
-            log: false,      // Enable logging
+            mute: true,     // Выключить все звуки
+            preload: true,  // Кэшировать все изображения в фоновом режиме
+            autosave_on_click: false, // Автосохранение после каждого клика
+            log: false,      // Включить журнал игры
+            fading: true,    // Включить эффект затухания при переходе между сценами
             translation: {
                 loading: 'Загрузка...',
                 preload: 'Кэширование картинок',
@@ -61,13 +62,13 @@
                 <div id="title"></div>
                 <div id="picture"></div>
                 <div id="ways-top"></div>
-                <div class="wordwrap" id="text"></div>
+                <div id="instead--text"></div>
                 <div id="ways-bottom"></div>
             </div>
             <div id="inventory"></div>
             <div id="menu_button"><img id="menu_image"></img></div>
         </div>
-        <div id="log"></div>
+        <div id="instead--log"></div>
     </div>
 
 </body>

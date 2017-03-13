@@ -20,25 +20,28 @@ var Instead = {
 
         // preloader
         interpreter.init();
-        interpreter.load('instead_js.lua');
+        // interpreter.load('instead_js.lua');
     },
 
     startGame: function startGame(savedGameID) {
-        interpreter.load('instead_js.lua');
-        interpreter.call('js_instead_gamepath("' + Game.path + '")');
-        setTimer(0);
+        // load corresponding STEAD lua files
+        interpreter.loadStead(Game.stead);
+        // initialize INSTEAD
+        interpreter.load('instead_init.lua');
+        setTimer(0);            // reset game timers
+        UI.loadTheme();         // load theme
+        this.clickSound(true);  // preload click sound
 
-        UI.loadTheme();
-        this.clickSound(true); // preload click sound
         // init game
-        interpreter.load(Game.path + 'main.lua');
-        interpreter.call('stead.game_ini(game)');
+        interpreter.call('js_instead_gamepath("' + Game.path + '")');
+        interpreter.load(Game.mainLua());
+        interpreter.call('game:ini()');
         // load game, if required
         if (Game.saveExists(savedGameID)) {
-            this.ifaceCmd('load ' + Game.getSaveName(savedGameID), true);
+            this.ifaceCmd('load ' + Game.getSaveName(savedGameID), true, true);
         } else {
             // start game
-            this.ifaceCmd('look', true);
+            this.ifaceCmd('look', true, true);
         }
     },
 
@@ -65,58 +68,71 @@ var Instead = {
 
     click: function click(uiref, field, onStead) {
         var ref = uiref;
+        var refID;
         this.clickSound(); // play click sound
 
-        if (typeof ref === 'object') {
+        if (uiref !== null && typeof ref === 'object') {
             var text = interpreter.call('instead_click(' + ref.x + ', ' + ref.y + ')');
             if (text !== null) {
-                UI.setText(text);
-                this.refreshInterface();
+                this.refreshInterface(text);
             }
             return;
         }
 
-        if (!onStead && (UI.isAct || field === 'Inv')) {
-            ref = ref.substr(1);
-            if (ref.substr(0, 3) === 'act') {
-                ref = 'use ' + ref.substr(4);
-                this.ifaceCmd(ref, true);
+        if (!onStead && (Game.isAct || field === 'Inv')) {
+            refID = ref.match(/([\d]+)/)[0];
+            if (ref.search('act') === 0 || ref.search('act') === 1 ) {
+                this.ifaceCmd('use ' + refID, true);
                 this.autoSave();
                 return;
             }
-
-            if (UI.isAct) {
+            if (Game.isAct) {
                 if (field !== 'Ways' && field !== 'Title') {
-                    if (ref === UI.actObj) {
-                        this.ifaceCmd('use ' + ref, true);
+                    if (refID === Game.actObj) {
+                        this.ifaceCmd('use ' + refID, true);
                     } else {
-                        this.ifaceCmd('use ' + UI.actObj + ',' + ref, true);
+                        this.ifaceCmd('use ' + Game.actObj + ',' + refID, true);
                     }
                     UI.setAct(false, '');
                     this.autoSave();
                 }
             } else {
-                UI.setAct(true, ref);
+                UI.setAct(true, refID);
             }
         } else {
-            if (UI.isAct) {
+            if (Game.isAct) {
                 UI.setAct(false, '');
             }
-            this.ifaceCmd(ref, true);
-            this.autoSave();
+            if (ref) {
+                this.ifaceCmd(ref, true);
+                this.autoSave();
+            }
         }
     },
 
     kbd: function keyboardHandler(ev) {
         if (ev) {
-            var kbdHandler = interpreter.call('instead.input("kbd", ' + ev.down +  ', "' + ev.key + '")');
+            var kbdHandler = interpreter.call('iface:input("kbd", ' + ev.down +  ', "' + ev.key + '")');
             if (kbdHandler && kbdHandler !== 'nil') {
                 this.ifaceCmd(kbdHandler, true);
             }
         }
     },
 
-    refreshInterface: function refreshInterface() {
+    // do not use fade effect, if the game just started
+    refreshInterface: function refreshInterface(text, isStart) {
+        var isFading = interpreter.call('instead.get_fading()');
+        if (isFading && Game.fading && !isStart) {
+            UI.fadeOut(function fadeCallback() {
+                Instead.updateUI(text);
+                UI.fadeIn();
+            });
+        } else {
+            this.updateUI(text);
+        }
+    },
+
+    updateUI: function updateUI(text) {
         var inventory;
         var horizontalInventory;
         var musicPath;
@@ -124,10 +140,15 @@ var Instead = {
         // sound
         soundPath = interpreter.call('instead.get_sound()');
         if (soundPath !== null) {
-            if (soundPath.indexOf(Game.path) === -1) {
-                soundPath = Game.path + soundPath;
-            }
-            HTMLAudio.playSound(soundPath);
+            soundPath.split(';').forEach(function parseSound(item) {
+                var soundFile = (item.split('@'))[0];
+                if (soundFile !== '') {
+                    if (soundFile.indexOf(Game.path) === -1) {
+                        soundFile = Game.path + soundFile;
+                    }
+                    HTMLAudio.playSound(soundFile);
+                }
+            });
         }
         // music
         musicPath = interpreter.call('instead.get_music()');
@@ -151,21 +172,38 @@ var Instead = {
         }
         // picture
         UI.setPicture(interpreter.call('instead.get_picture()'));
+        // text
+        if (text) {
+            UI.setText(text);
+        }
         // refresh
         UI.refresh();
     },
 
-    ifaceCmd: function ifaceCmd(command, refreshUI) {
-        var cmd = 'iface.cmd(iface, "' + command + '")';
+    ifaceCmd: function ifaceCmd(ifacecmd, refreshUI, isStart) {
+        var ifaceOutput = null;
+        // remove part of command before slash
+        var command = ifacecmd;
+        if (command[0] !== '#') {
+            command = ifacecmd.replace(/^([^\/]+\/)/, '');
+        }
+        var cmd = 'iface:cmd("' + command + '")';
         var text = interpreter.call(cmd);
         if (command !== 'user_timer') {
             Logger.log('> ' + command);
         }
         if (text !== null && command.indexOf('save') !== 0) {
-            UI.setText(text);
+            ifaceOutput = text;
         }
         if (refreshUI) {
-            this.refreshInterface();
+            this.refreshInterface(ifaceOutput, isStart);
+        }
+    },
+
+    timerCmd: function timerCmd() {
+        var timerHandler = interpreter.call('stead.timer()');
+        if (timerHandler && timerHandler !== 'nil') {
+            Instead.ifaceCmd(timerHandler, true); // use direct reference, since context is lost
         }
     },
 
@@ -188,6 +226,11 @@ var Instead = {
 };
 
 function kbdEvent(event) {
+    if (!Game.id) {
+        // do not handle keyboard events
+        // if game is not loaded yet
+        return;
+    }
     Instead.kbd(Keyboard.handler(event));
 }
 
@@ -200,9 +243,7 @@ function setTimer(t) {
         window.clearInterval(LuaTimer);
     } else {
         LuaTimer = window.setInterval(
-            function LuaTimeout() {
-                Instead.ifaceCmd('user_timer', true);
-            },
+            Instead.timerCmd,
             time
         );
     }
