@@ -162,7 +162,7 @@ var Sprite = {
                 sprite.canvas.getContext('2d').drawImage(img, 0, 0);
                 sprite.unavailable = false;
             }, false);
-            img.src = Game.path + sprite.name;
+            img.src = Game.fileURL(sprite.name);
         }
     },
     copy: function spriteCopy() {

@@ -58,6 +58,13 @@ var Game = {
     },
     allSaves: function allSaves() {
         return Storage.get(this.id);
+    },
+    fileURL: function fileURL(filename) {
+        var fullpath = filename;
+        if (filename.indexOf(this.path) === -1) {
+            fullpath = this.path + filename;
+        }
+        return fullpath;
     }
 };
 

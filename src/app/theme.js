@@ -23,7 +23,7 @@ var Theme = {
 
         if (Game.ownTheme) {
             // try to load custom theme
-            customTheme = ajaxGetSync(Game.path + this.themeFile);
+            customTheme = ajaxGetSync(Game.fileURL(this.themeFile));
             if (customTheme) {
                 interpreter.call('js_instead_theme_name(".")');
                 includedThemeName = this.parseTheme(customTheme, Game.path);
