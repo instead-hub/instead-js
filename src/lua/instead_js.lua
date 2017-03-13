@@ -1,3 +1,4 @@
+DEBUG = false
 STANDALONE = true
 local INSTEAD_THEME_NAME = ''
 
