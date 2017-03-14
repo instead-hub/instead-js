@@ -39,6 +39,9 @@ var Game = {
         return this.id + '-save-' + id;
     },
     saveExists: function saveExists(id) {
+        if (typeof id === 'undefined') {
+            return false;
+        }
         return Storage.exists(this.getSaveName(id));
     },
     loadConfig: function loadConfig(cfg) {

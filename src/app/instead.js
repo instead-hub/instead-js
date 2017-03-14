@@ -46,9 +46,12 @@ var Instead = {
     },
 
     resetGame: function resetGame() {
+        var self = this;
         HTMLAudio.stopMusic();
         interpreter.clear();
-        this.startGame();
+        setTimeout(function t() {
+            self.startGame();
+        }, 100);
     },
 
     saveGame: function saveGame(id) {
