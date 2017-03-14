@@ -38,6 +38,9 @@ var Storage = {
         return '';
     },
     exists: function exists(name) {
+        if (!name) {
+            return false;
+        }
         return !!mfs.getItem(name);
     },
     clear: function clear() {

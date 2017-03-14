@@ -11,6 +11,11 @@ var gameDefaults = {
     id: null,
     stead: 2,
     name: 'Default Game',
+    details: {
+        author: '',
+        version: '',
+        info: ''
+    },
     autosaveID: 9,
     importID: 10,
     saveSlots: 5,
@@ -39,6 +44,9 @@ var Game = {
         return this.id + '-save-' + id;
     },
     saveExists: function saveExists(id) {
+        if (typeof id === 'undefined') {
+            return false;
+        }
         return Storage.exists(this.getSaveName(id));
     },
     loadConfig: function loadConfig(cfg) {
@@ -58,6 +66,14 @@ var Game = {
     },
     allSaves: function allSaves() {
         return Storage.get(this.id);
+    },
+    fileURL: function fileURL(filename) {
+        var fullpath = filename;
+        // direct self-reference here, since fileURL is used as callback
+        if (filename.indexOf(Game.path) === -1) {
+            fullpath = Game.path + filename;
+        }
+        return fullpath;
     }
 };
 

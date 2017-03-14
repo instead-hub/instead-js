@@ -108,7 +108,8 @@ var UI = {
         $menu_content: $('#menu-content'),
         $toolbar_mute: $('#toolbar-mute'),
         $toolbar_log: $('#toolbar-log'),
-        $menu_mute: $('#menu-mute')
+        $menu_mute: $('#menu-mute'),
+        $gameDetails: $('#instead--game-details')
     },
 
     init: function init(steadHandler) {

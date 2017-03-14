@@ -6,7 +6,7 @@ var Preloader = {
     load: function load(imgArray, callbackProgress, callbackFinished) {
         var self = this;
         imgArray.forEach(function preloadImg(image) {
-            $('<img>').attr('src', Game.path + image).on('load', function complete() {
+            $('<img>').attr('src', Game.fileURL(image)).on('load', function complete() {
                 self.progress += 1;
             });
         });

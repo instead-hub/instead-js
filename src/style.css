@@ -7,12 +7,12 @@ body {
 }
 
 pre {
-	white-space: pre-line;
+    white-space: pre-line;
     margin: 0px;
 }
 
 .nowrap {
-	white-space: pre;
+    white-space: pre;
 }
 
 #manager {
@@ -58,7 +58,7 @@ pre {
 }
 
 #stead-container * {
-	font-size: 100%;
+    font-size: 100%;
 }
 
 #stead-toolbar {
@@ -98,22 +98,22 @@ pre {
 }
 
 #win, #inventory, #menu_button {
-	position: absolute;
+    position: absolute;
 }
 
 #win, #inventory {
-	overflow: auto;
-	overflow-x: hidden;
-	overflow-y: hidden;
+    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 #title, #picture, #ways-top {
-	text-align: center;
+    text-align: center;
     margin-bottom: 5px;
 }
 
 #ways-bottom {
-	text-align: center;
+    text-align: center;
     margin-top: 15px;
     margin-bottom: 5px;
 }
@@ -130,29 +130,29 @@ pre {
 }
 
 #instead--text {
-	text-align: justify;
-	word-wrap: normal;
-	white-space: pre-line;      /* CSS3 */
+    text-align: justify;
+    word-wrap: normal;
+    white-space: pre-line;      /* CSS3 */
 }
 
 #menu {
-	position: absolute;
-	z-index: 9000;
-    width: 200px;
-	top: 200px;
-	left: 300px;
+    position: absolute;
+    z-index: 9000;
+    width: 250px;
+    top: 150px;
+    left: 275px;
     padding: 10px;
     border-style: solid;
-	display: none;
+    display: none;
     text-align: center;
 }
 
 #menu a {
-	height: 24px;
-	text-decoration: none;
-	width: 100%;
+    height: 24px;
+    text-decoration: none;
+    width: 100%;
     padding: 1px;
-	display: block;
+    display: block;
 }
 
 #menu h3 {
@@ -218,4 +218,9 @@ l {
     width: 50px;
     font-weight: bold;
     border-right: 3px solid #C0C0C0;
+}
+
+#instead--game-details pre {
+    margin-top: 5px;
+    font-size: 0.8em;
 }

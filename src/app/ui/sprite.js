@@ -162,7 +162,7 @@ var Sprite = {
                 sprite.canvas.getContext('2d').drawImage(img, 0, 0);
                 sprite.unavailable = false;
             }, false);
-            img.src = Game.path + sprite.name;
+            img.src = Game.fileURL(sprite.name);
         }
     },
     copy: function spriteCopy() {
@@ -230,7 +230,7 @@ var Sprite = {
 
         fonts[fontID] = font;
         if (!fontNames.hasOwnProperty(fileName)) {
-            Theme.applyParamStyle('SPRITE.FNT', fontID, fileName, Game.path);
+            Theme.applyParamStyle('SPRITE.FNT', fontID, fileName, Game.fileURL);
         }
         fontNames[fileName] = true;
         interpreter.call('js_instead_font_load("' + fileName + size + '", "' + fontID + '")');

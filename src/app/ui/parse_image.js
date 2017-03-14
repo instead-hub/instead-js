@@ -3,7 +3,7 @@ var Sprite = require('./sprite');
 
 function parseCompositeImage(image) {
     var parsedImg = image.split(';');
-    var images = '<img src="' + Game.path + parsedImg[0] + '">';
+    var images = '<img src="' + Game.fileURL(parsedImg[0]) + '">';
     for (var i = 1; i < parsedImg.length; i++) {
         images += parseCompositePart(parsedImg[i]);
     }
@@ -24,7 +24,7 @@ function parseCompositePart(image) {
         pMargins = imageParts[1].match(/(\d+),(\d+)/);
         pStyle = 'left:' + pMargins[1] + 'px;top:' + pMargins[2] + 'px;';
     }
-    return '<img style="position:absolute;' + pStyle + '" src="' + Game.path + pImg + '"/>';
+    return '<img style="position:absolute;' + pStyle + '" src="' + Game.fileURL(pImg) + '"/>';
 }
 
 
@@ -74,7 +74,7 @@ function parseImg(fullString, img) {
     if (image.indexOf(';') !== -1) {
         return parseCompositeImage(image);
     }
-    return '<img ' + (style ? 'style="' + style + '" ' : '') + 'src="' + Game.path + image + '">';
+    return '<img ' + (style ? 'style="' + style + '" ' : '') + 'src="' + Game.fileURL(image) + '">';
 }
 
 module.exports = parseImg;

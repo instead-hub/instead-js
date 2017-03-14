@@ -6,7 +6,7 @@ var interpreter = require('../lua/interpreter');
 var Theme = {
     themeFile: 'theme.ini',
     theme: {},
-    themeUrl: {},
+    themeUrlGetter: {},
     load: function load(elements, themePath) {
         var defaultTheme = null;
         var customTheme = null;
@@ -19,21 +19,25 @@ var Theme = {
 
         // load default theme
         defaultTheme = ajaxGetSync(themePath + 'default/' + this.themeFile);
-        this.parseTheme(defaultTheme, themePath + 'default/');
+        this.parseTheme(defaultTheme, function themeURL(file) {
+            return themePath + 'default/' + file;
+        });
 
         if (Game.ownTheme) {
             // try to load custom theme
-            customTheme = ajaxGetSync(Game.path + this.themeFile);
+            customTheme = ajaxGetSync(Game.fileURL(this.themeFile));
             if (customTheme) {
                 interpreter.call('js_instead_theme_name(".")');
-                includedThemeName = this.parseTheme(customTheme, Game.path);
+                includedThemeName = this.parseTheme(customTheme, Game.fileURL);
             }
 
             // load included theme
             if (includedThemeName) {
                 includedTheme = ajaxGetSync(themePath + includedThemeName + '/' + this.themeFile);
-                this.parseTheme(includedTheme, themePath + includedThemeName + '/');
-                this.parseTheme(customTheme, Game.path);
+                this.parseTheme(includedTheme, function fileURL(file) {
+                    return themePath + includedThemeName + '/' + file;
+                });
+                this.parseTheme(customTheme, Game.fileURL);
             }
         }
         // apply theme
@@ -44,7 +48,7 @@ var Theme = {
 
         this.setCursor();
     },
-    parseTheme: function parseTheme(data, url) {
+    parseTheme: function parseTheme(data, urlGetter) {
         var self = this;
         var isInclude;
         data.split('\n').forEach(function parse(line) {
@@ -55,7 +59,7 @@ var Theme = {
                 name = pair[0].trim();
                 value = (pair[1].split(';'))[0].trim();
                 self.theme[name] = value;
-                self.themeUrl[name] = url;
+                self.themeUrlGetter[name] = urlGetter;
                 if (name === 'include') {
                     isInclude = value;
                 }
@@ -66,7 +70,7 @@ var Theme = {
     apply: function applyTheme() {
         var elements = this.elements;
         var theme = this.theme;
-        var themeUrl = this.themeUrl;
+        var themeUrlGetter = this.themeUrlGetter;
 
         if (theme['scr.gfx.mode'] === 'embedded') {
             // ignore gfx size for embedded
@@ -86,21 +90,21 @@ var Theme = {
             theme['inv.fnt.name'] = 'Tahoma';
         }
         Object.keys(theme).forEach(function parseParam(key) {
-            themeCSS.applyParamStyle(key, elements, theme[key], themeUrl[key]);
+            themeCSS.applyParamStyle(key, elements, theme[key], themeUrlGetter[key]);
         });
         if ('snd.click' in theme && theme['snd.click']) {
-            Game.clickSound = themeUrl['snd.click'] + theme['snd.click'];
+            Game.clickSound = themeUrlGetter['snd.click'](theme['snd.click']);
         }
     },
     setCursor: function setCursor(isAct) {
-        var cursor = this.themeUrl['scr.gfx.cursor.normal'] + this.theme['scr.gfx.cursor.normal'];
+        var cursor = this.theme['scr.gfx.cursor.normal'];
         if (isAct) {
-            cursor = this.themeUrl['scr.gfx.cursor.normal'] + this.theme['scr.gfx.cursor.use'];
+            cursor = this.theme['scr.gfx.cursor.use'];
         }
-        themeCSS.applyParamStyle('CURSOR', this.elements, cursor);
+        themeCSS.applyParamStyle('CURSOR', this.elements, cursor, this.themeUrlGetter['scr.gfx.cursor.normal']);
     },
     setStyle: function setStyle(name, value) {
-        themeCSS.applyParamStyle(name, this.elements, value, Game.path);
+        themeCSS.applyParamStyle(name, this.elements, value, Game.fileURL);
     },
     getStyle: function getStyle(name) {
         return this.theme[name];

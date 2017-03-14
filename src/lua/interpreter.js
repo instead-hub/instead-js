@@ -33,7 +33,7 @@ function luaRequire(filepath) {
     path = path.replace(/\./g, '/');
     if (!vfs.isStead(path + '.lua')) {
         // require unknown core module, assume loading from game files
-        path = Game.path + path;
+        path = Game.fileURL(path);
     }
     if (Lua.requires[path]) {
         return null;
@@ -43,7 +43,7 @@ function luaRequire(filepath) {
 }
 
 function luaDofile(filepath) {
-    return runLuaFromPath(Game.path + filepath);
+    return runLuaFromPath(Game.fileURL(filepath));
 }
 
 
@@ -65,10 +65,7 @@ function loadFile(path) {
 }
 
 function openFile(path) {
-    var filepath = path;
-    if (filepath.indexOf(Game.path) === -1) {
-        filepath = Game.path + path; // add game path if it's not present already
-    }
+    var filepath = Game.fileURL(path);
     return vfs.readfile(filepath);
 }
 

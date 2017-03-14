@@ -42,17 +42,28 @@ var Manager = {
                 self.startGame(chosenGame);
             } else {
                 $('#loading').remove();
-                gameIds.forEach(function listGame(id) {
-                    self.el.append('<a href="#/' + id + '" data-ref="' + id + '">' + allGames[id].name + '</a>');
-                });
+                gameIds
+                    .sort(function gameListSorter(a, b) {
+                        if (allGames[a].name > allGames[b].name) {
+                            return 1;
+                        }
+                        if (allGames[a].name < allGames[b].name) {
+                            return -1;
+                        }
+                        return 0;
+                    })
+                    .forEach(function listGame(id) {
+                        self.el.append('<a href="#/' + id + '" data-ref="' + id + '">' + allGames[id].name + '</a>');
+                    });
             }
         });
     },
     startGame: function startGame(gameid) {
         window.location.hash = '#/' + gameid;
-        Game.path = gamepath + gameid + '/';
+        Game.path = allGames[gameid].path || gamepath + gameid + '/';
         Game.id = gameid;
         Game.name = allGames[gameid].name;
+        Game.details = allGames[gameid].details;
         Game.ownTheme = allGames[gameid].theme;
         if (allGames[gameid].stead) {
             Game.stead = allGames[gameid].stead; // stead version
