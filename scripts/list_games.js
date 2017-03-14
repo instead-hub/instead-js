@@ -3,17 +3,33 @@ var fs = require('fs');
 var dirname = './games/';
 var output = {};
 
-function getGameName(gamepath, mainFile, gamename) {
+function matchRe(regexp, string) {
+    var isMatching = string.match(regexp);
+    if (isMatching) {
+        return isMatching[1].trim();
+    }
+    return '';
+}
+
+function getGameInfo(gamepath, mainFile, gamename) {
+    var gameinfo = {
+        name: gamename,
+        author: '',
+        version: '',
+        info: ''
+    };
     var game = fs.readFileSync(gamepath + '/' + mainFile, 'utf-8');
-    var name = game.match(/\$Name\(ru\)\s*:\s*([^\$\n]+)/);
-    if (name) {
-        return name[1].trim();
+    gameinfo.name = matchRe(/\$Name\(ru\)\s*:\s*([^\$\n]+)/, game);
+    if (gameinfo.name === '') {
+        gameinfo.name = matchRe(/\$Name\s*:\s*([^\$\n]+)/, game);
+        if (gameinfo.name === '') {
+            gameinfo.name = gamename;
+        }
     }
-    name = game.match(/\$Name\s*:\s*([^\$\n]+)/);
-    if (name) {
-        return name[1].trim();
-    }
-    return gamename;
+    gameinfo.author = matchRe(/\$Author\s*:\s*([^\$\n]+)/, game);
+    gameinfo.version = matchRe(/\$Version\s*:\s*([^\$\n]+)/, game);
+    gameinfo.info = matchRe(/\$Info\s*:\s*([^\$\n]+)/, game);
+    return gameinfo;
 }
 
 function walkSync(dir, filelist, gamedir) {
@@ -36,7 +52,7 @@ fs.readdir(dirname, function readFn(err, filenames) {
     }
     filenames.forEach(function processFn(filename) {
         var gamepath = dirname + filename;
-        var gameName;
+        var gameInfo = {};
         var images;
         var hasTheme = false;
         var stead = null;
@@ -51,13 +67,18 @@ fs.readdir(dirname, function readFn(err, filenames) {
                 mainFile = 'main3.lua';
             }
             if (stead) {
-                gameName = getGameName(gamepath, mainFile, filename);
+                gameInfo = getGameInfo(gamepath, mainFile, filename);
                 images = walkSync(gamepath, [], gamepath);
                 if (fs.existsSync(gamepath + '/theme.ini')) {
                     hasTheme = true;
                 }
                 output[filename] = {
-                    name: gameName,
+                    name: gameInfo.name,
+                    details: {
+                        version: gameInfo.version,
+                        author: gameInfo.author,
+                        info: gameInfo.info
+                    },
                     stead: stead,
                     theme: hasTheme,
                     preload: images
