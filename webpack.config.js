@@ -50,7 +50,7 @@ module.exports = {
         new ExtractTextPlugin('styles.css')
     ],
     devServer: {
-        contentBase: './src/assets',
+        contentBase: './build',
         stats: 'minimal'
     },
     resolve: {
