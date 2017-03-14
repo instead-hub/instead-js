@@ -50,7 +50,7 @@ var Manager = {
     },
     startGame: function startGame(gameid) {
         window.location.hash = '#/' + gameid;
-        Game.path = gamepath + gameid + '/';
+        Game.path = allGames[gameid].path || gamepath + gameid + '/';
         Game.id = gameid;
         Game.name = allGames[gameid].name;
         Game.ownTheme = allGames[gameid].theme;
