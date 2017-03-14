@@ -2,7 +2,7 @@ var HTMLAudio = {
     track: null,
     audio: null,
     isMuted: false,
-    playMusic: function play(track, loop) {
+    playMusic: function play(track, loop, onEndCallback) {
         if (!track.match(/(mp3|ogg|wav)$/)) {
             console.log('Unsupported music format:' + track); // eslint-disable-line no-console
             return;
@@ -16,6 +16,9 @@ var HTMLAudio = {
             this.audio.autoplay = true;
             this.audio.muted = this.isMuted;
             this.play(this.audio, loop);
+            this.audio.addEventListener('ended', function cb() {
+                onEndCallback(track);
+            });
         }
     },
     stopMusic: function stop() {

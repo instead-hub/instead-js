@@ -153,7 +153,10 @@ var Instead = {
         // music
         musicPath = interpreter.call('instead.get_music()');
         if (musicPath !== null) {
-            HTMLAudio.playMusic(Game.fileURL(musicPath), 0);
+            HTMLAudio.playMusic(Game.fileURL(musicPath), 0, function cbOnEnd() {
+                // call when music is finished
+                interpreter.call('instead.finish_music()');
+            });
         }
         // title
         UI.setTitle(interpreter.call('instead.get_title()'));
