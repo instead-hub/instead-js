@@ -219,3 +219,8 @@ l {
     font-weight: bold;
     border-right: 3px solid #C0C0C0;
 }
+
+#instead--game-details pre {
+    margin-top: 5px;
+    font-size: 0.8em;
+}

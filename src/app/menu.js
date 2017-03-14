@@ -106,6 +106,12 @@ var Menu = {
     },
     toggleMenu: function toggleMenu() {
         var ui = this.element;
+        ui.$gameDetails.html(
+            Game.name + ' - ' + Game.details.version + '<br/>'
+            + Game.details.author + '<br/>'
+            + '<pre>' + Game.details.info.replace(/\\n/g, '\n') + '</pre>'
+            + '<hr>'
+        );
         ui.$menu_saveload.hide();
         ui.$menu_content.show();
         ui.$menu.toggle();

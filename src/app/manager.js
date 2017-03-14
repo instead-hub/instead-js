@@ -63,6 +63,7 @@ var Manager = {
         Game.path = allGames[gameid].path || gamepath + gameid + '/';
         Game.id = gameid;
         Game.name = allGames[gameid].name;
+        Game.details = allGames[gameid].details;
         Game.ownTheme = allGames[gameid].theme;
         if (allGames[gameid].stead) {
             Game.stead = allGames[gameid].stead; // stead version

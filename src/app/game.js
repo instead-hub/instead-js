@@ -11,6 +11,11 @@ var gameDefaults = {
     id: null,
     stead: 2,
     name: 'Default Game',
+    details: {
+        author: '',
+        version: '',
+        info: ''
+    },
     autosaveID: 9,
     importID: 10,
     saveSlots: 5,
