@@ -1,5 +1,6 @@
 var $ = require('jquery');
 var Game = require('./game');
+var vfs = require('./vfs');
 var i18n = require('./i18n');
 
 var UTFsymbol = {
@@ -188,16 +189,7 @@ var Menu = {
     exportSave: function exportSave(id) {
         var savename = Game.getSaveName(id);
         var content = Game.load(id);
-        var data = new Blob([content], {type: 'octet/stream'});
-        var dataUrl = window.URL.createObjectURL(data);
-        var ref = document.createElement('a');
-        document.body.appendChild(ref);
-        ref.style = 'display: none';
-        ref.href = dataUrl;
-        ref.download = savename + '.lua';
-        ref.click();
-        window.URL.revokeObjectURL(dataUrl);
-        ref.remove();
+        vfs.exportFile(savename + '.lua', content);
     }
 };
 
