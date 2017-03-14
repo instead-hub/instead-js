@@ -61,8 +61,9 @@ var Game = {
     },
     fileURL: function fileURL(filename) {
         var fullpath = filename;
-        if (filename.indexOf(this.path) === -1) {
-            fullpath = this.path + filename;
+        // direct self-reference here, since fileURL is used as callback
+        if (filename.indexOf(Game.path) === -1) {
+            fullpath = Game.path + filename;
         }
         return fullpath;
     }
