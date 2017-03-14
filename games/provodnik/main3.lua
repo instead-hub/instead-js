@@ -1,7 +1,7 @@
---$Name:Проводник
---$Info:Демонстрационная игра\nна STEAD3
---$Author:Peter Kosyh, 2017
---$Version:0.2
+--$Name:Проводник$
+--$Info:Демонстрационная игра\nна STEAD3$
+--$Author:Peter Kosyh, 2017$
+--$Version:0.5$
 require "fmt"
 require "noinv"
 require "snapshots"
@@ -473,6 +473,10 @@ room {
 						p [[Но в бутылке вода! Я не хочу портить горючие свойства жидкости.]]
 						return
 					end
+					if w.full then
+						p [[Как бы не пришлось потом это пить...]];
+						return
+					end
 					w.spirt = true
 					p [[Я вылил содержимое банки в бутылку.]]
 					remove(s)
@@ -903,6 +907,11 @@ obj {
 		if transport and not have(bottle) then
 			take(bottle)
 			p [[Я подошел к столу и забрал свою бутылку.]]
+			if bottle.full then
+				p [[Она оказалась пустой.]]
+				bottle.full = false
+				bottle.drink = false
+			end
 		end
 	end;
 };
@@ -1062,6 +1071,10 @@ bottle = obj {
 			return
 		end
 		if w/'спирт' then
+			if s.full then
+				p [[Как бы не пришлось потом это самому пить...]];
+				return
+			end
 			s.spirt = true
 			p [[Я вылил содержимое банки в бутылку.]]
 			remove(w)
@@ -1206,6 +1219,8 @@ dlg {
 		{"А что это за здание?", "-- Это замечательное место! Оставайся, и не задавай лишних вопросов."};
        }}
 
+global 'know_provodnik' (false)
+
 dlg {
 	nam = 'председатель';
 	title = [[Разговор с угрюмым человеком]];
@@ -1233,7 +1248,7 @@ dlg {
 		   { '#снова', "Проводник?", [[-- Да, я проводник!]],
 		     { '#a', "Проводник чего?", [[-- Общества, в котором вы находитесь!]],
 		       {"Я не состою в вашем обществе!", function()
-				if have 'монета' then push '#омонете'; return "-- Вас обличает золотая монета!" end
+				if have 'монета' then push '#омонете'; know_provodnik = true; return "-- Вас обличает золотая монета!" end
 				p [[-- Вы сидите за нашим столом!]];
 		       end }
 		     },
@@ -1247,9 +1262,9 @@ dlg {
 		     { '#b', "Да вы сумасшедший!",
 		       [[Это не относится к делу. Может быть и вы сумасшедший, но важно не это, важно -- что вы вор!]],
 		     };
-		     { cond = function() return closed '#a' and closed '#b' end;
+		     { cond = function() return (closed '#a' and closed '#b') or know_provodnik end;
 		       [[Ладно, я сдаюсь.]], function(s) remove 'еда'; p [[С этими словами я затолкал бутерброды в рот и съел их. -- Так то лучше! -- одобрил мой поступок проводник. И больше никаких нарушений!]]; if bottle.full and have(bottle) then p [[И не забудьте про бутылку вина, которую вы также стянули!]] bottle.drink = true; end; walkout() end;
-		     }
+		     };
 		   },
 		  },
 		 },
