@@ -60,14 +60,14 @@ var Manager = {
     },
     startGame: function startGame(gameid) {
         window.location.hash = '#/' + gameid;
-        Game.path = allGames[gameid].path || gamepath + gameid + '/';
-        Game.id = gameid;
-        Game.name = allGames[gameid].name;
-        Game.details = allGames[gameid].details;
-        Game.ownTheme = allGames[gameid].theme;
-        if (allGames[gameid].stead) {
-            Game.stead = allGames[gameid].stead; // stead version
-        }
+        Instead.initGame({
+            id: gameid,
+            path: allGames[gameid].path || gamepath + gameid + '/',
+            name: allGames[gameid].name,
+            details: allGames[gameid].details,
+            ownTheme: allGames[gameid].theme,
+            stead: allGames[gameid].stead
+        });
         if (Game.preload) {
             this.preload(gameid);
         }

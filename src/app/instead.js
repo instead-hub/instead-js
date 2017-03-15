@@ -23,6 +23,15 @@ var Instead = {
         // interpreter.load('instead_js.lua');
     },
 
+    initGame: function initGame(gameData) {
+        // Allowed properties: path, id, name, details, ownTheme, stead
+        for (var property in gameData) {
+            if (gameData.hasOwnProperty(property)) {
+                Game[property] = gameData[property];
+            }
+        }
+    },
+
     startGame: function startGame(savedGameID) {
         // load corresponding STEAD lua files
         interpreter.loadStead(Game.stead);
