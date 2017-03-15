@@ -15,7 +15,7 @@ var Manager = {
         this.container = $('#manager');
         this.el = $('#manager-gamelist');
         this.el.perfectScrollbar({wheelSpeed: 1});
-        this.el.append('<a href="" id="loading">' + i18n.t('loading') + '</a>');
+        this.el.append('<div id="loading">' + i18n.t('loading') + '</div>');
 
         var self = this;
         this.el.on('click', 'a', function selectGame(e) {

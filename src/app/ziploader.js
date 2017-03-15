@@ -1,4 +1,4 @@
-/* global Promise, Uint8Array, TextDecoder */
+/* global Uint8Array, TextDecoder */
 var $ = require('jquery');
 
 var JSZip = require('jszip');
@@ -91,14 +91,19 @@ function importGame(e) {
         });
     };
 
-    $('#manager-gamelist').html('<a href="" id="loading">' + i18n.t('loading') + '</a>');
+    $('#manager-gamelist').html('<div id="loading">' + i18n.t('loading') + '</div>');
 
     JSZip.loadAsync(e.target.result).then(function handleZip(zip) {
         zip.forEach(function handleZipEntry(relativePath, entry) {
             fileBuffer.push(filehandler(entry));
         });
-        Promise.all(fileBuffer).then(function startgame() {
-            ZipLoader.startGame('provodnik', gameinfo);
+        $.when.apply($, fileBuffer).then(function startgame() {
+            if (gameinfo.name) {
+                ZipLoader.startGame('provodnik', gameinfo);
+            } else {
+                $('#manager-gamelist').html('<div id="loading">' + i18n.t('zip_incorrect') + '</div>');
+                Game.reset();
+            }
         });
     });
 }
