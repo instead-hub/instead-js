@@ -50,7 +50,7 @@ function luaDofile(filepath) {
 function saveFile(path) {
     var filepath = path;
     if (path.search(/prefs\.tmp/) !== -1) {
-        filepath = 'PREFS';
+        filepath = Game.getPrefsName();
     }
     var data = Lua.eval('instead_file_get_content("' + path + '")');
     Storage.save(filepath, data[1]);
@@ -59,7 +59,7 @@ function saveFile(path) {
 function loadFile(path) {
     var filepath = path;
     if (path.search(/prefs/) !== -1) {
-        filepath = 'PREFS';
+        filepath = Game.getPrefsName();
     }
     return Storage.load(filepath);
 }
