@@ -35,7 +35,9 @@ module.exports = {
             {from: 'instead/git/instead/icon/sdl_instead_1x32.png', to: 'instead.png'},
             {from: 'scripts/list_games.js'},
             {from: 'instead/stead2.json'},
-            {from: 'instead/stead3.json'}
+            {from: 'instead/stead3.json'},
+            {from: 'node_modules/text-encoding/lib/encoding.js'},
+            {from: 'node_modules/text-encoding/lib/encoding-indexes.js'}
         ], {
             ignore: [
                 'Makefile',

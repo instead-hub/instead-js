@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>INSTEAD.js</title>
     <script type="text/javascript">
+        if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent))
+            document.write('<script src="encoding-indexes.js"><\/script><script src="encoding.js"><\/script>');
+    </script>
+    <script type="text/javascript">
         var INSTEADjs = {
             mute: true,     // Выключить все звуки
             preload: true,  // Кэшировать все изображения в фоновом режиме

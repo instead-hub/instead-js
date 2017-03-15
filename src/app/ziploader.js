@@ -1,4 +1,4 @@
-/* global Promise, Uint8Array, TextDecoder */
+/* global Uint8Array, TextDecoder */
 var $ = require('jquery');
 
 var JSZip = require('jszip');
@@ -97,7 +97,7 @@ function importGame(e) {
         zip.forEach(function handleZipEntry(relativePath, entry) {
             fileBuffer.push(filehandler(entry));
         });
-        Promise.all(fileBuffer).then(function startgame() {
+        $.when.apply($, fileBuffer).then(function startgame() {
             ZipLoader.startGame('provodnik', gameinfo);
         });
     });
