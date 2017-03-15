@@ -15,7 +15,8 @@ var i18n = {
         menu_export: 'Export saved game',
         menu_autosave: 'Autosave',
         menu_cancel: 'Cancel',
-        zip: 'Play game from ZIP file'
+        zip: 'Play game from ZIP file',
+        zip_incorrect: 'This is not an INSTEAD game zip file, choose another.'
     },
     load: function init(d) {
         this.dict = d;
