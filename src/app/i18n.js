@@ -14,7 +14,8 @@ var i18n = {
         menu_import: 'Import',
         menu_export: 'Export saved game',
         menu_autosave: 'Autosave',
-        menu_cancel: 'Cancel'
+        menu_cancel: 'Cancel',
+        zip: 'Play game from ZIP file'
     },
     load: function init(d) {
         this.dict = d;

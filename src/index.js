@@ -6,6 +6,7 @@ var $ = require('jquery');
 require('perfect-scrollbar/jquery')($);
 
 var Manager = require('./app/manager');
+var ZipLoader = require('./app/ziploader');
 
 var i18n = require('./app/i18n');
 var Game = require('./app/game');
@@ -23,6 +24,7 @@ document.addEventListener(
             }
         }
         Manager.init();
+        ZipLoader.init();
         // initialization of INSTEAD components
         Instead.init();
         UI.init('#instead', Instead.handlers);
