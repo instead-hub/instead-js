@@ -86,6 +86,7 @@ var Game = {
         if (filename.indexOf(Game.path) === -1) {
             fullpath = Game.path + filename;
         }
+        fullpath = fullpath.replace(/\\/g, '\/');
         if (gamefsBlob.hasOwnProperty(fullpath)) {
             return gamefsBlob[fullpath];
         }
