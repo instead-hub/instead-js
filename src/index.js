@@ -25,7 +25,7 @@ document.addEventListener(
         Manager.init();
         // initialization of INSTEAD components
         Instead.init();
+        UI.init('#instead', Instead.handlers);
         Menu.init(UI.element, Instead.handlers);
-        UI.init(Instead.handlers);
     }
 );

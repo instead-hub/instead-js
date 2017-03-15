@@ -1,5 +1,7 @@
 var $ = require('jquery');
 
+var appHTML = require('./app.html');
+
 var Game = require('./game');
 var Theme = require('./theme');
 var Logger = require('./log');
@@ -93,27 +95,28 @@ function isUnchangedWin() {
 }
 
 var UI = {
-    element: {
-        $title: $('#title'),
-        $ways: $('#ways-top'),
-        $text: $('#instead--text'),
-        $picture: $('#picture'),
-        $win: $('#win'),
-        $stead: $('#stead'),
-        $inventory: $('#inventory'),
-        $menuButton: $('#menu_button'),
-        $menuImage: $('#menu_image'),
-        $menu: $('#instead--menu'),
-        $menu_saveload: $('#instead--menu-saveload'),
-        $menu_content: $('#instead--menu-content'),
-        $toolbar_mute: $('#toolbar-mute'),
-        $toolbar_log: $('#toolbar-log'),
-        $menu_mute: $('#instead--menu-mute'),
-        $gameDetails: $('#instead--game-details')
-    },
-
-    init: function init(steadHandler) {
+    init: function init(rootElement, steadHandler) {
         var self = this;
+        $(rootElement).html(appHTML);
+        // initialize JQuery selectors
+        this.element = {
+            $title: $('#title'),
+            $ways: $('#ways-top'),
+            $text: $('#instead--text'),
+            $picture: $('#picture'),
+            $win: $('#win'),
+            $stead: $('#stead'),
+            $inventory: $('#inventory'),
+            $menuButton: $('#menu_button'),
+            $menuImage: $('#menu_image'),
+            $menu: $('#instead--menu'),
+            $menu_saveload: $('#instead--menu-saveload'),
+            $menu_content: $('#instead--menu-content'),
+            $toolbar_mute: $('#toolbar-mute'),
+            $toolbar_log: $('#toolbar-log'),
+            $menu_mute: $('#instead--menu-mute'),
+            $gameDetails: $('#instead--game-details')
+        };
 
         this.element.$stead.on('click', 'a', function handler(e) {
             var obj = $(this);
