@@ -1,6 +1,5 @@
 /* global Lua */
 require('script-loader!../../instead/lua.vm.js');
-var ajaxGetSync = require('../ajax');
 var Game = require('../app/game');
 var vfs = require('../app/vfs');
 var Storage = require('../app/storage');
@@ -81,7 +80,7 @@ var Interpreter = {
     },
     loadStead: function loadStead(version) {
         var path = (version === 3) ? './stead3.json' : './stead2.json';
-        var stead = JSON.parse(ajaxGetSync(path));
+        var stead = JSON.parse(vfs.readfile(path));
         vfs.updateStead(stead);
     },
     call: function interpreterCall(command) {
