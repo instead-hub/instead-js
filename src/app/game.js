@@ -1,5 +1,7 @@
 var Storage = require('./storage');
 
+var gamefsBlob = {};
+
 var gameDefaults = {
     // === configurable options ===
     mute: true,     // Mute all sounds
@@ -32,12 +34,17 @@ var gameDefaults = {
 
 var Game = {
     mainLua: function mainLua() {
-        return this.path + '/' + (this.stead === 2 ? 'main.lua' : 'main3.lua');
+        var fullpath = this.path + (this.stead === 2 ? 'main.lua' : 'main3.lua');
+        if (gamefsBlob.hasOwnProperty(fullpath)) {
+            return gamefsBlob[fullpath];
+        }
+        return fullpath;
     },
     reset: function reset() {
         Object.keys(gameDefaults).forEach(function resetConfig(key) {
             Game[key] = gameDefaults[key];
         });
+        gamefsBlob = {};
     },
     getSaveName: function getSaveName(i) {
         var id = i ? i : 0;
@@ -70,11 +77,17 @@ var Game = {
     allSaves: function allSaves() {
         return Storage.get(this.id);
     },
+    addFile: function addFile(path, url) {
+        gamefsBlob[path] = url;
+    },
     fileURL: function fileURL(filename) {
         var fullpath = filename;
         // direct self-reference here, since fileURL is used as callback
         if (filename.indexOf(Game.path) === -1) {
             fullpath = Game.path + filename;
+        }
+        if (gamefsBlob.hasOwnProperty(fullpath)) {
+            return gamefsBlob[fullpath];
         }
         return fullpath;
     }

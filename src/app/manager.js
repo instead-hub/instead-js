@@ -12,7 +12,8 @@ var allGames;
 
 var Manager = {
     init: function init() {
-        this.el = $('#manager');
+        this.container = $('#manager');
+        this.el = $('#manager-gamelist');
         this.el.perfectScrollbar({wheelSpeed: 1});
         this.el.append('<a href="" id="loading">' + i18n.t('loading') + '</a>');
 
@@ -70,6 +71,8 @@ var Manager = {
         });
         if (Game.preload) {
             this.preload(gameid);
+        } else {
+            $('#stead-toolbar-info').html('<b>' + Game.name + '</b>');
         }
         this.hide();
         Instead.startGame(Game.autosaveID);
@@ -92,7 +95,7 @@ var Manager = {
         );
     },
     hide: function hide() {
-        this.el.hide();
+        this.container.hide();
         UI.show();
         $('#stead-toolbar').show();
     }

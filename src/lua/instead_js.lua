@@ -171,3 +171,15 @@ instead_click = function(x,y)
        return iface:cmd(cmd)
     end
 end
+
+-- scene helper
+js_instead_getscene = function(invmode)
+    local scene = {}
+    scene['sound'] = instead.get_sound()
+    scene['music'] = instead.get_music()
+    scene['title'] = instead.get_title()
+    scene['ways'] = instead.get_ways()
+    scene['inv'] = instead.get_inv(invmode)
+    scene['pic'] = instead.get_picture()
+    return scene
+end

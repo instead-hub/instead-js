@@ -224,3 +224,21 @@ l {
     margin-top: 5px;
     font-size: 0.8em;
 }
+
+#zip-game {
+    width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+#zip-game + label {
+    margin: 15px;
+    padding: 10px;
+    color: #CCCCCC;
+    background-color: #00394d;
+    display: inline-block;
+    cursor: pointer;
+}

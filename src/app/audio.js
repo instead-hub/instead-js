@@ -3,7 +3,7 @@ var HTMLAudio = {
     audio: null,
     isMuted: false,
     playMusic: function play(track, loop, onEndCallback) {
-        if (!track.match(/(mp3|ogg|wav)$/)) {
+        if (!track.match(/(mp3|ogg|wav)$/) && !track.match(/^blob:/)) {
             console.log('Unsupported music format:' + track); // eslint-disable-line no-console
             return;
         }
