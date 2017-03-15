@@ -175,11 +175,11 @@ var applyStyle = {
     'menu.col.bg': function s(e, v) { e.$menu.css('background-color', v); },
     'menu.col.fg': function s(e, v) { e.$menu.css('color', v); },
     'menu.col.link': function s(e, v) {
-        dynamicStyles['menu.col.link'] = '#menu a {color:' + v + '}';
+        dynamicStyles['menu.col.link'] = '#instead--menu a {color:' + v + '}';
         setCSS();
     },
     'menu.col.alink': function s(e, v) {
-        dynamicStyles['menu.col.alink'] = '#menu a:hover {color:' + v + '}';
+        dynamicStyles['menu.col.alink'] = '#instead--menu a:hover {color:' + v + '}';
         setCSS();
     },
     'menu.col.alpha': function s(e, v) { e.$menu.css('opacity', (v / 255)); },

@@ -15,11 +15,11 @@ var Menu = {
         var self = this;
 
         // apply menu translations
-        $('#menu-back').text(i18n.t('menu_back'));
-        $('#menu-save').text(i18n.t('menu_save'));
-        $('#menu-load').text(i18n.t('menu_load'));
-        $('#menu-reset').text(i18n.t('menu_reset'));
-        $('#menu-export').text(i18n.t('menu_export'));
+        $('#instead--menu-back').text(i18n.t('menu_back'));
+        $('#instead--menu-save').text(i18n.t('menu_save'));
+        $('#instead--menu-load').text(i18n.t('menu_load'));
+        $('#instead--menu-reset').text(i18n.t('menu_reset'));
+        $('#instead--menu-export').text(i18n.t('menu_export'));
 
         function toggleMute() {
             if (Game.mute) {

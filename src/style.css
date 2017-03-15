@@ -40,7 +40,7 @@ pre {
 }
 
 /* Set font */
-#manager *, #menu *, #stead-toolbar * {
+#manager *, #instead--menu *, #stead-toolbar * {
     font-family: Tahoma,Verdana,Helvetica,Arial,sans-serif;
 }
 
@@ -135,7 +135,7 @@ pre {
     white-space: pre-line;      /* CSS3 */
 }
 
-#menu {
+#instead--menu {
     position: absolute;
     z-index: 9000;
     width: 250px;
@@ -147,7 +147,7 @@ pre {
     text-align: center;
 }
 
-#menu a {
+#instead--menu a {
     height: 24px;
     text-decoration: none;
     width: 100%;
@@ -155,7 +155,7 @@ pre {
     display: block;
 }
 
-#menu h3 {
+#instead--menu h3 {
     margin-top: 5px;
 }
 
@@ -165,7 +165,7 @@ pre {
     font-size: 0.8em;
 }
 
-#menu-saveload {
+#instead--menu-saveload {
     display: none;
 }
 
