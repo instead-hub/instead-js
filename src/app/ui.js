@@ -103,12 +103,12 @@ var UI = {
         $inventory: $('#inventory'),
         $menuButton: $('#menu_button'),
         $menuImage: $('#menu_image'),
-        $menu: $('#menu'),
-        $menu_saveload: $('#menu-saveload'),
-        $menu_content: $('#menu-content'),
+        $menu: $('#instead--menu'),
+        $menu_saveload: $('#instead--menu-saveload'),
+        $menu_content: $('#instead--menu-content'),
         $toolbar_mute: $('#toolbar-mute'),
         $toolbar_log: $('#toolbar-log'),
-        $menu_mute: $('#menu-mute'),
+        $menu_mute: $('#instead--menu-mute'),
         $gameDetails: $('#instead--game-details')
     },
 

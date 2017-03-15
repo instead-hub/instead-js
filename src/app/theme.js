@@ -1,7 +1,7 @@
 var Game = require('./game');
 var themeCSS = require('./ui/theme_css');
-var ajaxGetSync = require('../ajax');
 var interpreter = require('../lua/interpreter');
+var vfs = require('./vfs');
 
 var Theme = {
     themeFile: 'theme.ini',
@@ -18,14 +18,14 @@ var Theme = {
         themeCSS.resetStyles();
 
         // load default theme
-        defaultTheme = ajaxGetSync(themePath + 'default/' + this.themeFile);
+        defaultTheme = vfs.readfile(themePath + 'default/' + this.themeFile);
         this.parseTheme(defaultTheme, function themeURL(file) {
             return themePath + 'default/' + file;
         });
 
         if (Game.ownTheme) {
             // try to load custom theme
-            customTheme = ajaxGetSync(Game.fileURL(this.themeFile));
+            customTheme = vfs.readfile(Game.fileURL(this.themeFile));
             if (customTheme) {
                 interpreter.call('js_instead_theme_name(".")');
                 includedThemeName = this.parseTheme(customTheme, Game.fileURL);
@@ -33,7 +33,7 @@ var Theme = {
 
             // load included theme
             if (includedThemeName) {
-                includedTheme = ajaxGetSync(themePath + includedThemeName + '/' + this.themeFile);
+                includedTheme = vfs.readfile(themePath + includedThemeName + '/' + this.themeFile);
                 this.parseTheme(includedTheme, function fileURL(file) {
                     return themePath + includedThemeName + '/' + file;
                 });

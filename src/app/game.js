@@ -43,6 +43,9 @@ var Game = {
         var id = i ? i : 0;
         return this.id + '-save-' + id;
     },
+    getPrefsName: function getPrefsName() {
+        return this.id + '-prefs';
+    },
     saveExists: function saveExists(id) {
         if (typeof id === 'undefined') {
             return false;

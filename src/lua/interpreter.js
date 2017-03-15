@@ -1,6 +1,5 @@
 /* global Lua */
 require('script-loader!../../instead/lua.vm.js');
-var ajaxGetSync = require('../ajax');
 var Game = require('../app/game');
 var vfs = require('../app/vfs');
 var Storage = require('../app/storage');
@@ -50,7 +49,7 @@ function luaDofile(filepath) {
 function saveFile(path) {
     var filepath = path;
     if (path.search(/prefs\.tmp/) !== -1) {
-        filepath = 'PREFS';
+        filepath = Game.getPrefsName();
     }
     var data = Lua.eval('instead_file_get_content("' + path + '")');
     Storage.save(filepath, data[1]);
@@ -59,7 +58,7 @@ function saveFile(path) {
 function loadFile(path) {
     var filepath = path;
     if (path.search(/prefs/) !== -1) {
-        filepath = 'PREFS';
+        filepath = Game.getPrefsName();
     }
     return Storage.load(filepath);
 }
@@ -81,7 +80,7 @@ var Interpreter = {
     },
     loadStead: function loadStead(version) {
         var path = (version === 3) ? './stead3.json' : './stead2.json';
-        var stead = JSON.parse(ajaxGetSync(path));
+        var stead = JSON.parse(vfs.readfile(path));
         vfs.updateStead(stead);
     },
     call: function interpreterCall(command) {
