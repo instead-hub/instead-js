@@ -32,13 +32,15 @@ function luaRequire(filepath) {
     path = path.replace(/\./g, '/');
     if (!vfs.isStead(path + '.lua')) {
         // require unknown core module, assume loading from game files
-        path = Game.fileURL(path);
+        path = Game.fileURL(path + '.lua');
+    } else {
+        path = path + '.lua';
     }
     if (Lua.requires[path]) {
         return null;
     }
     Lua.requires[path] = true;
-    return runLuaFromPath(path + '.lua');
+    return runLuaFromPath(path);
 }
 
 function luaDofile(filepath) {
