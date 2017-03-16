@@ -2,6 +2,7 @@
 var $ = require('jquery');
 
 var JSZip = require('jszip');
+var JSZipUtils = require('../lib/jszip-utils');
 
 var Game = require('./game');
 var Instead = require('./instead');
@@ -34,6 +35,14 @@ var ZipLoader = {
             reader.onload = importGame;
             reader.readAsArrayBuffer(this.files[0]);
         });
+
+        var gameHash = window.location.hash;
+        if (gameHash.match(/#zip:/)) {
+            var gameUrl = window.location.hash.replace('#zip:', '');
+            JSZipUtils.getBinaryContent(gameUrl, function(err, data) {
+                importGame({target:{result: data}});
+            });
+        }
     },
     startGame: function startGame(gameid, gameinfo) {
         Instead.initGame(gameinfo);
