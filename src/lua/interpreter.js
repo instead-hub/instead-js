@@ -70,6 +70,14 @@ function openFile(path) {
     return vfs.readfile(filepath);
 }
 
+function gameInfo() {
+    return {
+        id: Game.id,
+        name: Game.name,
+        stead: Game.stead
+    };
+}
+
 var Interpreter = {
     init: function interpreterInit() {
         Lua.initialize();
@@ -79,6 +87,7 @@ var Interpreter = {
         Lua.saveFile = saveFile;
         Lua.loadFile = loadFile;
         Lua.openFile = openFile;
+        Lua.gameinfo = gameInfo; // to be used by external handlers
     },
     loadStead: function loadStead(version) {
         var path = (version === 3) ? './stead3.json' : './stead2.json';
