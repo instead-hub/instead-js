@@ -39,8 +39,12 @@ var ZipLoader = {
         var gameHash = window.location.hash;
         if (gameHash.match(/#zip:/)) {
             var gameUrl = window.location.hash.replace('#zip:', '');
-            JSZipUtils.getBinaryContent(gameUrl, function(err, data) {
-                importGame({target:{result: data}});
+            JSZipUtils.getBinaryContent(gameUrl, function zipHandler(err, data) {
+                if (err) {
+                    $('#manager-gamelist').html('<div id="loading">' + JSON.stringify(err) + '</div>');
+                    return;
+                }
+                importGame({target: {result: data}});
             });
         }
     },
