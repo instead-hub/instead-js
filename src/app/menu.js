@@ -1,5 +1,6 @@
 var $ = require('jquery');
 var Game = require('./game');
+var Logger = require('./log');
 var vfs = require('./vfs');
 var i18n = require('./i18n');
 
@@ -81,6 +82,7 @@ var Menu = {
         if (Game.log) {
             ui.$toolbar_log.on('click', function toggleLog(e) {
                 e.preventDefault();
+                Logger.show();
                 $('#instead--log').toggle().scrollTop(function sh() { return this.scrollHeight; });
             });
         } else {
