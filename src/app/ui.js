@@ -31,6 +31,9 @@ function normalizeContent(input, field) {
             return '<div style="padding-left:' + margin + '; text-align: ' + align + '">' + text + '</div>';
         }
     ).replace(
+        /<a:#>/g,
+        '<a name="instead--scroll-anchor"> </a>'
+    ).replace(
         /<a(:)([^>]+)>(<i>|)((&#160;)+)/g,
         '$4<a href="" data-ref="' + delim + '$2" data-type="' + field + '">$3'
     ).replace(
@@ -114,6 +117,7 @@ var UI = {
             $menu_content: $('#instead--menu-content'),
             $toolbar_mute: $('#toolbar-mute'),
             $toolbar_log: $('#toolbar-log'),
+            $toolbar_menu: $('#toolbar-menu'),
             $menu_mute: $('#instead--menu-mute'),
             $gameDetails: $('#instead--game-details')
         };

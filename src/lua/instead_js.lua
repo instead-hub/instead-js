@@ -10,6 +10,10 @@ INSTEAD_EMPTYSTR = function()
   return ''
 end
 
+INSTEAD_NOTIMPLEMENTED = function(fn)
+  js.run('Lua.logWarning("' .. fn .. ' : not implemented in instead.js");')
+end
+
 -- call JS function with given parameters
 insteadjs_call = function(jsfn, arg)
     local arguments = ''
@@ -71,11 +75,21 @@ instead_sound = INSTEAD_PLACEHOLDER
 instead_sound_load = INSTEAD_PLACEHOLDER
 instead_sound_free = INSTEAD_PLACEHOLDER
 instead_sounds_free = INSTEAD_PLACEHOLDER
-instead_sound_channel = INSTEAD_PLACEHOLDER
-instead_sound_volume = INSTEAD_PLACEHOLDER
-instead_sound_panning = INSTEAD_PLACEHOLDER
-instead_sound_load_mem = INSTEAD_PLACEHOLDER -- stead 3
-instead_music_callback = INSTEAD_PLACEHOLDER -- stead 3
+instead_sound_channel = = function()
+    INSTEAD_NOTIMPLEMENTED('sound_channel')
+end
+instead_sound_volume = = function()
+    INSTEAD_NOTIMPLEMENTED('sound_volume')
+end
+instead_sound_panning = = function()
+    INSTEAD_NOTIMPLEMENTED('sound_panning')
+end
+instead_sound_load_mem = = function()
+    INSTEAD_NOTIMPLEMENTED('sound_load_mem')
+end -- stead 3
+instead_music_callback = function()
+    INSTEAD_NOTIMPLEMENTED('music_callback')
+end -- stead 3
 
 -- sprites are not supported (yet?)
 sprite_descriptors = {}
@@ -97,16 +111,16 @@ instead_font_scaled_size = function(size)
     return size
 end
 instead_sprite_alpha = function()
-    print('NOT IMPLEMENTED: sprite.sprite_alpha')
+    INSTEAD_NOTIMPLEMENTED('sprite.sprite_alpha')
 end
 instead_sprite_dup = function()
-    print('NOT IMPLEMENTED: sprite.dup')
+    INSTEAD_NOTIMPLEMENTED('sprite.dup')
 end
 instead_sprite_scale = function()
-    print('NOT IMPLEMENTED: sprite.scale')
+    INSTEAD_NOTIMPLEMENTED('sprite.scale')
 end
 instead_sprite_rotate = function()
-    print('NOT IMPLEMENTED: sprite.rotate')
+    INSTEAD_NOTIMPLEMENTED('sprite.rotate')
 end
 instead_sprite_text = function(font, text, col, style)
     local arguments = ''
@@ -121,7 +135,7 @@ js_instead_sprite_text = function(font, id)
     sprite_descriptors[font] = id
 end
 instead_sprite_text_size = function()
-    print('NOT IMPLEMENTED: sprite.text_size')
+    INSTEAD_NOTIMPLEMENTED('sprite.text_size')
 end
 instead_sprite_draw = function(...)
     insteadjs_call('Sprite.draw', {...})
@@ -149,7 +163,7 @@ instead_sprite_free = function(descriptor)
     js.run('Sprite.free("' .. tostring(descriptor) .. '")')
 end
 instead_sprite_size = function()
-    print('NOT IMPLEMENTED: sprite.size')
+    INSTEAD_NOTIMPLEMENTED('sprite.size')
 end
 instead_sprites_free = INSTEAD_PLACEHOLDER
 instead_sprite_colorkey = INSTEAD_PLACEHOLDER

@@ -18,6 +18,7 @@ var gameDefaults = {
         version: '',
         info: ''
     },
+    gJournal: [], // game event log
     autosaveID: 9,
     importID: 10,
     saveSlots: 5,
@@ -82,15 +83,20 @@ var Game = {
     },
     fileURL: function fileURL(filename) {
         var fullpath = filename;
+        Game.journal('[file: ' + filename + ']');
         // direct self-reference here, since fileURL is used as callback
         if (filename.indexOf(Game.path) === -1) {
             fullpath = Game.path + filename;
         }
         fullpath = fullpath.replace(/\\/g, '\/');
+        fullpath = fullpath.replace(/\/+/g, '\/'); // fix multiple slashes
         if (gamefsBlob.hasOwnProperty(fullpath)) {
             return gamefsBlob[fullpath];
         }
         return fullpath;
+    },
+    journal: function gameJournal(message) {
+        Game.gJournal.push(message);
     }
 };
 

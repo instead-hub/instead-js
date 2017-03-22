@@ -1,5 +1,6 @@
 var $ = require('jquery');
 var Game = require('./game');
+var Logger = require('./log');
 var vfs = require('./vfs');
 var i18n = require('./i18n');
 
@@ -20,6 +21,7 @@ var Menu = {
         $('#instead--menu-load').text(i18n.t('menu_load'));
         $('#instead--menu-reset').text(i18n.t('menu_reset'));
         $('#instead--menu-export').text(i18n.t('menu_export'));
+        $('#instead--menu-export-log').text(i18n.t('menu_export_log'));
 
         function toggleMute() {
             if (Game.mute) {
@@ -73,6 +75,9 @@ var Menu = {
             case 'mute':
                 toggleMute();
                 break;
+            case 'export-log':
+                self.exportLog();
+                break;
             default:
                 self.toggleMenu();
             }
@@ -81,6 +86,7 @@ var Menu = {
         if (Game.log) {
             ui.$toolbar_log.on('click', function toggleLog(e) {
                 e.preventDefault();
+                Logger.show();
                 $('#instead--log').toggle().scrollTop(function sh() { return this.scrollHeight; });
             });
         } else {
@@ -90,6 +96,7 @@ var Menu = {
             e.preventDefault();
             toggleMute();
         });
+        ui.$toolbar_menu.on('click', this.toggleMenu.bind(this));
 
         function importLoad(e) {
             Game.importSave(e.target.result);
@@ -196,6 +203,11 @@ var Menu = {
         var savename = Game.getSaveName(id);
         var content = Game.load(id);
         vfs.exportFile(savename + '.lua', content);
+    },
+    exportLog: function exportLog() {
+        var logContentTxt = Game.id + '\n' + Game.name + '\n\n';
+        logContentTxt += Game.gJournal.join('\n');
+        vfs.exportFile(Game.id + '-log.txt', logContentTxt);
     }
 };
 

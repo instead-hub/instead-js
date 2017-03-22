@@ -44,10 +44,7 @@ pre {
     font-family: Tahoma,Verdana,Helvetica,Arial,sans-serif;
 }
 
-#stead-container {
-    width: 800px;
-    position: relative;
-    margin: 0 auto;
+#instead--menu *, #stead-toolbar *, #stead * {
     /* disallow text selection */
     -webkit-touch-callout: none;
       -webkit-user-select: none;
@@ -55,6 +52,12 @@ pre {
          -moz-user-select: none;
           -ms-user-select: none;
               user-select: none;
+}
+
+#stead-container {
+    width: 800px;
+    position: relative;
+    margin: 0 auto;
 }
 
 #stead-container * {
@@ -212,6 +215,12 @@ l {
 #instead--log .command {
     color: #333399;
 }
+
+#instead--log .error {
+    color: #993333;
+    font-weight: bold;
+}
+
 
 #instead--log .block {
     display:inline-block;

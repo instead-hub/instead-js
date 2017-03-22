@@ -13,6 +13,7 @@ var i18n = {
         menu_loadgame: 'Load game',
         menu_import: 'Import',
         menu_export: 'Export saved game',
+        menu_export_log: 'Export game log',
         menu_autosave: 'Autosave',
         menu_cancel: 'Cancel',
         zip: 'Play game from ZIP file',
