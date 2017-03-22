@@ -89,6 +89,9 @@ var Interpreter = {
         Lua.loadFile = loadFile;
         Lua.openFile = openFile;
         Lua.gameinfo = gameInfo; // to be used by external handlers
+        Lua.logWarning = function logWarning(msg) {
+            Logger.log('{warning} ' + msg);
+        };
         Lua.set_error_callback(function errCb(errorMsg) {
             Logger.log('{error} ' + errorMsg);
         });
