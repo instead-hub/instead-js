@@ -1,3 +1,4 @@
+var Logger = require('./log');
 var HTMLAudio = {
     track: null,
     audio: null,
@@ -5,6 +6,7 @@ var HTMLAudio = {
     playMusic: function play(track, loop, onEndCallback) {
         if (!track.match(/(mp3|ogg|wav)$/) && !track.match(/^blob:/)) {
             console.log('Unsupported music format:' + track); // eslint-disable-line no-console
+            Logger.log('{warning} Unsupported music format:' + track); // eslint-disable-line no-console
             return;
         }
         if (track !== this.track) {

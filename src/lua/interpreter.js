@@ -3,6 +3,7 @@ require('script-loader!../../instead/lua.vm.js');
 var Game = require('../app/game');
 var vfs = require('../app/vfs');
 var Storage = require('../app/storage');
+var Logger = require('../app/log');
 
 // synchronous ajax to get file, so code executed before function returns
 function runLuaFromPath(path) {
@@ -88,6 +89,9 @@ var Interpreter = {
         Lua.loadFile = loadFile;
         Lua.openFile = openFile;
         Lua.gameinfo = gameInfo; // to be used by external handlers
+        Lua.set_error_callback(function errCb(errorMsg) {
+            Logger.log('{error} ' + errorMsg);
+        });
     },
     loadStead: function loadStead(version) {
         var path = (version === 3) ? './stead3.json' : './stead2.json';
