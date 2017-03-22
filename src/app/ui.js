@@ -117,6 +117,7 @@ var UI = {
             $menu_content: $('#instead--menu-content'),
             $toolbar_mute: $('#toolbar-mute'),
             $toolbar_log: $('#toolbar-log'),
+            $toolbar_menu: $('#toolbar-menu'),
             $menu_mute: $('#instead--menu-mute'),
             $gameDetails: $('#instead--game-details')
         };

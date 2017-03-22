@@ -96,6 +96,7 @@ var Menu = {
             e.preventDefault();
             toggleMute();
         });
+        ui.$toolbar_menu.on('click', this.toggleMenu.bind(this));
 
         function importLoad(e) {
             Game.importSave(e.target.result);
