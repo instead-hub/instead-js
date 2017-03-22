@@ -75,16 +75,16 @@ instead_sound = INSTEAD_PLACEHOLDER
 instead_sound_load = INSTEAD_PLACEHOLDER
 instead_sound_free = INSTEAD_PLACEHOLDER
 instead_sounds_free = INSTEAD_PLACEHOLDER
-instead_sound_channel = = function()
+instead_sound_channel = function()
     INSTEAD_NOTIMPLEMENTED('sound_channel')
 end
-instead_sound_volume = = function()
+instead_sound_volume = function()
     INSTEAD_NOTIMPLEMENTED('sound_volume')
 end
-instead_sound_panning = = function()
+instead_sound_panning = function()
     INSTEAD_NOTIMPLEMENTED('sound_panning')
 end
-instead_sound_load_mem = = function()
+instead_sound_load_mem = function()
     INSTEAD_NOTIMPLEMENTED('sound_load_mem')
 end -- stead 3
 instead_music_callback = function()
