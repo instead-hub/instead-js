@@ -88,8 +88,9 @@ var Game = {
         if (filename.indexOf(Game.path) === -1) {
             fullpath = Game.path + filename;
         }
-        fullpath = fullpath.replace(/\\/g, '\/');
-        fullpath = fullpath.replace(/\/+/g, '\/'); // fix multiple slashes
+        fullpath = fullpath.trim()
+            .replace(/\\/g, '\/')
+            .replace(/\/+/g, '\/'); // fix multiple slashes
         if (gamefsBlob.hasOwnProperty(fullpath)) {
             return gamefsBlob[fullpath];
         }
