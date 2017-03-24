@@ -247,10 +247,9 @@ function kbdEvent(event) {
 var LuaTimer; // eslint-disable-line no-unused-vars
 
 function setTimer(t) {
+    window.clearInterval(LuaTimer); // clear previous timer
     var time = parseInt(t, 10);
-    if (time === 0) {
-        window.clearInterval(LuaTimer);
-    } else {
+    if (time > 0) {
         LuaTimer = window.setInterval(
             Instead.timerCmd,
             time
