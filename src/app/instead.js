@@ -223,6 +223,7 @@ var Instead = {
 
     autoSave: function autoSave(force) {
         if (Game.autosave_on_click || force) {
+            interpreter.call('instead.autosave(' + Game.autosaveID + ')'); // enable autosave
             this.saveGame(Game.autosaveID); // autosave
         }
     },
