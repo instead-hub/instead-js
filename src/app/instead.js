@@ -223,6 +223,7 @@ var Instead = {
 
     autoSave: function autoSave(force) {
         if (Game.autosave_on_click || force) {
+            interpreter.call('instead.autosave(' + Game.autosaveID + ')'); // enable autosave
             this.saveGame(Game.autosaveID); // autosave
         }
     },
@@ -247,10 +248,9 @@ function kbdEvent(event) {
 var LuaTimer; // eslint-disable-line no-unused-vars
 
 function setTimer(t) {
+    window.clearInterval(LuaTimer); // clear previous timer
     var time = parseInt(t, 10);
-    if (time === 0) {
-        window.clearInterval(LuaTimer);
-    } else {
+    if (time > 0) {
         LuaTimer = window.setInterval(
             Instead.timerCmd,
             time
