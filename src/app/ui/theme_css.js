@@ -76,7 +76,10 @@ var applyStyle = {
     'scr.col.bg': function s(e, v) {
         e.$stead.css('background-color', v);
     },
-    'scr.w': function s(e, v) { e.$stead.css('width', v + 'px'); },
+    'scr.w': function s(e, v) {
+        e.$stead.css('width', v + 'px');
+        e.$container.css('width', v + 'px'); // change width of the INSTEAD container with toolbar
+    },
     'scr.h': function s(e, v) { e.$stead.css('height', v + 'px'); },
 
     'scr.gfx.w': function s(e, v) {

@@ -103,6 +103,7 @@ var UI = {
         $(rootElement).html(appHTML);
         // initialize JQuery selectors
         this.element = {
+            $container: $('#stead-container'),
             $title: $('#title'),
             $ways: $('#ways-top'),
             $text: $('#instead--text'),
