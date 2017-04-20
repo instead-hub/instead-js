@@ -142,6 +142,11 @@ var Instead = {
         } else {
             this.updateUI(text);
         }
+        // check if restart required
+        var isRestart = interpreter.call('instead.get_restart()');
+        if (isRestart) {
+            this.resetGame();
+        }
     },
 
     updateUI: function updateUI(text) {
