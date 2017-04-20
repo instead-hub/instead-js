@@ -161,7 +161,9 @@ var Instead = {
         }
         // music
         musicPath = interpreter.call('instead.get_music()');
-        if (musicPath !== null) {
+        if (musicPath === null) {
+            HTMLAudio.stopMusic();
+        } else {
             HTMLAudio.playMusic(Game.fileURL(musicPath), 0, function cbOnEnd() {
                 // call when music is finished
                 interpreter.call('instead.finish_music()');
