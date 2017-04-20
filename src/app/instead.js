@@ -81,11 +81,11 @@ var Instead = {
     click: function click(uiref, field, onStead) {
         var ref = uiref;
         var refID;
-        this.clickSound(); // play click sound
 
         if (uiref !== null && typeof ref === 'object') {
             var text = interpreter.call('instead_click(' + ref.x + ', ' + ref.y + ')');
             if (text !== null) {
+                this.clickSound();
                 this.refreshInterface(text);
             }
             return;
@@ -94,12 +94,14 @@ var Instead = {
         if (!onStead && (Game.isAct || field === 'Inv')) {
             refID = ref.match(/([\d]+)/)[0];
             if (ref.search('act') === 0 || ref.search('act') === 1 ) {
+                this.clickSound();
                 this.ifaceCmd('use ' + refID, true);
                 this.autoSave();
                 return;
             }
             if (Game.isAct) {
                 if (field !== 'Ways' && field !== 'Title') {
+                    this.clickSound();
                     if (refID === Game.actObj) {
                         this.ifaceCmd('use ' + refID, true);
                     } else {
@@ -116,6 +118,7 @@ var Instead = {
                 UI.setAct(false, '');
             }
             if (ref) {
+                this.clickSound();
                 this.ifaceCmd(ref, true);
                 this.autoSave();
             }
