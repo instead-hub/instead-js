@@ -11,7 +11,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'build'),
         publicPath: './',
-        filename: 'instead.js'
+        filename: 'instead.[hash].js'
     },
     module: {
         loaders: [
@@ -49,7 +49,7 @@ module.exports = {
             template: './src/index.html',
             inject: 'body'
         }),
-        new ExtractTextPlugin('styles.css')
+        new ExtractTextPlugin('style.[hash].css')
     ],
     devServer: {
         contentBase: './src/assets',
