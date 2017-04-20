@@ -12,7 +12,8 @@ var vfs = {
         if (vfsData.hasOwnProperty(path)) {
             return vfsData[path];
         }
-        return ajaxGetSync(path);
+        var avoidCache = Math.random().toString(36).substring(7);
+        return ajaxGetSync(path + '?' + avoidCache);  // avoid cached response
     },
     save: function save(path, content) {
         vfsData[path] = content;

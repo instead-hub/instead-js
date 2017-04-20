@@ -24,7 +24,8 @@ var Manager = {
             self.startGame(gameid);
         });
 
-        $.get(gameList, function listGames(data) {
+        var gameListURL = gameList + '?' + Math.random().toString(36).substring(7); // avoid cached response
+        $.get(gameListURL, function listGames(data) {
             allGames = typeof data === 'object' ? data : JSON.parse(data);
             var chosenGame = null;
             var gameIds = Object.keys(allGames);
