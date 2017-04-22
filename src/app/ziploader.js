@@ -82,7 +82,7 @@ function importGame(e) {
             if (filename === 'main3.lua') {
                 gameinfo.stead = 3;
             }
-            if (filename === 'main.lua' || filename === 'main3.lua') {
+            if ((filename === 'main.lua' || filename === 'main3.lua') && pathParts.length <= 2) {
                 var gf = decoder.decode(new Uint8Array(zcontent));
                 gameinfo.name = matchRe(/\$Name\(ru\)\s*:\s*([^\$\n]+)/, gf);
                 if (gameinfo.name === '') {
