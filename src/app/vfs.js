@@ -12,6 +12,10 @@ var vfs = {
         if (vfsData.hasOwnProperty(path)) {
             return vfsData[path];
         }
+        if (path.startsWith('blob')) {
+            // normal query when load from ZIP file
+            return ajaxGetSync(path);
+        }
         var avoidCache = Math.random().toString(36).substring(7);
         return ajaxGetSync(path + '?' + avoidCache);  // avoid cached response
     },
