@@ -136,6 +136,7 @@ js_instead_sprite_text = function(font, id)
 end
 instead_sprite_text_size = function()
     INSTEAD_NOTIMPLEMENTED('sprite.text_size')
+    return 16 -- default font size
 end
 instead_sprite_draw = function(...)
     insteadjs_call('Sprite.draw', {...})
