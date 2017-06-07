@@ -108,6 +108,7 @@ pre {
     overflow: auto;
     overflow-x: hidden;
     overflow-y: hidden;
+    z-index: 1000;  /* always above the picture layer */
 }
 
 #title, #picture, #ways-top {
