@@ -12,7 +12,7 @@ var vfs = {
         if (vfsData.hasOwnProperty(path)) {
             return vfsData[path];
         }
-        if (path.startsWith('blob')) {
+        if (path.indexOf('blob') === 0) {
             // normal query when load from ZIP file
             return ajaxGetSync(path);
         }
