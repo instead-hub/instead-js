@@ -7,7 +7,7 @@ io.open = function (filename, mode)
 		mode = mode or "r",
 		name = filename,
 		new = function(s)
-			if not s._lines then
+			if not s._lines and s.mode:find("r") then -- for read
 				instead_file_set_content(
 					s,
 					js.run_string('Lua.openFile("' .. tostring(s.name) .. '")')
@@ -17,18 +17,24 @@ io.open = function (filename, mode)
 		lines = function (s)
 			s:new()
 			return function()
-				return s:read()
+				return s:read('*line')
 			end
 		end,
 		setvbuf = function ()
 			return
 		end,
-		read = function(s) -- line by line
+		read = function(s, m) -- line by line
 			s:new()
-			local i = s.line_nr + 1
-			s.line_nr = i;
-			local n = #s._lines
-			if i < n then return s._lines[i] end
+			if m == '*line' then
+				local i = s.line_nr + 1
+				s.line_nr = i;
+				local n = #s._lines
+				if i >= n then
+					return
+				end
+				return s._lines[i]
+			end
+			return s.content
 		end;
 		write = function(s, ...)
 			local a = { ... }
