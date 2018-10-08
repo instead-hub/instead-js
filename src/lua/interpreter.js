@@ -24,7 +24,7 @@ function runLuaFromPath(path) {
     return null;
 }
 
-function luaRequire(filepath) {
+function requireContent(filepath) {
     var path = filepath;
     // path transformations
     if (path.substr(-4) === '.lua') {
@@ -37,11 +37,7 @@ function luaRequire(filepath) {
     } else {
         path = path + '.lua';
     }
-    if (Lua.requires[path]) {
-        return null;
-    }
-    Lua.requires[path] = true;
-    return runLuaFromPath(path);
+    return vfs.readfile(path);
 }
 
 function luaDofile(filepath) {
@@ -83,8 +79,8 @@ var Interpreter = {
     init: function interpreterInit() {
         Lua.initialize();
         Lua.requires = {};
-        Lua.inject(luaRequire, 'require');
         Lua.inject(luaDofile, 'dofile');
+        Lua.requireContent = requireContent
         Lua.saveFile = saveFile;
         Lua.loadFile = loadFile;
         Lua.openFile = openFile;

@@ -198,3 +198,10 @@ js_instead_getscene = function(invmode)
     scene['pic'] = instead.get_picture()
     return scene
 end
+
+function instead_readdir(d) -- TODO
+	return function()
+		print ("Readdir for: ", d)
+	end
+end
+

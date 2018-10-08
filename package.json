@@ -1,6 +1,6 @@
 {
   "name": "instead-js",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "INSTEAD in Javascript",
   "main": "index.js",
   "scripts": {

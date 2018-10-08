@@ -276,4 +276,9 @@ window.onbeforeunload = function autoSaveOnClose() {
     }
 };
 
+document.onblur = function onBlur() {
+    // reset Alt modifier
+    Instead.kbd({key: 'alt', down: 'false'});
+};
+
 module.exports = Instead;
