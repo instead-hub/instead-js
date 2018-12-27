@@ -1,22 +1,23 @@
 var Game = require('../game');
 var Sprite = require('./sprite');
 
-function parseCompositeImage(image) {
+function parseCompositeImage(image, style) {
     var parsedImg = image.split(';');
-    var images = '<img src="' + Game.fileURL(parsedImg[0]) + '">';
+    var images = parseCompositePart(parsedImg[0], true);
     for (var i = 1; i < parsedImg.length; i++) {
         images += parseCompositePart(parsedImg[i]);
     }
-    return '<div class="compositeImage">' + images + '</div>';
+
+    return '<div class="compositeImage" style="' + style + '">' + images + '</div>';
 }
 
-function parseCompositePart(image) {
+function parseCompositePart(image, isMain) {
     if (!image) {
         return '';
     }
     var pImg = image;
     var imageParts = [];
-    var pStyle = 'position:absolute;';
+    var pStyle = isMain ? '' : 'position:absolute;';
     var pMargins;
     if (image.indexOf('@') !== -1 ) {
         imageParts = image.split('@');
@@ -61,6 +62,26 @@ function parseImg(fullString, img, style) {
     if (Sprite.is(img)) {
         return Sprite.asImage(img);
     }
+
+    // parse padded images
+    if (image.indexOf('pad') === 0) {
+        parsedImg = image.match(/pad:(.+?),(.+)/);
+        style += 'margin:' + parsedImg[1].replace(/(\d+)/g, '$1px') + ';';
+        image = parsedImg[2];
+    }
+
+    // parse aligned images
+    if (image.indexOf('\|') !== -1) {
+        parsedImg = image.match(/(.+)\\\|(.+)/);
+        image = parsedImg[1];
+        style += 'float:' + parsedImg[2] + ';';
+    }
+
+    // composite image
+    if (image.indexOf(';') !== -1) {
+        return parseCompositeImage(image, style);
+    }
+
     // Parse pseudo-images (box, blank)
     if (img.indexOf('box') === 0 || img.indexOf('blank') === 0) {
         return img.replace(/(box|blank):(.+)/, function() {
@@ -69,25 +90,7 @@ function parseImg(fullString, img, style) {
             return parseEmptyImage.apply(undefined, args);
         });
     }
-    // parse padded images
-    if (image.indexOf('pad') === 0) {
-        parsedImg = image.match(/pad:(.+?),(.+)/);
-        style += 'margin:' + parsedImg[1].replace(/(\d+)/g, '$1px') + ';';
-        image = parsedImg[2];
-        if (image.indexOf('box') === 0 || image.indexOf('blank') === 0) {
-            return image.replace(/(box|blank):(.+)/, parseEmptyImage);
-        }
-    }
-    // parse aligned images
-    if (image.indexOf('\|') !== -1) {
-        parsedImg = image.match(/(.+)\\\|(.+)/);
-        image = parsedImg[1];
-        style += 'float:' + parsedImg[2] + ';';
-    }
-    // composite image
-    if (image.indexOf(';') !== -1) {
-        return parseCompositeImage(image);
-    }
+
     return '<img ' + (style ? 'style="' + style + '" ' : '') + 'src="' + Game.fileURL(image) + '">';
 }
 
