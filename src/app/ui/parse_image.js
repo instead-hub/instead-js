@@ -29,10 +29,10 @@ function parseCompositePart(image, isMain) {
     }
     // Parse pseudo-images (box, blank)
     if (pImg.indexOf('box') === 0 || pImg.indexOf('blank') === 0) {
-        return pImg.replace(/(box|blank):(.+)/, function() {
+        return pImg.replace(/(box|blank):(.+)/, function imgReplacer() {
             var args = Array.prototype.slice.call(arguments);
             args.unshift(pStyle);
-            return parseEmptyImage.apply(undefined,args);
+            return parseEmptyImage.apply(null, args);
         });
     }
     return '<img style="' + pStyle + '" src="' + Game.fileURL(pImg) + '"/>';
@@ -57,7 +57,7 @@ function parseEmptyImage(style, fullReplaceString, box, params) {
 function parseImg(fullString, img, style) {
     var image = img;
     var parsedImg = '';
-    style = style? style : 'max-width: 100%;';
+    var imgStyle = style ? style : 'max-width: 100%;';
 
     if (Sprite.is(img)) {
         return Sprite.asImage(img);
@@ -66,7 +66,7 @@ function parseImg(fullString, img, style) {
     // parse padded images
     if (image.indexOf('pad') === 0) {
         parsedImg = image.match(/pad:(.+?),(.+)/);
-        style += 'margin:' + parsedImg[1].replace(/(\d+)/g, '$1px') + ';';
+        imgStyle += 'margin:' + parsedImg[1].replace(/(\d+)/g, '$1px') + ';';
         image = parsedImg[2];
     }
 
@@ -74,24 +74,24 @@ function parseImg(fullString, img, style) {
     if (image.indexOf('\|') !== -1) {
         parsedImg = image.match(/(.+)\\\|(.+)/);
         image = parsedImg[1];
-        style += 'float:' + parsedImg[2] + ';';
+        imgStyle += 'float:' + parsedImg[2] + ';';
     }
 
     // composite image
     if (image.indexOf(';') !== -1) {
-        return parseCompositeImage(image, style);
+        return parseCompositeImage(image, imgStyle);
     }
 
     // Parse pseudo-images (box, blank)
     if (img.indexOf('box') === 0 || img.indexOf('blank') === 0) {
-        return img.replace(/(box|blank):(.+)/, function() {
+        return img.replace(/(box|blank):(.+)/, function imgReplacer() {
             var args = Array.prototype.slice.call(arguments);
-            args.unshift(style);
-            return parseEmptyImage.apply(undefined, args);
+            args.unshift(imgStyle);
+            return parseEmptyImage.apply(null, args);
         });
     }
 
-    return '<img ' + (style ? 'style="' + style + '" ' : '') + 'src="' + Game.fileURL(image) + '">';
+    return '<img ' + (imgStyle ? 'style="' + imgStyle + '" ' : '') + 'src="' + Game.fileURL(image) + '">';
 }
 
 module.exports = parseImg;
