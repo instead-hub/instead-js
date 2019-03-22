@@ -1,5 +1,6 @@
 DEBUG = false
 STANDALONE = true
+PLATFORM = 'web'
 local INSTEAD_THEME_NAME = ''
 
 INSTEAD_PLACEHOLDER = function()
@@ -205,3 +206,6 @@ function instead_readdir(d) -- TODO
 	end
 end
 
+function instead_text_input()
+    return true
+end
