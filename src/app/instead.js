@@ -131,6 +131,12 @@ var Instead = {
             if (kbdHandler && kbdHandler !== 'nil') {
                 this.ifaceCmd(kbdHandler, true);
             }
+            if (ev.text) {
+                var textHandler = interpreter.call('iface:input("text", "' + ev.text + '")');
+                if (textHandler && textHandler !== 'nil') {
+                    this.ifaceCmd(textHandler, true);
+                }
+            }
         }
     },
 

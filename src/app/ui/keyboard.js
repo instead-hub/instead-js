@@ -103,7 +103,8 @@ var Keyboard = {
         e.preventDefault();
         return {
             key: keycodes[e.keyCode],
-            down: e.type === 'keydown' ? 'true' : 'false'
+            down: e.type === 'keydown' ? 'true' : 'false',
+            text: e.type === 'keydown' && e.keyCode >= 48 && !(e.keyCode >= 112 && e.keyCode <= 145) ? e.key : null
         };
     }
 };
