@@ -33,7 +33,7 @@ var Theme = {
 
             // load included theme
             if (includedThemeName) {
-                includedTheme = vfs.readfile(themePath + includedThemeName + '/' + this.themeFile);
+                includedTheme = vfs.readfile(themePath + includedThemeName.toLowerCase() + '/' + this.themeFile);
                 this.parseTheme(includedTheme, function fileURL(file) {
                     return themePath + includedThemeName + '/' + file;
                 });
