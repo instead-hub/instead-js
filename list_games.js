@@ -86,5 +86,5 @@ fs.readdir(dirname, function readFn(err, filenames) {
             }
         }
     });
-    fs.writeFile(dirname + 'games_list.json',  JSON.stringify(output), {flag: 'w'});
+    fs.writeFileSync(dirname + 'games_list.json',  JSON.stringify(output), {flag: 'w'});
 });
