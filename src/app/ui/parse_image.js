@@ -57,7 +57,7 @@ function parseEmptyImage(style, fullReplaceString, box, params) {
 function parseImg(fullString, img, style) {
     var image = img;
     var parsedImg = '';
-    var imgStyle = style ? style : 'max-width: 100%;';
+    var imgStyle = style && !Number.isInteger(style) ? style : 'max-width: 100%;';
 
     if (Sprite.is(img)) {
         return Sprite.asImage(img);
@@ -83,8 +83,8 @@ function parseImg(fullString, img, style) {
     }
 
     // Parse pseudo-images (box, blank)
-    if (img.indexOf('box') === 0 || img.indexOf('blank') === 0) {
-        return img.replace(/(box|blank):(.+)/, function imgReplacer() {
+    if (image.indexOf('box') === 0 || image.indexOf('blank') === 0) {
+        return image.replace(/(box|blank):(.+)/, function imgReplacer() {
             var args = Array.prototype.slice.call(arguments);
             args.unshift(imgStyle);
             return parseEmptyImage.apply(null, args);
