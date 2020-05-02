@@ -9,4 +9,4 @@ var outputFileContent = 'var stead={};' +
     'stead["instead_init.lua"]=' + JSON.stringify(insteadInit) + ';' +
     'module.exports=stead;';
 
-fs.writeFile('./instead/stead.js', outputFileContent, {flag: 'w'});
+fs.writeFileSync('./instead/stead.js', outputFileContent, {flag: 'w'});
