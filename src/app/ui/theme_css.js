@@ -41,7 +41,7 @@ function setFontCSS(selector, fontName, v, getURL) {
         return fnt;
     }
 
-    var fonts = v.match(/(.*?){(.*?),(.*?),(.*?),(.*?)}(\.\w+)/);
+    var fonts = v.match(/(.*?){(.*?)(?:,(.*?)(?:,(.*?)(?:,(.*?))?)?)?}(\.\w+)/);
     if (fonts) {
         if (fonts[2]) {
             fntCSS += setFont(fontName, getURL(fonts[1] + fonts[2] + fonts[6]));
