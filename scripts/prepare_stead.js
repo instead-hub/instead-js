@@ -34,14 +34,14 @@ fs.readdir(dirname, function readFn(err, filenames) {
     if (fs.existsSync(dirname + '/stead3')) {
         // stead 3
         walkSync(dirname + '/stead2', dirname + '/stead2');
-        fs.writeFile('./instead/stead2.json',  JSON.stringify(output), {flag: 'w'});
+        fs.writeFileSync('./instead/stead2.json',  JSON.stringify(output), {flag: 'w'});
         output = {};
         walkSync(dirname + '/stead3', dirname + '/stead3');
-        fs.writeFile('./instead/stead3.json',  JSON.stringify(output), {flag: 'w'});
+        fs.writeFileSync('./instead/stead3.json',  JSON.stringify(output), {flag: 'w'});
     } else {
         filenames.forEach( function processFn(filename) {
             loadFile(dirname, filename, dirname);
         });
-        fs.writeFile('./instead/stead_lua.json',  JSON.stringify(output), {flag: 'w'});
+        fs.writeFileSync('./instead/stead_lua.json',  JSON.stringify(output), {flag: 'w'});
     }
 });
